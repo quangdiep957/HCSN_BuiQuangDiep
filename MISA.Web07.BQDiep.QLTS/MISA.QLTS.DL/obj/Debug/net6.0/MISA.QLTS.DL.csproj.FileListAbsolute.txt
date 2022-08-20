@@ -1,0 +1,15 @@
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.csproj.AssemblyReference.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.GeneratedMSBuildEditorConfig.editorconfig
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.AssemblyInfoInputs.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.AssemblyInfo.cs
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.csproj.CoreCompileInputs.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\bin\Debug\net6.0\MISA.QLTS.DL.deps.json
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\bin\Debug\net6.0\MISA.QLTS.DL.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\bin\Debug\net6.0\MISA.QLTS.DL.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\refint\MISA.QLTS.DL.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\ref\MISA.QLTS.DL.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\bin\Debug\net6.0\MISA.QLTS.Common.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\bin\Debug\net6.0\MISA.QLTS.Common.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.DL\obj\Debug\net6.0\MISA.QLTS.DL.csproj.CopyComplete
