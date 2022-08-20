@@ -1,0 +1,78 @@
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.AssemblyReference.cache
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.GeneratedMSBuildEditorConfig.editorconfig
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.AssemblyInfoInputs.cache
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.AssemblyInfo.cs
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.CoreCompileInputs.cache
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.MvcApplicationPartsAssemblyInfo.cs
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.MvcApplicationPartsAssemblyInfo.cache
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\appsettings.Development.json
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\appsettings.json
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.exe
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.deps.json
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.runtimeconfig.json
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.pdb
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Microsoft.OpenApi.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\staticwebassets.build.json
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\staticwebassets.development.json
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\scopedcss\bundle\MISA.Web07.BQDiep.QLTS.API.styles.css
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.CopyComplete
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\refint\MISA.Web07.BQDiep.QLTS.API.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.pdb
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.genruntimeconfig.cache
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\ref\MISA.Web07.BQDiep.QLTS.API.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Dapper.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MySqlConnector.dll
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.ResourceN.resources
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.ResourceVN.resources
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.GenerateResource.cache
+E:\Thuc Tap\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.ResourceValidate.resources
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\appsettings.Development.json
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\appsettings.json
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.exe
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.deps.json
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.runtimeconfig.json
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Dapper.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\System.Web.Cors.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\System.Web.Http.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\System.Web.Http.Cors.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Microsoft.OpenApi.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MySqlConnector.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.AssemblyReference.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.ResourceN.resources
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.ResourceValidate.resources
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.ResourceVN.resources
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.GenerateResource.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.GeneratedMSBuildEditorConfig.editorconfig
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.AssemblyInfoInputs.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.AssemblyInfo.cs
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.CoreCompileInputs.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.MvcApplicationPartsAssemblyInfo.cs
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.MvcApplicationPartsAssemblyInfo.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\staticwebassets.build.json
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\staticwebassets.development.json
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\scopedcss\bundle\MISA.Web07.BQDiep.QLTS.API.styles.css
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.CopyComplete
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\refint\MISA.Web07.BQDiep.QLTS.API.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.genruntimeconfig.cache
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\ref\MISA.Web07.BQDiep.QLTS.API.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.BL.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.Common.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.DL.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.BL.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.Common.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.DL.pdb
