@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using MISA.QLSP.Common.Entities.Entities;
+using MISA.QLTS.BL.BaseBL;
 using MISA.QLTS.Common.Entities.DTO;
 using MySqlConnector;
 using System;
@@ -10,9 +11,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MISA.QLTS.BL.AssetBL
+namespace MISA.QLTS.BL
 {
-    public interface IAssetBL
+    public interface IAssetBL:IBaseBL<FixedAsset>
     {
         //<summary>
         //Lấy toàn bộ thông tin tài sản
@@ -24,7 +25,7 @@ namespace MISA.QLTS.BL.AssetBL
         //</returns>
         // Author:14/08/2022
 
-        public IEnumerable<FixedAsset> Get();
+       // public IEnumerable<FixedAsset> Get();
 
         //<summary>
         //Lấy mã tài sản mới nhất
@@ -72,7 +73,15 @@ namespace MISA.QLTS.BL.AssetBL
 
         public string GetPagingAsset(string ID);
 
-        public string DeleteAsset(Guid AssetId);
+
+        /// <summary>
+        /// Xóa tài sản
+        /// </summary>
+        /// <param name="fixedAssetID"></param>
+        /// <returns>Xóa tài sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        //public int DeleteAsset(Guid fixedAssetID);
+
         /// <summary>
         /// Hàm thông báo lỗi cho người dùng
         /// </summary>

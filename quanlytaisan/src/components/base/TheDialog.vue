@@ -263,7 +263,7 @@
                 ref="purchasedate"
                  @blur="checkRequired(this.$refs['purchasedate'])"
               />  -->
-              <datepicker format="dd/MM/yyyy" v-model="date.Depreciation"></datepicker>
+              <datepicker format="MM/dd/yyyy" v-model="date.Depreciation" :hideInput="false" :full-month-name="true" typeable = "true"></datepicker>
               <div class="icon icon-calendar icon__size-18 combobox__icon"></div>
             </div>
           </div>
@@ -285,7 +285,8 @@
                 tabindex="1011"
                 @blur="checkRequired(this.$refs['startday'])"
               /> -->
-              <datepicker format="dd/MM/yyyy" v-model="date.Startday"></datepicker>
+              <datepicker format="MM/dd/yyyy" typeable = "true" v-model="date.Startday"  :hideInput="false" :full-month-name="true">
+              </datepicker>
               <div class="icon icon-calendar icon__size-18 combobox__icon"></div>
             </div>
           </div>
@@ -294,7 +295,7 @@
       </div>
       <div class="dialog__footer">
         <button @click="Validation()" class="btn btn-save active" tabindex="1012">Lưu</button>
-        <button class="btn btn-cancel" id="btn-cancel" tabindex="1013" @keydown.tab.prevent="isFocusInput()">
+        <button class="btn btn-cancel" id="btn-cancel" tabindex="1013" @keydown.tab.prevent="isFocusInput()" @click="this.$emit('BtnCloseDialog')">
           Hủy
         </button>
       </div>
@@ -302,6 +303,7 @@
   </div>
   
     <Notify v-if="DialogNotify" v-bind:dataError="errors" @isShowDialogNotify="DialogNotify=false" />
+    
 </template>
 <script>
 import ComboBox from "../base/TheComboBox.vue"
@@ -309,6 +311,7 @@ import Notify from "../base/TheDialogNotify.vue"
 import Datepicker from 'vuejs3-datepicker'
 import Tooltip from '../base/TheTooltip.vue'
 import {formatCash} from '../../js/common.js'
+
 import axios from "axios"
 export default {
     name:"TheDialog",
@@ -358,8 +361,6 @@ export default {
                 ],
                 optionCBBox:[],
                 optionCBBox1:[],
-                handler :"",
-                isShowSuccess:false
         }
     },
     methods:{
@@ -435,50 +436,63 @@ export default {
                           //     errorMsgs.push(`Hao mòn năm phải lớn hơn nguyên giá`);
                           // }
                          // this.dataItemDetail.depreciationYear = (res.depreciationRate)*(res.price);
-
                         if(this.errors.length>=1){
                             
                             this.DialogNotify = true;
                         }
+                        
                         else{
+                          debugger
                           // tạo object loại kiểu json
+                          var cost=(this.dataItemDetail.cost).split('.').join('');
+                          var depreciationYear = (this.dataItemDetail.depreciationYear).split('.').join('');
                           var dataAPI={
-
+                             
                                 fixedAssetCode: this.dataItemDetail.fixedAssetCode,
                                 fixedAssetName: this.dataItemDetail.fixedAssetName,
                                 fixedAssetCategoryName: this.dataItemDetail.FixedAssetCategoryName,
                                 departmentID: this.dataItemDetail.departmentID,
                                 fixedAssetCategoryID:this.dataItemDetail.fixedAssetCategoryID,
-                                cost: this.dataItemDetail.cost,
+                                cost:cost ,
                                 quantity: this.dataItemDetail.quantity,
                                 depreciationRate: this.dataItemDetail.depreciationRate,
                                 lifeTime: this.dataItemDetail.lifeTime,
-                                depreciationYear: this.dataItemDetail.depreciationYear,
+                                depreciationYear: depreciationYear,
                           }
                                 // Nếu thành công thì call API xử lý thêm dữ liệu
                                 // Kiểm tra xem đang là chức năng thêm hay chỉnh sửa
-                                debugger
+                                
                                 if(this.handler == "edit"){
-                                axios
-                                .put(
-                                  `http://localhost:13846/api/v1/FixedAssets/${this.dataItemDetail.fixedAssetID}`,
-                                  JSON.stringify(dataAPI),
-                                  {
-                                    headers: {
-                                      "Content-Type": "application/json",
-                                    },
-                                  }
-                                )
-                                .then((response) => {
-                                  this.isShowsuc
-                                  console.log(response);
-                                })
-                                .catch((error) => {
-                                  console.log(error.message);
-                                });
+                                      axios
+                                      .put(
+                                        `http://localhost:13846/api/v1/FixedAssets?FixedAssetID=${this.dataItemDetail.fixedAssetID}`,
+                                        JSON.stringify(dataAPI),
+                                        {
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                          },
+                                        }
+                                      )
+                                      .then((response) => {
+                                        this.$emit('BtnCloseDialog');
+                                        this.emitter.emit("LoadData",this.dataItemDetail.fixedAssetCode);
+                                        console.log(response);
+                                       
+                                       
+                                      })
+                                      .catch((error) => {
+                                        console.log(error.message);
+                                      });
+                                       this.$emit("handlerName","Sửa");
+                                      
+                                      
+                                      
+    
                                
                                 }
-                                 axios
+                                // Kiểm tra nếu là thêm mới thì xử lý 
+                                 if(this.handler== "add"){
+                                  axios
                                 .post(
                                   "http://localhost:13846/api/v1/FixedAssets",
                                   JSON.stringify(dataAPI),
@@ -489,12 +503,17 @@ export default {
                                   }
                                 )
                                 .then((response) => {
-                                  this.isShowSuccess = true;
+                                  this.$emit('BtnCloseDialog');
+                                  this.emitter.emit("LoadData",this.dataItemDetail.fixedAssetCode);
                                   console.log(response);
                                 })
                                 .catch((error) => {
                                   console.log(error.message);
                                 });
+                                  this.$emit("handlerName","Thêm");
+                              
+                                }
+                                 
                                
                         }
                     }
@@ -574,7 +593,7 @@ export default {
         
         // Lấy dữu liệu cho Tên phòng ban
         DataDepartment(e){
-          debugger
+          
           this.dataItemDetail.departmentName =e.DepartmentName;
           this.dataItemDetail.departmentID =e.DepartmentID;
         },
@@ -588,12 +607,12 @@ export default {
         
     },
     created(){
-      
+          
         // gám mảng DataItemDetail vào Cho item để có thể sử dụng v-model
          
                   this.dataItemDetail = this.item
         // Lấy dữ liệu từ api đổ vào combobox
-        axios.get("http://localhost:13846/api/Department")
+        axios.get("http://localhost:13846/api/v1/Departments")
         .then(res=>{
           console.log(res);
           this.optionCBBox = res.data;
@@ -601,7 +620,7 @@ export default {
         .catch(error=>{
           console.log(error);
         })
-        axios.get("http://localhost:13846/api/FixedAssetCategory")
+        axios.get("http://localhost:13846/api/v1/FixedAssetCategorys")
         .then(res=>{
           console.log(res);
           this.optionCBBox1 = res.data;
@@ -613,22 +632,19 @@ export default {
 
     },
 
+
    mounted() {
+    
       this.isFocusInput();
        this.dataItemDetail.cost = formatCash(this.dataItemDetail.cost);
 
-       // Nhận liệu handler edit 
-        this.emitter.on("handlerEdit", () => {
-          debugger
-                // gán giá trị handler = edit
-                  this.handler = "edit";
-            })
   },
    
     props:{
         isShowDialog1 : Boolean,
         item:Array,
-        title:String
+        title:String,
+        handler:String
     },
   
 

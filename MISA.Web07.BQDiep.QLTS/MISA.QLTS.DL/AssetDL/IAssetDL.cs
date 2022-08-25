@@ -6,15 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MISA.QLTS.DL.AssetDL
+namespace MISA.QLTS.DL
 {
-    public interface IAssetDL
+    public interface IAssetDL:IBaseDL<FixedAsset>
     {
         /// <summary>
         /// Lấy tất cả tài sản
         /// <returns>tất cả tài sản</returns>
         /// Created by: Bùi Quang Điệp (20/08/2022)
-        IEnumerable<FixedAsset> Get();
+       // IEnumerable<FixedAsset> Get();
 
         /// <summary>
         /// Lấy mã tài sản mới nhất
@@ -54,5 +54,13 @@ namespace MISA.QLTS.DL.AssetDL
         /// <param name="pageNumber"></param>
         /// <returns>Danh sách tàn sản</returns>
         public PagingData<FixedAsset> FilterAsset( string?where, int pageSize = 10, int pageNumber = 1);
+
+        /// <summary>
+        /// Xóa tài sản
+        /// </summary>
+        /// <param name="fixedAssetID"></param>
+        /// <returns>Xóa tài sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        //int DeleteAsset(Guid fixedAssetID);
     }
 }

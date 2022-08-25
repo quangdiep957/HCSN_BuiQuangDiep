@@ -42,7 +42,7 @@
     width: 100px;
     box-sizing: border-box;
     margin: 0 18px 0 0;
-    border: 1px solid #afafaf;
+    /* border: 1px solid #afafaf; */
 }
 
 .combobox__input--number {
@@ -86,6 +86,9 @@
 }
 .combobox__option--item-text{
     padding-left: 40px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .location-icon{
     position: absolute;
@@ -107,6 +110,7 @@
 .remove__Combobox{
     width: 150% !important;
     overflow: hidden;
+    border: 1px solid #afafaf;
 }
 .input-date{
     border: 1px solid #afafaf !important;

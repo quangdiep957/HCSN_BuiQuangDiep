@@ -3,80 +3,26 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using MISA.QLSP.Common.Entities.Entities;
-using MISA.QLTS.BL.AssetBL;
-using MISA.QLTS.DL.AssetDL;
+using MISA.QLTS.BL;
+using MISA.Web07.BQDiep.QLTS.API.BaseController;
 using MySqlConnector;
 using System.Data;
 using System.Text.RegularExpressions;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace MISA.Web07.BQDiep.QLTS.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class FixedAssetsController : ControllerBase
+    public class FixedAssetsController : BasesController<FixedAsset>
     {
         #region Field
         private IAssetBL _assetBL;
         #endregion
-
-        #region Constructor
-
-        public FixedAssetsController(IAssetBL assetBL)
+        public FixedAssetsController(IAssetBL assetBL) : base(assetBL)
         {
             _assetBL = assetBL;
         }
-
-        #endregion
-
-        //<summary>
-        //Lấy toàn bộ thông tin tài sản
-        //</summary>
-        // <param name ="Asset">Thông tin tài sản </param>
-        //<returns>
-        // - 200 Lấydữ liệu thành công
-        // - 500 Lỗi từ phía sever
-        //</returns>
-        // Author:14/08/2022
-
-        [HttpGet]
-        public IActionResult Get()
-        {
-            try
-            {
-
-                var assets = _assetBL.Get();
-
-                if (assets != null)
-                {
-                    // Trả về dữ liệu cho client
-                    return StatusCode(StatusCodes.Status200OK, assets);
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status400BadRequest, "e002");
-                }
-                //// 1 Khai báo thông tin Database
-                //var connectionString = "Host=localhost;Database=misa.web07.hcsn.diep;port=3306;User Id=root;password=Quangdiep@2001";
-
-                //// 2 Khởi tạo kết nối tới Mysql
-                //var sqlConection = new MySqlConnection(connectionString);
-
-                //// 3 Lấy dữ liệu
-                //var sqlCommand = "SELECT *, fac.FixedAssetCategoryName,d.DepartmentName FROM fixed_asset fa INNER JOIN department d ON fa.DepartmentID = d.DepartmentID INNER JOIN fixed_asset_category fac ON fa.FixedAssetCategoryID = fac.FixedAssetCategoryID";
-                //var assets = sqlConection.Query<FixedAsset>(sql: sqlCommand);
-
-                //// 4 Trả về kết quả
-                //return Ok(assets);
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex);
-            }
-
-
-
-        }
+       
 
         ////<summary>
         ////Lấy mã tài sản mới nhất
@@ -206,16 +152,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
 
         }
 
-        /// <summary>
-        /// Tìm kiếm và phân trang
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <param name="positionID"></param>
-        /// <param name="departmentID"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageNumber"></param>
-        /// <returns>Danh sách tàn sản</returns>
-        /// 
+      
 
         private IActionResult HandleException(Exception ex)
         {
@@ -226,9 +163,18 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
             return StatusCode(500, error);
         }
 
-
+        /// <summary>
+        /// Tìm kiếm và phân trang
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="positionID"></param>
+        /// <param name="departmentID"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNumber"></param>
+        /// <returns>Danh sách tàn sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
         [HttpGet("filter")]
-        public IActionResult FilterAsset([FromQuery] string? keyword, [FromQuery] Guid? categoryAssetID, [FromQuery] Guid? departmentID, [FromQuery] int pageSize = 10, [FromQuery] int pageNumber = 1)
+        public IActionResult FilterAsset([FromQuery] string? keyword, [FromQuery] Guid? categoryAssetID, [FromQuery] Guid? departmentID, [FromQuery] int pageSize = 20, [FromQuery] int pageNumber = 1)
         {
             var res = _assetBL.FilterAsset(keyword, categoryAssetID, departmentID, pageSize, pageNumber);
                
@@ -240,8 +186,29 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
                     {
                               return StatusCode(StatusCodes.Status400BadRequest, res);
                      }
-        
-        } 
 
+        }
+        /// <summary>
+        /// Xóa tài sản
+        /// </summary>
+        /// <param name="fixedAssetID"></param>
+        /// <returns>Xóa tài sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        //[HttpPost("Delete")] 
+        //public IActionResult DeleteAsset(Guid fixedAssetID)
+        //{
+        //    var res = _assetBL.DeleteAsset(fixedAssetID);
+        //    if(res > 0)
+        //    {
+        //        return StatusCode(StatusCodes.Status200OK, res);
+        //    }
+        //    else
+        //    {
+        //        return StatusCode(StatusCodes.Status400BadRequest, res);
+        //    }
+        //}
+
+       
+        
     }
 }

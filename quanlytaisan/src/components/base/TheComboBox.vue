@@ -7,26 +7,29 @@
                                 <input type="text" name="" id="" class="input combobox__input" v-bind:value="value_input" v-bind:placeholder="val">
                                 <div class="combobox__icon--right icon icon-down1 icon__size-5 tooltip"><Tooltip tooltiptext="hiển thị" positiontooltip="bottom" style="margin-top:10px"/></div>
                             </div>
+                             <div v-show="isShow" class="combobox__option" v-if="optionTable==false" @mouseleave="isShow=false">
+                                <div v-for="item in option" :key="item" class="combobox__option--item" v-on:click="btnTickedBody(item)" :class="{'combobox__option--active':(isTicked == item)}">
+                                    <span v-if="isTicked == item" class="combobox__option--item-icon"><i class="fa-solid fa-check"></i></span>
+                                    <div v-if="typeCombobox=='department'" class="combobox__option--item-text">{{item.DepartmentName}}</div>
+                                    <div v-if="typeCombobox=='category'" class="combobox__option--item-text">{{item.FixedAssetCategoryName}}</div>
+                                    
+                                </div>
+                             
+                            </div>
                             <div class="combobox__control combox--number" v-if="ComboboxQuantity" v-on:click="isShowCombo = true">
                                             <input type="text" name="" id="" class="input combobox__input--number" v-bind:value="value_quantity">
                                             <div class="combobox__icon--right icon icon-down1 icon__size-5 tooltip"
                                                 title="chọn để chọn các thành phần"></div>
                             </div>
-                            <div v-show="isShowCombo" class="combobox__option combobox_quantity" v-if="optionTable==false">
+                            <div v-show="isShowCombo" class="combobox__option combobox_quantity" v-if="optionTable==false" @mouseleave="isShowCombo=false">
                                 <div v-for="item in combobox_quantity" :key="item" class="combobox__option--item" v-on:click="btnTickedQuantity(item)" :class="{'combobox__option--active':(isTicked == item)}">
                                     <div class="combobox__option--item-text" style="padding:0;margin-left:40%">{{ item}}</div>
                                 </div>
                              
                             </div>
                             
-                            <div v-show="isShow" class="combobox__option" v-if="optionTable==false">
-                                <div v-for="item in option" :key="item.id" class="combobox__option--item" v-on:click="btnTicked(item)" :class="{'combobox__option--active':(isTicked == item)}">
-                                    <span v-if="isTicked == item" class="combobox__option--item-icon"><i class="fa-solid fa-check"></i></span>
-                                    <div class="combobox__option--item-text">{{item.DepartmentName}}</div>
-                                </div>
-                             
-                            </div>
-                           <div v-show="isShow" class="combobox__option remove__Combobox" v-if="optionTable">
+                           
+                           <div v-show="isShow" class="combobox__option remove__Combobox" v-if="optionTable" @mouseleave="isShow=false">
                                 <div class="combobox__option--table">
                                     <table style="width: 100%;" class ="table">
                                         <thead class ="combobox__table--header">
@@ -76,6 +79,15 @@ export default{
             value_input : "",
             value_quantity:"10",
             combobox_quantity:[10,20,30,40],
+              searchArray :{
+                keyword : "",
+                categoryAssetID : "",
+                departmentID : "",
+                dataPage:{
+                    pageSize:""
+                }
+
+            }
           
         }
     },
@@ -126,12 +138,28 @@ export default{
                   this.value_input = item.FixedAssetCategoryCode;
                  this.$emit('dataName', item);
             }
-          
+
+        },
+        btnTickedBody(item){
+            this.isTicked  = item ;
+            this.isShow = false;
+            if(this.typeCombobox=="department")
+            {
+                this.value_input = item.DepartmentName;
+                this.$emit('dataDepartment', item);
+            }
+            if(this.typeCombobox == "category"){
+                  this.value_input = item.FixedAssetCategoryName;
+                 this.$emit('dataCategory', item);
+            }
+
         },
           btnTickedQuantity(item){
              this.isTicked  = item ;
             this.isShowCombo = false;
             this.value_quantity = item;
+            this.dataPage = item;
+            this.emitter.emit('dataPageSize', this.dataPage);
         }
 
     },

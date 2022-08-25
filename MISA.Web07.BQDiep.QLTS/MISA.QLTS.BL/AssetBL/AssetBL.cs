@@ -1,5 +1,5 @@
 ﻿using MISA.QLSP.Common.Entities.Entities;
-using MISA.QLTS.BL.AssetBL;
+using MISA.QLTS.BL;
 using MISA.QLTS.Common.Entities.DTO;
 using System;
 using System.Collections;
@@ -9,9 +9,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MISA.QLTS.DL.AssetDL
+namespace MISA.QLTS.DL
 {
-    public class AssetBL : IAssetBL
+    public class AssetBL :BaseDL<FixedAsset>, IAssetBL
     {
         #region Field
         private IAssetDL _assetDL;
@@ -35,10 +35,16 @@ namespace MISA.QLTS.DL.AssetDL
         //</returns>
         // Author:14/08/2022
 
-        public string DeleteAsset(Guid AssetId)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Xóa tài sản
+        /// </summary>
+        /// <param name="fixedAssetID"></param>
+        /// <returns>Xóa tài sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        //public int DeleteAsset(Guid fixedAssetID)
+        //{
+        //    return(_assetDL.DeleteAsset(fixedAssetID));
+        //}
 
         //<summary>
         //Lấy mã tài sản mới nhất
@@ -156,13 +162,13 @@ namespace MISA.QLTS.DL.AssetDL
             return assetNew;
         }
 
-        public IEnumerable<FixedAsset> Get()
-        {
-            var res = _assetDL.Get();
-            return res;
-        }
+        //public IEnumerable<FixedAsset> Get()
+        //{
+        //    var res = _assetDL.Get();
+        //    return res;
+        //}
 
-        public PagingData<FixedAsset> FilterAsset(string? keyword, Guid? categoryAssetID, Guid? departmentID, int pageSize = 10, int pageNumber = 1)
+        public PagingData<FixedAsset> FilterAsset(string? keyword, Guid? categoryAssetID, Guid? departmentID, int pageSize = 20, int pageNumber = 1)
         {
             var orConditions = new List<string>();
             var andConditions = new List<string>();
@@ -190,7 +196,12 @@ namespace MISA.QLTS.DL.AssetDL
 
             if (andConditions.Count > 0)
             {
-                whereClause += $" AND {string.Join(" AND ", andConditions)}";
+                if(orConditions.Count > 0)
+                {
+                    whereClause += $"AND {string.Join(" AND ", andConditions)}";
+                } 
+                else
+                whereClause += $" {string.Join(" AND ", andConditions)}";
             }
             return _assetDL.FilterAsset(whereClause,pageSize,pageNumber);
         }

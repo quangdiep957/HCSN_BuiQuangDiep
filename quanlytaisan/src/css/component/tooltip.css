@@ -82,37 +82,26 @@
   .tooltip {}
 
 .tooltip .tooltiptext {
-    /* height: 20px; */
-    background-color: #fff;
-    color: #000;
-    text-align: center;
-    border-radius: 5px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    /* margin-left: -60px; */
-    opacity: 0;
-    display: block;
-    transition: opacity 0.3s;
-    z-index: 100000;
-    white-space: nowrap;
-    pointer-events: none;
-    color: #000 !important;
-    font-weight: normal !important;
-    font-size:10px;
+      /* height: 20px; */
+      background-color: #000;
+      color: #fff;
+      box-shadow: 2px 1px 1px #000;
+      border-radius: 5px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      /* margin-left: -60px; */
+      opacity: 0;
+      display: block;
+      transition: opacity 0.3s;
+      z-index: 100000;
+      white-space: nowrap;
+      pointer-events: none;
+      /* color: #000 !important; */
+      font-weight: normal !important;
+      font-size: 13px;
 }
 
-.tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #fff transparent transparent transparent ;
-    z-index: 1000;
-}
 
 .tooltip:hover .tooltiptext {
     visibility: visible;
@@ -145,7 +134,8 @@
   margin-right: 14px !important;
 }
 [attr="top"] {
-  margin-left: 20px !important;
+  position: absolute;
+  margin-left: 0px !important;
 }
 .b [attr="top"] {
   margin-left: -20px !important;

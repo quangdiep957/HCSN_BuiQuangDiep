@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MISA.QLTS.Common.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MISA.QLSP.Common.Entities.Entities
@@ -6,6 +7,8 @@ namespace MISA.QLSP.Common.Entities.Entities
     /// <summary>
     /// 
     /// </summary>
+    /// 
+    [TableName("fixed_asset")]
     public class FixedAsset
     {
         #region Field

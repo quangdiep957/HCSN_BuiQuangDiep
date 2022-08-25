@@ -5,22 +5,21 @@
             <div class="m-row m-row__form" style="">
                 <div class="m-row__left display-flex">
                     <!-- tạo input search -->
-                    <div class="input-search tooltip" style="margin-right:10px" >
-                        <div class="icon input__search--icon__item input__search--icon" data-toggle="tìm kiếm"> <Tooltip tooltiptext="Tìm kiếm" positiontooltip="bottom"/></div>
-                        <input type="text" name="" id="" class="input input__search--text"
+                    <div class="input-search" style="margin-right:10px" >
+                        <div class="icon input__search--icon__item input__search--icon" data-toggle="tìm kiếm"></div>
+                        <input type="text" name="" id="" class="input input__search--text" @keydown.enter="HandlerSearch"
                             placeholder="Tìm kiếm tài sản">
                     </div>
-                    <ComboBox val="Loại tài sản" v-bind:option=optionCBBox icon="true" />
-                    <ComboBox val="Bộ phận sử dụng" v-bind:option=optionCBBox icon="true" />
+                    <ComboBox val="Loại tài sản" v-bind:option=optionCategory icon="true"  typeCombobox="category" @dataCategory="HandlerSearch" />
+                    <ComboBox val="Bộ phận sử dụng" v-bind:option=optionDepartment icon="true" typeCombobox="department" @dataDepartment="HandlerSearch" />
                 </div>
 
                 <div class="m-row__right display-flex">
-                    <div @click="btnShowDialog()" class="btn btn__icon tooltip" id="btn--add">
+                    <div @click="btnShowDialog()" class="btn btn__icon" id="btn--add">
                         <div class="btn__icon--item">
                             <div class="icon icon-add icon__size-8"></div>
                             <div class="btn--text">Thêm tài sản</div>
                         </div>
-                         <Tooltip tooltiptext="Thêm mới" positiontooltip="bottom"/>
                     </div>
                     <button class="btnfunction distance tooltip">
                         <div class="bntfunction__more icon icon-more icon__size-18"></div>
@@ -37,8 +36,14 @@
         </div>
     </div>
     <TheDialog v-if="isShowDialog" @BtnCloseDialog="isShowDialog = false" :title="title"
-    v-bind:item="itemAssetDetail" />
-    <Notify v-if="isShowDialogNotify" :dataError=titleWarning @isShowDialogNotify ="isShowDialogNotify = false" />
+    v-bind:item="itemAssetDetail" :handler=handler @handlerName="ShowSuccess" />
+    <Notify v-if="isShowDialogNotify" :dataError=titleWarning @isShowDialogNotify ="isShowDialogNotify = false" :dataAsset=dataTicks />
+    <div class="toast__box" v-show="isShowSuccess == true">
+                    <div class="toast__box--item">
+                    <div class="toast__box--body"><div class ="toast__box--item-icon"><div class="icon icon-tick-white icon__size-11x2"></div></div></div>
+                        <div class="toast__box--item-text">{{handlerName}} dữ liệu thành công</div>
+                    </div>
+                </div>
 </template>
 <script>
 import Header from './TheHeader.vue'
@@ -59,9 +64,20 @@ export default {
             title:"Sửa tài sản",
             titleWarning:[],
             dataTicks:[],
-            optionCBBox: [],
+            optionDepartment: [],
+            optionCategory: [],
             itemAssetDetail :[],
-            isSetWidth:false
+            isSetWidth:false,
+            handler:"",
+            searchArray :{
+                keyword : "",
+                fixedAssetCategoryID : "",
+                departmentID : "",
+                pageSize:"",
+                isShowSuccess:false,
+                handlerName:""
+
+            }
         };
     },
     methods: {
@@ -74,7 +90,7 @@ export default {
             try {
             // đặt lại input về rỗng
              this.itemAssetDetail=[]
-
+            this.handler="add";
              // Lấy mã tài sản mới nhất truyền vào input
              axios.get('http://localhost:13846/api/v1/FixedAssets/CodeAsset')
              .then(res=>{
@@ -106,18 +122,62 @@ export default {
                 this.titleWarning.push("Bạn cần chọn tài sản trước khi xóa !");
             }
             else if(quantity==1){
-                  this.titleWarning.push(`Bạn có thật sự muốn xóa tài sản ${this.dataTicks[0].AssetName}`);
+                  this.titleWarning.push(`Bạn có thật sự muốn xóa tài sản ${this.dataTicks[0].fixedAssetName}`);
             }
             else{
                 this.titleWarning.push(`Bạn có thật sự muốn xóa ${quantity} tài sản ?`);
             }
-                
+
             } catch (error) {
                 console.log(error);
             }
            
         },
+        HandlerSearch(item){
+            
+            if(item.DepartmentID != undefined)
+            {   
+                
+                 this.searchArray.departmentID= item.DepartmentID;
+            }
+            if(item.FixedAssetCategoryID != undefined)
+            {   
+                
+                 this.searchArray.fixedAssetCategoryID= item.FixedAssetCategoryID;
+            }
+            if(event.currentTarget.value != undefined)
+            {
+                this.searchArray.keyword= event.currentTarget.value;
+            }
+            if(item.pageSize != undefined)
+            {
+                this.searchArray.pageSize = item;
+            }
+           
+           
+            this.emitter.emit("search",this.searchArray);
+        },
+        /**
+         * Show thông báo thêm mới hoặc sửa thành công
+         * Author : Bùi Quang Điệp
+         * Date :14 /08/ 2021
+         */
+        ShowSuccess(item){
+           
+            if(item == "Sửa")
+            {
+                this.handlerName="Sửa"
+            }
+            else{
+                 this.handlerName="Thêm"
+            }
+             this.isShowSuccess = true;
+              setTimeout(() => {
+            this.isShowSuccess = false;
+            }, 2000);
 
+        }
+        
     },
      /**
          * Nhận dữ liệu từ combobox
@@ -125,13 +185,34 @@ export default {
          * Date :14 /08/ 2021
          */
     created(){
+        // Lấy thông tin bộ phận sử dụng từ API
         try {
-            
-            axios.get("http://localhost:13846/api/Department")
+            debugger
+            axios.get("http://localhost:13846/api/v1/Departments")
             .then(res=>{
                 console.log(res);
-                this.optionCBBox = res.data;
+                this.optionDepartment = res.data;
                  this.emitter.emit("Department",res.data);
+                
+            })
+            .catch(res=>{
+                  console.log(res);
+            })
+           
+            
+        } catch (error) {
+            console.log(error);
+        }
+
+        // lấy thông tin loại tài sản từ API
+         try {
+            
+            axios.get("http://localhost:13846/api/v1/FixedAssetCategorys")
+            .then(res=>{
+                console.log(res);
+                this.optionCategory = res.data;
+                // truyền dữu liệu sang table
+                 this.emitter.emit("Category",res.data);
                 
             })
             .catch(res=>{
@@ -159,23 +240,31 @@ export default {
               this.title="Sửa tài sản";
              // truyền data detail vào cho mảng 
              this.itemAssetDetail = item
+             this.handler = "edit";
             }),
             // Nhận dữ liệu set lại width navbar
               this.emitter.on("setWidth", () => {
                 // gán giá trị width lại cho body
              this.isSetWidth = true
-            })
+            }),
             // Nhận dữ liệu reset width navbar
              this.emitter.on("setWidthClear", () => {
                 // gán giá trị width lại cho body
              this.isSetWidth = false
-            })
+            }),
             // Nhận dữ liệu từ titleWarning từ table
              this.emitter.on("titleWarning", (item) => {
                 
              // truyền data vào cho mảng 
              this.dataTicks = item
+            }),
+            this.emitter.on("dataPageSize",(item)=>{
+                
+                  // truyền data vào cho mảng 
+                    this.searchArray.pageSize = item
+                    this.HandlerSearch(item)
             })
+
         } catch (error) {
             console.log(error);
         }

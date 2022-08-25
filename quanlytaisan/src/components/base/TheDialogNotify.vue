@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="dialog__notify--footer">
-                <button class="btn btn-confirm" ref="btnConfirm" tabindex="1" @click="this.$emit('isShowDialogNotify')" >
+                <button class="btn btn-confirm" ref="btnConfirm" tabindex="1" @click="DeleteAsset()" >
                     Đồng ý
                 </button>
                 <button class="btn btn-cancel" style="margin:0 10px;" @keydown.tab.prevent="isFocusConfirm()" tabindex="2" @click="this.$emit('isShowDialogNotify')">
@@ -21,20 +21,23 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: 'TheDialogNotify',
 
     data() {
         return {
-            ShowDialogNotify:true
+            ShowDialogNotify:true,
         };
     },
 
     mounted() {
         this.$refs['btnConfirm'].focus();
+
     },
     props:{
         dataError:Array,
+        dataAsset:Array
     },
 
     methods: {
@@ -46,6 +49,30 @@ export default {
          */
         isFocusConfirm(){
         this.$refs['btnConfirm'].focus();
+        },
+
+        DeleteAsset(){
+            debugger
+            try {
+                // Xóa 1 bản ghi
+                if(this.dataAsset.length >= 1)
+                {
+                    axios.post(`http://localhost:13846/api/v1/FixedAssets/delete?fixedAssetID=${this.dataAsset[0].fixedAssetID}`)
+                    .then(res=>{
+                        console.log(res);
+                            this.$emit("isShowDialogNotify");
+                            this.emitter.emit("LoadData");
+                    })
+                    .catch(res=>{
+                         console.log(res);
+                    })
+                }
+
+               
+              
+            } catch (error) {
+                console.log(error);
+            }
         }
     },
     

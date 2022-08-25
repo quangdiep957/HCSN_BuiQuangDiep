@@ -1,3 +1,4 @@
+
 .icon-asset {
     background-position: -65px -153px;
 }
@@ -114,9 +115,7 @@
 .icon-more{
     background-position: -287px -111px;
 }
-.icon-remove{
-    background-position: -463px -111px;
-}
+
 .icon-edit{
     background-position: -156px -68px;
 }
@@ -124,6 +123,17 @@
     margin: 0 15px;
     background-position: -244px -112px;
 }
+.icon-remove-mini{
+    background-position: -279px -116px;
+}
+.icon-replication-mini{
+    background-position:  -147px -117px;
+}
+
+.icon-edit-mini{
+    background-position: -94px -90px;
+}
+
 .icon-back{
     background-position: -206px -248px;
 }
@@ -151,7 +161,7 @@
 
     font-size:30px;
     color:gold;
-    margin:0 20px;
+    margin-right: 20px;
 }
 
 

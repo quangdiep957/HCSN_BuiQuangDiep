@@ -1,9 +1,11 @@
 ﻿
+using MISA.QLTS.Common.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MISA.QLSP.Common.Entities.Entities
 {
+    [TableName("fixed_asset_category")]
     public class FixedAssetCategory
     {
         /// <summary>
