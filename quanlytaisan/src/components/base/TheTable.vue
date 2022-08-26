@@ -43,9 +43,9 @@
                                 <td class="text-align-right price-remaining">{{formatCash(item.trackedYear)}}</td>
                                 <td class="text-align-center">
                                     <div class="tablefunction display-flex">
-                                        <div class="icon-mini icon-edit-mini icon__size-14 tooltip" style="margin-left:15px"><Tooltip tooltiptext="Sửa" positiontooltip="top" style="left: -22%;top: 20px;" /></div>
-                                        <div class="icon-mini icon-replication-mini icon__size-14 tooltip"><Tooltip tooltiptext="Nhân bản" positiontooltip="top" style="left: -2%;top: 20px;" /></div>
-                                        <div class="icon-mini icon-remove-mini icon__size-14 tooltip" @click="HandleRemoveDetail(item)"><Tooltip tooltiptext="Xóa" positiontooltip="top" style="left: 4px;top: 20px;" /></div>
+                                        <div class="icon-mini icon-edit-mini icon__size-14 tooltip tooltipHandler" style="margin-left:15px"><Tooltip tooltiptext="Sửa" positiontooltip="top" style="top: 20px;" /></div>
+                                        <div class="icon-mini icon-replication-mini icon__size-14 tooltip tooltipHandler tooltipHandlerEdit"><Tooltip tooltiptext="Nhân bản" positiontooltip="top" style="left: 20px;top: 20px;" /></div>
+                                        <div class="icon-mini icon-remove-mini icon__size-14 tooltip tooltipHandler" @click="HandleRemoveDetail(item)"><Tooltip tooltiptext="Xóa" positiontooltip="top" style="top: 20px;" /></div>
                                     </div>
                                 </td>
 

@@ -89,35 +89,35 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         //// / 400 Dữ liệu đầu vào không hợp lệ
         ////</returns>
         //// Date:14/08/2022
-        [HttpPost]
+        //[HttpPost]
 
-        public IActionResult Post([FromBody] FixedAsset asset)
-        {
-            try
-            {
+        //public IActionResult Post([FromBody] FixedAsset asset)
+        //{
+        //    try
+        //    {
 
-                // 4 Trả về kết quả
-                var res = _assetBL.Post(asset);
-                if (res > 0)
-                {
-                    return StatusCode(StatusCodes.Status201Created, asset);
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status400BadRequest, "e002");
-                }
-
-
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex);
-            }
+        //        // 4 Trả về kết quả
+        //        var res = _assetBL.Post(asset);
+        //        if (res > 0)
+        //        {
+        //            return StatusCode(StatusCodes.Status201Created, asset);
+        //        }
+        //        else
+        //        {
+        //            return StatusCode(StatusCodes.Status400BadRequest, "e002");
+        //        }
 
 
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return HandleException(ex);
+        //    }
 
 
-        }
+
+
+        //}
         /// <summary>
         /// Sửa thông tin tài sản
         /// </summary>
@@ -159,7 +159,6 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
             var error = new ErrorSevice();
             error.UserMsg = Resource.ResourceVN.Error_Exception;
             error.DevMsg = ex.Message;
-            error.data = ex.Data;
             return StatusCode(500, error);
         }
 

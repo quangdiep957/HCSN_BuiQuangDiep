@@ -7,15 +7,16 @@
                                 <input type="text" name="" id="" class="input combobox__input" v-bind:value="value_input" v-bind:placeholder="val">
                                 <div class="combobox__icon--right icon icon-down1 icon__size-5 tooltip"><Tooltip tooltiptext="hiển thị" positiontooltip="bottom" style="margin-top:10px"/></div>
                             </div>
-                             <div v-show="isShow" class="combobox__option" v-if="optionTable==false" @mouseleave="isShow=false">
-                                <div v-for="item in option" :key="item" class="combobox__option--item" v-on:click="btnTickedBody(item)" :class="{'combobox__option--active':(isTicked == item)}">
+                             <div v-show="isShow" class="combobox__option" v-if="optionTable==false">
+                                <div v-for="item in option" :key="item" class="combobox__option--item tooltip tooltipCombobox" v-on:click="btnTickedBody(item)" :class="{'combobox__option--active':(isTicked == item)}">
                                     <span v-if="isTicked == item" class="combobox__option--item-icon"><i class="fa-solid fa-check"></i></span>
-                                    <div v-if="typeCombobox=='department'" class="combobox__option--item-text">{{item.DepartmentName}}</div>
+                                    <div v-if="typeCombobox=='department'" class="combobox__option--item-text">{{item.DepartmentName}} </div>
                                     <div v-if="typeCombobox=='category'" class="combobox__option--item-text">{{item.FixedAssetCategoryName}}</div>
-                                    
+                                    <div style="position:absolute"><Tooltip positiontooltip="right" :tooltiptext=item.DepartmentName /></div>
                                 </div>
                              
                             </div>
+                            <!-- combobox phân trang   -->
                             <div class="combobox__control combox--number" v-if="ComboboxQuantity" v-on:click="isShowCombo = true">
                                             <input type="text" name="" id="" class="input combobox__input--number" v-bind:value="value_quantity">
                                             <div class="combobox__icon--right icon icon-down1 icon__size-5 tooltip"
@@ -28,8 +29,9 @@
                              
                             </div>
                             
+                             <!-- option combobox table  -->
                            
-                           <div v-show="isShow" class="combobox__option remove__Combobox" v-if="optionTable" @mouseleave="isShow=false">
+                           <div v-show="isShow" class="combobox__option remove__Combobox" v-if="optionTable">
                                 <div class="combobox__option--table">
                                     <table style="width: 100%;" class ="table">
                                         <thead class ="combobox__table--header">

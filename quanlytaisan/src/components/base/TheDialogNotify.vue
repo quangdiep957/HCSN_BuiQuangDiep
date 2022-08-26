@@ -57,7 +57,7 @@ export default {
                 // Xóa 1 bản ghi
                 if(this.dataAsset.length >= 1)
                 {
-                    axios.post(`http://localhost:13846/api/v1/FixedAssets/delete?fixedAssetID=${this.dataAsset[0].fixedAssetID}`)
+                    axios.post(`http://localhost:13846/api/v1/FixedAssets/delete?id=${this.dataAsset[0].fixedAssetID}`)
                     .then(res=>{
                         console.log(res);
                             this.$emit("isShowDialogNotify");

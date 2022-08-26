@@ -75,60 +75,60 @@ namespace MISA.QLTS.DL
         // / 400 Dữ liệu đầu vào không hợp lệ
         //</returns>
         // Date:14/08/2022
-        public int Post(FixedAsset asset)
-        {
-            var error = new ErrorSevice();
-            var errorData = new Dictionary<string, string>();
-            // 1. Validate dữ liệu
-            // 1.1 Mã tài sản không được phép để trống 
-            if (string.IsNullOrEmpty(asset.fixedAssetCode))
-            {
-                errorData.Add("FixedAssetCode", BL.Resource.ResourceValidate.AssetCode);
-            }
-            // 1.2 Tên tài sản không được phép để trống 
-            if (string.IsNullOrEmpty(asset.fixedAssetName))
-            {
-                errorData.Add("FixedAssetName", BL.Resource.ResourceValidate.AssetName);
-            }
-            // 1.3 Mã bộ phận sử dụng không được phép để trống 
-            //if (string.IsNullOrEmpty(asset.DepartmentCode))
-            //{
-            //    errorData.Add("FixedAssetCode", Resource.ResourceValidate.DepartmentCode);
-            //}
-            //// 1.4 Mã loại tài sản không được phép để trống 
-            //if (string.IsNullOrEmpty(asset.FixedAssetCategoryCode))
-            //{
-            //    errorData.Add("FixedAssetCode", Resource.ResourceValidate.CategoryCode);
-            //}
-            // 1.5 Nguyên giá không được phép để trống 
-            if (asset.cost == null)
-            {
-                errorData.Add("Cost", BL.Resource.ResourceValidate.Cost);
-            }
-            // 1.6 Số lượng không được phép để trống 
-            if (asset.quantity == null)
-            {
-                errorData.Add("quantity", BL.Resource.ResourceValidate.Quantity);
-            }
-            // 1.7 Ngày mua không được phép để trống 
+        //public int Post(FixedAsset asset)
+        //{
+        //    var error = new ErrorSevice();
+        //    var errorData = new Dictionary<string, string>();
+        //    // 1. Validate dữ liệu
+        //    // 1.1 Mã tài sản không được phép để trống 
+        //    if (string.IsNullOrEmpty(asset.fixedAssetCode))
+        //    {
+        //        errorData.Add("FixedAssetCode", BL.Resource.ResourceValidate.AssetCode);
+        //    }
+        //    // 1.2 Tên tài sản không được phép để trống 
+        //    if (string.IsNullOrEmpty(asset.fixedAssetName))
+        //    {
+        //        errorData.Add("FixedAssetName", BL.Resource.ResourceValidate.AssetName);
+        //    }
+        //    // 1.3 Mã bộ phận sử dụng không được phép để trống 
+        //    //if (string.IsNullOrEmpty(asset.DepartmentCode))
+        //    //{
+        //    //    errorData.Add("FixedAssetCode", Resource.ResourceValidate.DepartmentCode);
+        //    //}
+        //    //// 1.4 Mã loại tài sản không được phép để trống 
+        //    //if (string.IsNullOrEmpty(asset.FixedAssetCategoryCode))
+        //    //{
+        //    //    errorData.Add("FixedAssetCode", Resource.ResourceValidate.CategoryCode);
+        //    //}
+        //    // 1.5 Nguyên giá không được phép để trống 
+        //    if (asset.cost == null)
+        //    {
+        //        errorData.Add("Cost", BL.Resource.ResourceValidate.Cost);
+        //    }
+        //    // 1.6 Số lượng không được phép để trống 
+        //    if (asset.quantity == null)
+        //    {
+        //        errorData.Add("quantity", BL.Resource.ResourceValidate.Quantity);
+        //    }
+        //    // 1.7 Ngày mua không được phép để trống 
 
-            // 1.8 Ngày bắt đầu sử dụng không được phép để trống 
-            // 1.9 Tỉ lệ hao mòn không được phép để trống
-            // 1.10 Giá trị hao mòn không được phép để trống
-            // 1.11 Số năm sử dụng không được phép để trống
-            // 2. Kiểm tra độ dài của từng trường
-            // 3. Validate nghiệp vụ
-            // 3.1 Tỉ lệ hao mòn trong khoảng từ 1 => tỉ lệ hao mòn = 1/ số năm sử dụng
-            // 3.2 Hao mòn năm phải nhỏ hơn hoặc bằng nguyên giá => Hao mòn / khấu hao năm > nguyên giá
+        //    // 1.8 Ngày bắt đầu sử dụng không được phép để trống 
+        //    // 1.9 Tỉ lệ hao mòn không được phép để trống
+        //    // 1.10 Giá trị hao mòn không được phép để trống
+        //    // 1.11 Số năm sử dụng không được phép để trống
+        //    // 2. Kiểm tra độ dài của từng trường
+        //    // 3. Validate nghiệp vụ
+        //    // 3.1 Tỉ lệ hao mòn trong khoảng từ 1 => tỉ lệ hao mòn = 1/ số năm sử dụng
+        //    // 3.2 Hao mòn năm phải nhỏ hơn hoặc bằng nguyên giá => Hao mòn / khấu hao năm > nguyên giá
 
-            if (errorData.Count > 0)
-            {
-                //error.UserMsg = BL.Resource.ResourceVN.Error_ValidateData;
-                //error.data = errorData;
+        //    if (errorData.Count > 0)
+        //    {
+        //        //error.UserMsg = BL.Resource.ResourceVN.Error_ValidateData;
+        //        //error.data = errorData;
                
-            }
-           return _assetDL.Post(asset);
-        }
+        //    }
+        //   return _assetDL.Post(asset);
+        //}
 
         /// <summary>
         /// Sửa thông tin tài sản

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -14,39 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\MISA.QLTS.Common\MISA.QLTS.Common.csproj" />
     <ProjectReference Include="..\MISA.QLTS.DL\MISA.QLTS.DL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resource\ResourceN.Designer.cs">
-      <DependentUpon>ResourceN.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resource\ResourceValidate.Designer.cs">
-      <DependentUpon>ResourceValidate.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resource\ResourceVN.Designer.cs">
-      <DependentUpon>ResourceVN.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resource\ResourceN.resx">
-      <LastGenOutput>ResourceN.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resource\ResourceValidate.resx">
-      <LastGenOutput>ResourceValidate.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resource\ResourceVN.resx">
-      <LastGenOutput>ResourceVN.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

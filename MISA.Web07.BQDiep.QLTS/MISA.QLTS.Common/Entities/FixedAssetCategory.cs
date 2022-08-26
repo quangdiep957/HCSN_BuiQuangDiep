@@ -2,18 +2,20 @@
 using MISA.QLTS.Common.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using KeyAttribute = MISA.QLTS.Common.Entities.KeyAttribute;
 
 namespace MISA.QLSP.Common.Entities.Entities
 {
     [TableName("fixed_asset_category")]
+    [Key("FixedAssetCategoryID")]
     public class FixedAssetCategory
     {
         /// <summary>
         /// ID loại tài sản
         /// </summary>
-        [Key]
+   
         #region propperty
-        public string FixedAssetCategoryID { get; set; }
+        public Guid FixedAssetCategoryID { get; set; } = Guid.NewGuid();
         /// <summary>
         /// mã loại tài sản
         /// </summary>

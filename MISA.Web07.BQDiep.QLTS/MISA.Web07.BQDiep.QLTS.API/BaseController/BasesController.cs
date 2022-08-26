@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MISA.QLSP.Common.Entities.Entities;
-using MISA.QLTS.BL;
 using MISA.QLTS.BL.BaseBL;
+using System.Web.Http.ModelBinding;
+
 
 namespace MISA.Web07.BQDiep.QLTS.API.BaseController
 {
@@ -72,7 +73,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
         //</returns>
         // Created By:Bùi Quang Điệp (14/08/2022)
 
-        [HttpDelete]
+        [HttpPost("delete")]
         public IActionResult Delete(Guid id)
         {
             try
@@ -94,12 +95,49 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
             }
         }
 
+        [HttpPost]
+        public IActionResult InsertOneRecord([FromBody] T record)
+        {
+           
+            try
+            {
+               
+                var validateResult = HandleError.HandleError.IsValidate(ModelState);
+                if (validateResult != null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, validateResult);
+                }
+                 var recordID= _baseBL.InsertOneRecord(record);
+                if (recordID != Guid.Empty)
+                {
+                    return StatusCode(StatusCodes.Status201Created, recordID);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "e004");
+                }
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+        /// <summary>
+        /// Sửa 1 bản ghi trong 1 bảng
+        /// </summary>
+        /// <param name=""></param>
+        /// <param name="id"></param>
+        /// <returns>Trả về mã bản ghi đã được sửa</returns>
+        //public IActionResult UpdateRecord([FromBody] T record, Guid id)
+        //{
+        //    return StatusCode(4000);
+        //}
+
         private IActionResult HandleException(Exception ex)
         {
             var error = new ErrorSevice();
             error.UserMsg = Resource.ResourceVN.Error_Exception;
             error.DevMsg = ex.Message;
-            error.data = ex.Data;
             return StatusCode(500, error);
         }
         #endregion

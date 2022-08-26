@@ -10,11 +10,13 @@ export default {
             type: String,
             default: "Tooltip text",
         },
+        
         positiontooltip: {
             default: "top",
             type: String,
         },
     },
+
 };
 </script>
 <style scoped>

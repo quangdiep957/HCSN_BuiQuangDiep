@@ -80,7 +80,9 @@
 
   /**/
   .tooltip {}
-
+.tooltipMenu{
+  
+}
 .tooltip .tooltiptext {
       /* height: 20px; */
       background-color: #000;
@@ -146,5 +148,35 @@
   transform: rotate(135deg) !important;
   -webkit-transform: rotate(180deg) !important;
   margin-right: 14px !important;
-  left: 50% !important;
+}
+.tooltipHandler [attr="top"]::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background-color: #0006;
+  position: absolute;
+  opacity: 1;
+  border-radius: 3px;
+  left: -5px !important;
+  top: -25px !important;
+  box-shadow: 1px 1px 1px #000;
+
+}
+.tooltipHandlerEdit [attr="top"]::before {
+  left: 28px !important;
+}
+.navbar .tooltip:hover .tooltiptext {
+  opacity: 0;
+}
+.setnavbar .tooltip:hover .tooltiptext {
+  opacity: 1 !important;
+}
+.tooltipMenu [attr="top"]{
+  top:22px !important;
+}
+.tooltipCombobox [attr="right"]
+{
+  position: absolute;
+  white-space: nowrap;
+  left:30px;
 }

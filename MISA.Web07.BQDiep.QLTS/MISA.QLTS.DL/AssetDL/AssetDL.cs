@@ -109,38 +109,38 @@ namespace MISA.QLTS.DL
             return assetCode.ToString();
         }
 
-        public int Post(FixedAsset asset)
-        {
+        //public int Post(FixedAsset asset)
+        //{
 
-            DateTime date = DateTime.Now;
-            asset.createdDate = date;
-            asset.modifiedDate = date;
-            // 1 Khai báo thông tin Database
-            var connectionString = "Host=localhost;Database=misa.web07.hcsn.diep;port=3306;User Id=root;password=Quangdiep@2001";
+        //    DateTime date = DateTime.Now;
+        //    asset.createdDate = date;
+        //    asset.modifiedDate = date;
+        //    // 1 Khai báo thông tin Database
+        //    var connectionString = "Host=localhost;Database=misa.web07.hcsn.diep;port=3306;User Id=root;password=Quangdiep@2001";
 
-            // 2 Khởi tạo kết nối tới Mysql
-            var sqlConection = new MySqlConnection(connectionString);
-            asset.fixedAssetID = Guid.NewGuid();
-            // 3 Lấy dữ liệu
-            var sqlCommand = "Proc_Fixed_Asset_Insert";
-            var parameters = new DynamicParameters();
-            parameters.Add("FixedAssetID", asset.fixedAssetID);
-            parameters.Add("FixedAssetCode", asset.fixedAssetCode);
-            parameters.Add("FixedAssetName", asset.fixedAssetName);
-            parameters.Add("DepartmentID", asset.departmentID);
-            parameters.Add("FixedAssetCategoryID", asset.fixedAssetCategoryID);
-            parameters.Add("Cost", asset.cost);
-            parameters.Add("Quantity", asset.quantity);
-            parameters.Add("DepreciationRate", asset.depreciationRate);
-            parameters.Add("TrackedYear", asset.trackedYear);
-            parameters.Add("LifeTime", asset.lifeTime);
-            parameters.Add("CreatedDate", asset.createdDate);
-            parameters.Add("CreatedBy", asset.createdBy);
-            parameters.Add("ModifiedDate",asset.modifiedDate);
-            parameters.Add("DepreciationYear", asset.depreciationYear);
-            var res = sqlConection.Execute(sql: sqlCommand, param: asset, commandType: CommandType.StoredProcedure);
-            return res;
-        }
+        //    // 2 Khởi tạo kết nối tới Mysql
+        //    var sqlConection = new MySqlConnection(connectionString);
+        //    asset.fixedAssetID = Guid.NewGuid();
+        //    // 3 Lấy dữ liệu
+        //    var sqlCommand = "Proc_Fixed_Asset_OneInsert";
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("FixedAssetID", asset.fixedAssetID);
+        //    parameters.Add("FixedAssetCode", asset.fixedAssetCode);
+        //    parameters.Add("FixedAssetName", asset.fixedAssetName);
+        //    parameters.Add("DepartmentID", asset.departmentID);
+        //    parameters.Add("FixedAssetCategoryID", asset.fixedAssetCategoryID);
+        //    parameters.Add("Cost", asset.cost);
+        //    parameters.Add("Quantity", asset.quantity);
+        //    parameters.Add("DepreciationRate", asset.depreciationRate);
+        //    parameters.Add("TrackedYear", asset.trackedYear);
+        //    parameters.Add("LifeTime", asset.lifeTime);
+        //    parameters.Add("CreatedDate", asset.createdDate);
+        //    parameters.Add("CreatedBy", asset.createdBy);
+        //    parameters.Add("ModifiedDate",asset.modifiedDate);
+        //    parameters.Add("DepreciationYear", asset.depreciationYear);
+        //    var res = sqlConection.Execute(sql: sqlCommand, param: asset, commandType: CommandType.StoredProcedure);
+        //    return res;
+        //}
 
         /// <summary>
         /// Sửa thông tin tài sản

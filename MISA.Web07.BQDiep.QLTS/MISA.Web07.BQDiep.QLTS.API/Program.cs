@@ -1,4 +1,4 @@
-
+﻿
 using MISA.QLSP.Common.Entities.Entities;
 using MISA.QLTS.BL;
 using MISA.QLTS.BL.BaseBL;
@@ -16,10 +16,16 @@ builder.Services.AddScoped<IDepartmentBL, DepartmentBL>();
 builder.Services.AddScoped<IDepartmentDL, DepartmentDL>();
 builder.Services.AddScoped<IFixedAssetCategoryBL, FixedAssetCategoryBL>();
 builder.Services.AddScoped<IFixedAssetCategoryDL, FixedAssetCategoryDL>();
-builder.Services.AddControllers();
+
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+DatabaseContext.ConnectionString = builder.Configuration.GetConnectionString("MySqlConnection");
 
 //services cors
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>

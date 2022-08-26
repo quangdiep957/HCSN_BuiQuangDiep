@@ -35,6 +35,18 @@ namespace MISA.QLTS.BL.BaseBL
             return _baseDL.GetAll();
         }
 
+
+        /// <summary>
+        /// Thêm mới 1 bản ghi vào 1 Bảng
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns>Giá trị cảu bản ghi được thêm mới</returns>
+        ///  /// createdBy : Bùi Quang Điệp (24/08/2022)
+        public Guid InsertOneRecord(T record)
+        {
+          return _baseDL.InsertOneRecord(record);
+        }
+
         #endregion
     }
 }

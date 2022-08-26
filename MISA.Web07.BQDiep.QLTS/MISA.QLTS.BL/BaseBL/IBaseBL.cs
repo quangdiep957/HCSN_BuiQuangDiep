@@ -22,7 +22,15 @@ namespace MISA.QLTS.BL.BaseBL
         /// createBy : Bùi Quang Điệp (24/08/2022)
         /// 
 
-        public int Delete(Guid id); 
+        public int Delete(Guid id);
 
+
+        /// <summary>
+        /// Thêm mới 1 bản ghi vào 1 Bảng
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns>Giá trị cảu bản ghi được thêm mới</returns>
+        ///  /// createdBy : Bùi Quang Điệp (24/08/2022)
+        public Guid InsertOneRecord(T record);
     }
 }

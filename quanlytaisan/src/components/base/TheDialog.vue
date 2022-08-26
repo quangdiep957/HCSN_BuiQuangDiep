@@ -130,7 +130,7 @@
                 tabindex="1005"
                 ref="txtQuantity"
 
-              @input="FormatNumberInput()"
+              @input="FormatNumberInput(dataItemDetail.quantity,'quantity')"
               @keypress="CheckNumber($event)"
               @blur="checkRequired(this.$refs['txtQuantity'])"
               />
@@ -159,7 +159,7 @@
               tabindex="1006"
               ref ="txtPrice"
               @blur="checkRequired(this.$refs['txtPrice'])"
-              @input="FormatNumberInput()"
+              @input="FormatNumberInput(dataItemDetail.cost,'cost')"
             />
           </div>
           <div class="group-input size-33 margin-right-10">
@@ -225,7 +225,7 @@
               ref="txtdepreciation"
               tabindex="1009"
               @blur="checkRequired(this.$refs['txtdepreciation'])"
-                @input="FormatNumberInput()"
+                @input="FormatNumberInput(dataItemDetail.depreciationYear,'depreciation')"
               
 
             />
@@ -370,6 +370,7 @@ export default {
          * Date:10/08/2022
          */
         Validation(){
+          debugger
             var isCheckRequired = false;
             var res = this.dataItemDetail;
                console.log(res);
@@ -567,13 +568,23 @@ export default {
          * Author : Bùi Quang Điệp
          * Date:10/08/2022
          */
-        FormatNumberInput(){
+        FormatNumberInput(val,item){
             try {
-                var value = event.currentTarget.value;
-                if(value){
-                    value = formatCash(value);
-                    event.currentTarget.value = value;
+              debugger
+                if(item == "cost")
+                {
+                  this.dataItemDetail.cost = formatCash(val);
                 }
+                  if(item == "quantity")
+                {
+                  this.dataItemDetail.quantity = formatCash(val);
+                }
+                  if(item == "depreciation")
+                {
+                  this.dataItemDetail.depreciationYear = formatCash(val);
+                }
+             
+                
                 
 
                 

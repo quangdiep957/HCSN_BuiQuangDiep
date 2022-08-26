@@ -33,7 +33,7 @@ namespace MISA.QLTS.DL
         /// 400 Dữ liệu đầu vào không hợp lệ
         ///</returns>
         /// Date:14/08/2022
-        int Post(FixedAsset asset);
+        //int Post(FixedAsset asset);
 
         ///// <summary>
         ///// Sửa thông tin tài sản

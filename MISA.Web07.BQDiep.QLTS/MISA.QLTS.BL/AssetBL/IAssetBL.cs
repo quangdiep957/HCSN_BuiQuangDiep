@@ -54,7 +54,7 @@ namespace MISA.QLTS.BL
         //</returns>
         // Date:14/08/2022
 
-        public int Post(FixedAsset asset);
+       // public int Post(FixedAsset asset);
         /// <summary>
         /// Sửa thông tin tài sản
         /// </summary>

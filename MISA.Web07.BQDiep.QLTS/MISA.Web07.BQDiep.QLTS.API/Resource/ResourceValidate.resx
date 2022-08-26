@@ -123,13 +123,13 @@
   <data name="AssetName" xml:space="preserve">
     <value>Tên tài sản không được phép để trống</value>
   </data>
-  <data name="CategoryCode" xml:space="preserve">
+  <data name="CategoryID" xml:space="preserve">
     <value>Mã loại tài sản không được phép để trống</value>
   </data>
   <data name="Cost" xml:space="preserve">
     <value>Nguyên giá không được phép để trống</value>
   </data>
-  <data name="DepartmentCode" xml:space="preserve">
+  <data name="DepartmentID" xml:space="preserve">
     <value>Mã bộ phận sử dụng không được phép để trống</value>
   </data>
   <data name="Quantity" xml:space="preserve">

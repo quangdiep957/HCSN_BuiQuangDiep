@@ -81,9 +81,9 @@ namespace MISA.Web07.BQDiep.QLTS.API.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Mã loại tài sản không được phép để trống.
         /// </summary>
-        public static string CategoryCode {
+        public static string CategoryID {
             get {
-                return ResourceManager.GetString("CategoryCode", resourceCulture);
+                return ResourceManager.GetString("CategoryID", resourceCulture);
             }
         }
         
@@ -99,9 +99,9 @@ namespace MISA.Web07.BQDiep.QLTS.API.Resource {
         /// <summary>
         ///   Looks up a localized string similar to Mã bộ phận sử dụng không được phép để trống.
         /// </summary>
-        public static string DepartmentCode {
+        public static string DepartmentID {
             get {
-                return ResourceManager.GetString("DepartmentCode", resourceCulture);
+                return ResourceManager.GetString("DepartmentID", resourceCulture);
             }
         }
         
