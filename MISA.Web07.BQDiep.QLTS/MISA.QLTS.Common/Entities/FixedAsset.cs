@@ -18,6 +18,7 @@ namespace MISA.QLSP.Common.Entities.Entities
         // còn lại dùng PascalCase
         private readonly int id;
         private int MAX_PRICE = 10000;
+        private int MAX_LENGTH = 50;
         #endregion
         #region Property
         /// <summary>
@@ -29,6 +30,7 @@ namespace MISA.QLSP.Common.Entities.Entities
         /// Mã tài sản
         /// </summary>
         /// 
+        [MaxLength(50, ErrorMessage = "e010")]
         [Required(ErrorMessage = "e006")]
         public string fixedAssetCode { get; set; }
         /// <summary>
@@ -59,11 +61,13 @@ namespace MISA.QLSP.Common.Entities.Entities
         /// <summary>
         /// nguyên giá
         /// </summary>
+        /// 
         public decimal cost { get; set; }
 
         /// <summary>
         /// số lượng
         /// </summary>
+        /// 
         public int quantity { get; set; }
 
         /// <summary>

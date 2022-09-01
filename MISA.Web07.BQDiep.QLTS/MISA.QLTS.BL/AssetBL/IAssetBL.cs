@@ -99,5 +99,13 @@ namespace MISA.QLTS.BL
         /// <param name="pageNumber"></param>
         /// <returns>Danh sách tàn sản</returns>
         public PagingData<FixedAsset> FilterAsset(string? keyword, Guid? categoryAssetID, Guid? departmentID, int pageSize = 10, int pageNumber = 1);
+
+        /// <summary>
+        /// Xóa tài sản
+        /// </summary>
+        /// <param name="fixedAssetID"></param>
+        /// <returns>Xóa nhiều tài sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        public int DeleteAssetMulti(List<Guid> fixedAssetID);
     }
 }

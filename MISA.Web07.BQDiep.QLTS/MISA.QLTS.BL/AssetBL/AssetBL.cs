@@ -146,19 +146,63 @@ namespace MISA.QLTS.DL
         public string GetCodeAsset()
         {
             var assetNew = "";
-            var assetCode = _assetDL.GetNewAsset();
-            ////  tách chuỗi thành số
-            if (assetCode != "")
+            var assetCodes = _assetDL.GetNewAsset();
+            var results = new List<string>();
+            var resultString = "";
+            var isCheck = 0;
+            var prefix = "TS";
+
+            foreach (var assetCode in assetCodes)
             {
-                var resultString = Regex.Match(assetCode.ToString(), @"\d{3}").Value;
-                int number = int.Parse(resultString);
+                var textFormat = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
+                results.Add(textFormat);
+                if (textFormat != "TS")
+                {
+                    isCheck = isCheck + 1;
+                }
+
+            }
+
+            if (isCheck >= 2)
+            {
+                foreach (var assetCode in assetCodes)
+                {
+                    if (Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty) != "TS")
+                    {
+                        prefix = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
+                        if (resultString == "")
+                            resultString = assetCode.FixedAssetCode.ToString();
+                    }
+
+                }
+            }
+            else
+            {
+                foreach (var assetCode in assetCodes)
+                {
+                    if (Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty) == "TS")
+                    {
+                        prefix = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
+                        if (resultString == "")
+                            resultString = assetCode.FixedAssetCode.ToString();
+                    }
+                }
+            }
+
+
+            // tách chuỗi thành số
+            if (resultString != "")
+            {
+                assetNew = Regex.Match(resultString.ToString(), @"\d{3}").Value;
+                int number = int.Parse(assetNew);
                 number = number + 1;
-                assetNew = "TS" + number;
+                assetNew = prefix + number;
             }
             else
             {
                 assetNew = "TS001";
             }
+
             return assetNew;
         }
 
@@ -204,6 +248,17 @@ namespace MISA.QLTS.DL
                 whereClause += $" {string.Join(" AND ", andConditions)}";
             }
             return _assetDL.FilterAsset(whereClause,pageSize,pageNumber);
+        }
+
+        /// <summary>
+        /// Xóa tài sản
+        /// </summary>
+        /// <param name="fixedAssetID"></param>
+        /// <returns>Xóa nhiều tài sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        public int DeleteAssetMulti(List<Guid> fixedAssetID)
+        {
+           return _assetDL.DeleteAssetMulti(fixedAssetID);
         }
 
 

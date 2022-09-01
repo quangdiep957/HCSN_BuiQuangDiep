@@ -58,7 +58,7 @@
 /* dialog cảnh báo */
 .dialog__notify{
     position: absolute;
-    width: 452px;
+    width: 480px;
     background-color: #f5f5f5;
     border-radius: 3px;
     display: grid;

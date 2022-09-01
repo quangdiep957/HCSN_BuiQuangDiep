@@ -16,6 +16,39 @@ namespace MISA.QLTS.DL
         /// <summary>
         /// Xóa tài sản
         /// </summary>
+        /// <param name="fixedAssetIDs"></param>
+        /// <returns>Xóa nhiều tài sản</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        public int DeleteAssetMulti(List<Guid> fixedAssetIDs)
+        {
+            // 1 Khai báo thông tin Database
+             var connectionString = "Host=localhost;Database=misa.web07.hcsn.diep;port=3306;User Id=root;password=Quangdiep@2001";
+
+            // 2 Khởi tạo kết nối tới Mysql
+            var sqlConection = new MySqlConnection(connectionString);
+            var ids = "";
+           for(int i=0; i < fixedAssetIDs.Count; i++)
+            {
+                if(i< fixedAssetIDs.Count-1)
+                {
+                    ids = ids + "'" + fixedAssetIDs[i].ToString() + "'" + ",";
+                }
+                if(i == fixedAssetIDs.Count -1)
+                {
+                    ids = ids + "'" + fixedAssetIDs[i].ToString() + "'" ;
+                }
+               
+            }    
+            //// 3 Lấy dữ liệu
+            var sqlCommand = $"Delete From fixed_asset where FixedAssetID IN({ids.Replace("\"", "")})";
+
+            var numberRows=sqlConection.Execute(sqlCommand);
+            return numberRows;
+        }
+
+        /// <summary>
+        /// Xóa tài sản
+        /// </summary>
         /// <param name="fixedAssetID"></param>
         /// <returns>Xóa tài sản</returns>
         /// Create By : Bùi Quang Điệp (22/08/2022)
@@ -94,7 +127,7 @@ namespace MISA.QLTS.DL
         //    return assets;
         //}
 
-        public string GetNewAsset()
+        public IEnumerable<FixedAssetCodeNew> GetNewAsset()
         {
             // 1 Khai báo thông tin Database
             var connectionString = "Host=localhost;Database=misa.web07.hcsn.diep;port=3306;User Id=root;password=Quangdiep@2001";
@@ -103,10 +136,10 @@ namespace MISA.QLTS.DL
             var sqlConection = new MySqlConnection(connectionString);
 
             // 3 Lấy dữ liệu
-            var sqlCommand = "SELECT MAX(FixedAssetCode) FROM fixed_asset";
-            var assetCode = sqlConection.QueryFirst<object>(sql: sqlCommand);
+            var sqlCommand = "SELECT FixedAssetCode FROM fixed_asset order by ModifiedDate desc limit 0,2";
+            var assetCode = sqlConection.Query<FixedAssetCodeNew>(sql: sqlCommand);
 
-            return assetCode.ToString();
+            return assetCode;
         }
 
         //public int Post(FixedAsset asset)

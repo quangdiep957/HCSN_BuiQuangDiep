@@ -10,8 +10,8 @@
                         <input type="text" name="" id="" class="input input__search--text" @keydown.enter="HandlerSearch"
                             placeholder="Tìm kiếm tài sản">
                     </div>
-                    <ComboBox val="Loại tài sản" v-bind:option=optionCategory icon="true"  typeCombobox="category" @dataCategory="HandlerSearch" />
-                    <ComboBox val="Bộ phận sử dụng" v-bind:option=optionDepartment icon="true" typeCombobox="department" @dataDepartment="HandlerSearch" />
+                    <ComboBox val="Loại tài sản" v-bind:option=optionCategory icon="true"  typeCombobox="category" @dataCategory="HandlerSearch" @remove="HandlerSearch" />
+                    <ComboBox val="Bộ phận sử dụng" v-bind:option=optionDepartment icon="true" typeCombobox="department" @dataDepartment="HandlerSearch" @remove="HandlerSearch" />
                 </div>
 
                 <div class="m-row__right display-flex">
@@ -37,7 +37,7 @@
     </div>
     <TheDialog v-if="isShowDialog" @BtnCloseDialog="isShowDialog = false" :title="title"
     v-bind:item="itemAssetDetail" :handler=handler @handlerName="ShowSuccess" />
-    <Notify v-if="isShowDialogNotify" :dataError=titleWarning @isShowDialogNotify ="isShowDialogNotify = false" :dataAsset=dataTicks />
+  <Notify v-if="isShowDialogNotify" :dataError=titleWarning @isShowDialogNotify ="isShowDialogNotifyFuntion()" :dataAsset=dataTicks :buttonNames="['Xóa','Không']" />  
     <div class="toast__box" v-show="isShowSuccess == true">
                     <div class="toast__box--item">
                     <div class="toast__box--body"><div class ="toast__box--item-icon"><div class="icon icon-tick-white icon__size-11x2"></div></div></div>
@@ -69,15 +69,18 @@ export default {
             itemAssetDetail :[],
             isSetWidth:false,
             handler:"",
+             isShowSuccess:false,
             searchArray :{
                 keyword : "",
                 fixedAssetCategoryID : "",
                 departmentID : "",
                 pageSize:"",
-                isShowSuccess:false,
+                pageNumber:"",
                 handlerName:""
 
             }
+            ,
+            dataReplication:[]
         };
     },
     methods: {
@@ -94,14 +97,22 @@ export default {
              // Lấy mã tài sản mới nhất truyền vào input
              axios.get('http://localhost:13846/api/v1/FixedAssets/CodeAsset')
              .then(res=>{
-                this.itemAssetDetail.fixedAssetCode = res.data;
                  this.isShowDialog = true ;
                  this.title="Thêm tài sản";
                     console.log(res);
+
+            // Kiểm tra nếu là nhân bản thì truyền data vào
+            if(this.dataReplication != undefined)
+            {
+                this.itemAssetDetail = this.dataReplication;
+            }
+             this.itemAssetDetail.fixedAssetCode = res.data;
              })
              .catch(res=>{
                 console.log(res);
              })
+
+            
              
             } catch (error) {
                 console.log(error);
@@ -115,6 +126,7 @@ export default {
          */
         HandleRemove(){
             try {
+                debugger
             this.titleWarning = [];
              this.isShowDialogNotify = true;
            var quantity = this.dataTicks.length;
@@ -133,8 +145,29 @@ export default {
             }
            
         },
+        /**
+        *   Xóa thành công thì ẩn dialog và xóa dữ liệu cũ
+         * Author : Bùi Quang Điệp
+         * Date:10/08/2022
+         */
+        isShowDialogNotifyFuntion(){
+            this.isShowDialogNotify = false;
+            this.dataTicks = [];
+            this.titleWarning=[]
+        },
+
+         /**
+        *  Nhận dữ liệu lọc
+         * Author : Bùi Quang Điệp
+         * Date:10/08/2022
+         */
         HandlerSearch(item){
-            
+            debugger
+            if(item=="")
+            {
+                this.searchArray.departmentID = "";
+                this.searchArray.fixedAssetCategoryID = "";
+            }
             if(item.DepartmentID != undefined)
             {   
                 
@@ -153,8 +186,11 @@ export default {
             {
                 this.searchArray.pageSize = item;
             }
-           
-           
+            if(item.pageNumber!=undefined)
+            {
+                this.searchArray.pageNumber = item;
+            }
+
             this.emitter.emit("search",this.searchArray);
         },
         /**
@@ -163,7 +199,7 @@ export default {
          * Date :14 /08/ 2021
          */
         ShowSuccess(item){
-           
+           debugger
             if(item == "Sửa")
             {
                 this.handlerName="Sửa"
@@ -172,9 +208,10 @@ export default {
                  this.handlerName="Thêm"
             }
              this.isShowSuccess = true;
-              setTimeout(() => {
-            this.isShowSuccess = false;
-            }, 2000);
+             
+              setTimeout(()=>{
+
+                this.isShowSuccess = false },3000);
 
         }
         
@@ -187,7 +224,6 @@ export default {
     created(){
         // Lấy thông tin bộ phận sử dụng từ API
         try {
-            debugger
             axios.get("http://localhost:13846/api/v1/Departments")
             .then(res=>{
                 console.log(res);
@@ -211,7 +247,7 @@ export default {
             .then(res=>{
                 console.log(res);
                 this.optionCategory = res.data;
-                // truyền dữu liệu sang table
+                // truyền dữ liệu sang table
                  this.emitter.emit("Category",res.data);
                 
             })
@@ -233,11 +269,13 @@ export default {
          * Date :09 /08/ 2021
          */
         try {
+            debugger
             // nhận dữ liệu từ table
              this.emitter.on("itemDialog", (item) => {
                 // gán giá trị mở dialog bằng true
              this.isShowDialog = true,
               this.title="Sửa tài sản";
+              
              // truyền data detail vào cho mảng 
              this.itemAssetDetail = item
              this.handler = "edit";
@@ -252,17 +290,26 @@ export default {
                 // gán giá trị width lại cho body
              this.isSetWidth = false
             }),
-            // Nhận dữ liệu từ titleWarning từ table
+            // Nhận dữ liệu từ Cần xóa từ table
              this.emitter.on("titleWarning", (item) => {
-                
              // truyền data vào cho mảng 
              this.dataTicks = item
             }),
             this.emitter.on("dataPageSize",(item)=>{
-                
                   // truyền data vào cho mảng 
                     this.searchArray.pageSize = item
                     this.HandlerSearch(item)
+            }),
+            this.emitter.on("pageNumber",item=>{
+                // truyền data vào cho mảng 
+                this.searchArray.pageNumber = item
+                this.HandlerSearch(item)
+            })
+            this.emitter.on("replication",item=>{
+                // Nhận dữ liệu cần nhân bản
+                
+                this.dataReplication =  item;
+                this.btnShowDialog();
             })
 
         } catch (error) {

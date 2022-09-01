@@ -1,88 +1,80 @@
 <template>
-    <div>
-        <div v-contextmenu:contextmenu>right click here</div>
-       <v-contextmenu ref="contextmenu">
-    <v-contextmenu-item>Menu Item 1</v-contextmenu-item>
-    <v-contextmenu-item>Menu Item 2</v-contextmenu-item>
-    <v-contextmenu-item>Menu Item 3</v-contextmenu-item>
-  </v-contextmenu>
-<div class="tooltip">
-  <span class="tooltiptext">{{tooltiptext}}</span>
-</div>
-<div class="tooltip">
-  <span class="tooltiptext">{{tooltiptext}}</span>
-</div>
-
-<div class="tooltip">
-  <span class="tooltiptext">{{tooltiptext}}</span>
-</div>
-
+  <div>
+    <div class="drop-zone"
+  >
+      <div v-for="item in listOne" :key="item.title" class="drag-el" draggable="true"
+  @dragstart="startDrag($event, item)">
+        {{ item.title }}
+      </div>
     </div>
+    
+      <div v-for="item in listTwo" :key="item.title" class="drag-el"  draggable="true"
+  @dragstart="startDrag($event, item)">
+        {{ item.title }}
+      </div>
+  </div>
+   <div class="drop-zone"
+  @drop="onDrop($event, 2)"
+  @dragover.prevent
+  @dragenter.prevent >
+  </div>
 </template>
-
 <script>
-import { directive, Contextmenu, ContextmenuItem } from "v-contextmenu";
-import "v-contextmenu/dist/themes/default.css";
 export default {
-    name: 'QuanlytaisanAboutView',
- directives: {
-    contextmenu: directive,
+  data() {
+    return {
+      items: [
+        {
+          id: 0,
+          title: 'Item A',
+          list: 1,
+        },
+        {
+          id: 1,
+          title: 'Item B',
+          list: 1,
+        },
+        {
+          id: 2,
+          title: 'Item C',
+          list: 2,
+        },
+      ],
+    }
   },
-  components: {
-    [Contextmenu.name]: Contextmenu,
-    [ContextmenuItem.name]: ContextmenuItem,
-  },
-    data() {
-        return {
-            
-        };
+
+   computed: {
+    listOne() {
+      return this.items.filter((item) => item.list === 1)
     },
+    listTwo() {
+      return this.items.filter((item) => item.list === 2)
+    },
+  },
 
     methods: {
-         onClick (text) {
-            alert(`You clicked ${text}!`);
-        }
-        
+    startDrag(evt, item) {
+      evt.dataTransfer.dropEffect = 'move'
+      evt.dataTransfer.effectAllowed = 'move'
+      evt.dataTransfer.setData('itemID', item.id)
     },
-   
-};
+    onDrop(evt, list) {
+      const itemID = evt.dataTransfer.getData('itemID')
+      const item = this.items.find((item) => item.id == itemID)
+      item.list = list
+    },
+  },
+}
 </script>
-
-<style lang="css" scoped>
-.tooltip {
-  position: relative;
+<style scoped>
+.drop-zone {
+  background-color: #eee;
+  margin-bottom: 10px;
+  padding: 10px;
 }
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: #555;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 125%;
-  left: 50%;
-  margin-left: -60px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.tooltip .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+.drag-el {
+  background-color: #fff;
+  margin-bottom: 10px;
+  padding: 5px;
 }
 </style>

@@ -42,6 +42,14 @@ namespace MISA.Web07.BQDiep.QLTS.API.HandleError
                     {
                         errorsData.Add(Resource.ResourceValidate.CategoryID);
                     }
+                    if(error == "e010")
+                    {
+                        errorsData.Add(Resource.ResourceValidate.MaxLength);
+                    }    
+                    if(error == "e011")
+                    {
+                        errorsData.Add(Resource.ResourceValidate.Number);
+                    }    
                    
                 }    
                 var errorResult = new ErrorSevice();

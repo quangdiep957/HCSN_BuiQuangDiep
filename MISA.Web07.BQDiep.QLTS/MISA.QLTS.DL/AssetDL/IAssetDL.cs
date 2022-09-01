@@ -21,7 +21,7 @@ namespace MISA.QLTS.DL
         /// <returns>mã tài sản  mới nhất</returns>
         /// Created by: Bùi Quang Điệp (20/08/2022)
 
-        string GetNewAsset();
+       public IEnumerable<FixedAssetCodeNew> GetNewAsset();
 
         ///<summary>
         ///Thêm mới tài sản
@@ -59,8 +59,8 @@ namespace MISA.QLTS.DL
         /// Xóa tài sản
         /// </summary>
         /// <param name="fixedAssetID"></param>
-        /// <returns>Xóa tài sản</returns>
+        /// <returns>Xóa nhiều tài sản</returns>
         /// Create By : Bùi Quang Điệp (22/08/2022)
-        //int DeleteAsset(Guid fixedAssetID);
+        int DeleteAssetMulti(List<Guid> fixedAssetID);
     }
 }

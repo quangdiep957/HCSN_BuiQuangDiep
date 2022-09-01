@@ -1,7 +1,7 @@
 .managetable{
     width: 100%;
     overflow: auto;
-     height: calc(100vh - 66px - 60px - 15px); 
+     height: calc(100vh - 66px - 60px - 15px - 45px); 
      margin: 0 15px;
      border-radius: 3px;
      border: 1px solid rgb(32 26 25 / 14%);
@@ -48,10 +48,11 @@ tbody tr:hover{
 }
 .page__table{
     position: sticky;
-    bottom: 38px;
+    bottom: 0px;
     line-height: 40px;
     z-index: 999;
     background-color: #fff !important;
+    border-bottom: none;
 }
 
 .page--number-item{
@@ -116,13 +117,15 @@ tbody tr:hover{
     height: 40px;
     background-color: #fff;
     border-top: 1px solid #cdd3d6b0;
-    border-bottom: 1px solid #cdd3d6b0;
+
     box-sizing: border-box;
 }
 .paging{
+    
     font-size: 11px;
     margin-top: 4px;
-    top: 93%;
+    margin-left:15px;
+    bottom:17px;
     height: 40px;
     z-index: 999;
     position: absolute !important;
@@ -130,7 +133,8 @@ tbody tr:hover{
 }
 .paging_item{
     position: fixed !important;
-    width: calc(100% - 279px);
+    width: calc(100% - 275px);
+    border-radius: 3px;
     background-color: rgb(255, 255, 255);
     height: 40px !important;
     /* margin-top: 12px; */

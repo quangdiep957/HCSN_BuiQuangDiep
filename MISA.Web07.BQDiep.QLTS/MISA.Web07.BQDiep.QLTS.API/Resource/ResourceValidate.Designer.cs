@@ -106,6 +106,24 @@ namespace MISA.Web07.BQDiep.QLTS.API.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nhập quá kí tự cho phép.
+        /// </summary>
+        public static string MaxLength {
+            get {
+                return ResourceManager.GetString("MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chỉ được phép nhập số.
+        /// </summary>
+        public static string Number {
+            get {
+                return ResourceManager.GetString("Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Số lượng không  được phép để trống.
         /// </summary>
         public static string Quantity {

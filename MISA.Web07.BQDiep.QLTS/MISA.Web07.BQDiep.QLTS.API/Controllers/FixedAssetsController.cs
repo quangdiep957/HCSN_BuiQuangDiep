@@ -60,7 +60,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
                 //{
                 //    assetNew = "TS001";
                 //}
-                var assetNew = _assetBL.GetCodeAsset();
+                 var assetNew = _assetBL.GetCodeAsset();
 
                 // 4 Trả về kết quả
                 return Ok(assetNew);
@@ -175,39 +175,57 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         [HttpGet("filter")]
         public IActionResult FilterAsset([FromQuery] string? keyword, [FromQuery] Guid? categoryAssetID, [FromQuery] Guid? departmentID, [FromQuery] int pageSize = 20, [FromQuery] int pageNumber = 1)
         {
-            var res = _assetBL.FilterAsset(keyword, categoryAssetID, departmentID, pageSize, pageNumber);
-               
-                    if(res != null)
-                        {
-                              return StatusCode(StatusCodes.Status200OK, res);    
-                        }
-                    else
-                    {
-                              return StatusCode(StatusCodes.Status400BadRequest, res);
-                     }
+            try
+            {
+                var res = _assetBL.FilterAsset(keyword, categoryAssetID, departmentID, pageSize, pageNumber);
+
+                if (res != null)
+                {
+                    return StatusCode(StatusCodes.Status200OK, res);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, res);
+                }
+            }
+            catch(Exception ex)
+            {
+                return HandleException(ex);
+            }
+           
 
         }
-        /// <summary>
-        /// Xóa tài sản
-        /// </summary>
-        /// <param name="fixedAssetID"></param>
-        /// <returns>Xóa tài sản</returns>
-        /// Create By : Bùi Quang Điệp (22/08/2022)
-        //[HttpPost("Delete")] 
-        //public IActionResult DeleteAsset(Guid fixedAssetID)
-        //{
-        //    var res = _assetBL.DeleteAsset(fixedAssetID);
-        //    if(res > 0)
-        //    {
-        //        return StatusCode(StatusCodes.Status200OK, res);
-        //    }
-        //    else
-        //    {
-        //        return StatusCode(StatusCodes.Status400BadRequest, res);
-        //    }
-        //}
 
-       
-        
+        /// <summary>
+        /// Xóa nhiều bản ghi
+        /// </summary>
+        /// <param name="fixedassetids"></param>
+        /// <returns>Số lượng bản ghi đã xóa</returns>
+        /// Create By : Bùi Quang Điệp (22/08/2022)
+        [HttpPost("deleteMulti")]
+        public IActionResult DeleteAssetMulti([FromBody] List<Guid> fixedassetids)
+        {
+            try
+            {
+                var res = _assetBL.DeleteAssetMulti(fixedassetids);
+                if (res > 0)
+                {
+                    return StatusCode(StatusCodes.Status200OK, res);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, res);
+                }
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+
+
+        }
+
+
+
     }
 }
