@@ -106,6 +106,15 @@ namespace MISA.Web07.BQDiep.QLTS.API.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to trùng mã.
+        /// </summary>
+        public static string DoubleKey {
+            get {
+                return ResourceManager.GetString("DoubleKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nhập quá kí tự cho phép.
         /// </summary>
         public static string MaxLength {
@@ -124,11 +133,38 @@ namespace MISA.Web07.BQDiep.QLTS.API.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tỉ lệ hao mòn phải bằng một chia số năm sử dụng.
+        /// </summary>
+        public static string professional1 {
+            get {
+                return ResourceManager.GetString("professional1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hao mòn năm phải nhỏ hơn hoặc bằng nguyên giá.
+        /// </summary>
+        public static string professional2 {
+            get {
+                return ResourceManager.GetString("professional2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Số lượng không  được phép để trống.
         /// </summary>
         public static string Quantity {
             get {
                 return ResourceManager.GetString("Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to vui lòng nhập đầy đủ thông tin.
+        /// </summary>
+        public static string Required {
+            get {
+                return ResourceManager.GetString("Required", resourceCulture);
             }
         }
     }

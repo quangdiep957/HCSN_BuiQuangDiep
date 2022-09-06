@@ -5,7 +5,7 @@
             <div class="dialog__notify--header">
                 <div class="icon-warning"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <div  class ="text--notify">
-                    <p v-for="item in dataError" :key="item">{{item}}</p>
+                    <p v-for="item in dataError" :key="item">{{item}} <b>{{errorName}}</b> !</p>
                 </div>
             </div>
             <div class="dialog__notify--footer">
@@ -40,6 +40,7 @@ export default {
     },
     props:{
         dataError:Array,
+        errorName:String,
         dataAsset:Array,
         buttonNames:Array,
         handleButton:String
@@ -80,8 +81,11 @@ export default {
                         {
                             axios.post(`http://localhost:13846/api/v1/FixedAssets/delete?id=${this.dataAsset[0].fixedAssetID}`)
                             .then(res=>{
+                                debugger
                                     console.log(res);
+                                    this.$emit("removeData");
                                     this.$emit("isShowDialogNotify");
+                                    
                                     this.emitter.emit("LoadData");
                             })
                             .catch(res=>{
@@ -98,7 +102,9 @@ export default {
                             axios.post(`http://localhost:13846/api/v1/FixedAssets/deleteMulti`,idAssets)
                             .then(res=>{
                                 console.log(res);
+                                this.$emit("removeData");
                                     this.$emit("isShowDialogNotify");
+                                   
                                     this.emitter.emit("LoadData");
                             })
                             .catch(res=>{
@@ -129,6 +135,7 @@ export default {
                         }
                         else{
                             this.$emit("isShowDialogNotify");
+                          
                         }
                         
                     } catch (error) {

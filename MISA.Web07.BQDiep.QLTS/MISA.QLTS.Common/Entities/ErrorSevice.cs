@@ -6,6 +6,8 @@ namespace MISA.QLSP.Common.Entities.Entities
     {
         #region Property
         public string DevMsg { get; set; }
+
+        public string Error { get; set; }
         public string UserMsg { get; set; }
         public List<string> data { get; set; }
 
@@ -17,9 +19,10 @@ namespace MISA.QLSP.Common.Entities.Entities
 
         }
 
-        public ErrorSevice(string? userMsg, string? devMsg, List<string>? data )
+        public ErrorSevice(string? userMsg ,string? error, string? devMsg, List<string>? data )
         {
             UserMsg = userMsg;
+            Error = error;
             DevMsg = devMsg;
             data = data;
         }

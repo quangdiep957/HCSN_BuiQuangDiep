@@ -61,7 +61,6 @@
     border-radius: 3px;
     box-sizing: border-box;
     padding: 5px;
-    box-shadow: 5px 5px 5px #fff;
     z-index: 999999;
     position: absolute;
     top:90%;
@@ -85,7 +84,8 @@
     background-color: rgba(26, 164, 200, .2);
 }
 .combobox__option--item-text{
-    padding-left: 40px;
+    padding-left: 30px;
+    padding-right: 15px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -96,7 +96,7 @@
 }
 .combobox__option--item-icon{
     position: absolute;
-    left: 15px;
+    left: 8px;
 }
 .combobox__option--table{
     width: 100%;

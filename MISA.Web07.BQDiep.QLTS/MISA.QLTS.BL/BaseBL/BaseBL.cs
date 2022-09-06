@@ -35,6 +35,17 @@ namespace MISA.QLTS.BL.BaseBL
             return _baseDL.GetAll();
         }
 
+        /// <summary>
+        /// Danh sách một bản ghi
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Danh sách một bản ghi</returns>
+        /// /// Createed By :Bùi Quang Điệp (23/08/2022)
+        //public IEnumerable<dynamic> GetOneRecord(Guid id)
+        //{
+        //    return _baseDL.GetOneRecord(id);
+        //}
+
 
         /// <summary>
         /// Thêm mới 1 bản ghi vào 1 Bảng

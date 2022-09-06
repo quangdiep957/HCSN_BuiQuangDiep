@@ -34,8 +34,8 @@
             <div class="margin-text">
               Mã bộ phận sử dụng<span style="color: red">*</span>
             </div>
-            <ComboBox val="Chọn mã bộ phận sử dụng" :option="optionCBBox" dialog_icon="true" optionTable="true"
-              @dataName="DataDepartment" typeCombobox="department" :dataItemCombobox = item />
+            <ComboBox val="Chọn mã bộ phận sử dụng" :option="optionCBBox" dialog_icon="true" optionTable="true" :departmentCheck="departmentCheck" @departmentCheck="departmentCheck=true"  @departmentCheckfalse="departmentCheck=false"
+              @dataName="DataDepartment" typeCombobox="department" :dataItemCombobox = dataItemDetailFake @RemoveDataOne="dataItemDetailFake.departmentID=''" />
             <!-- <button class="combobox__control combobox__width">
                             <input type="text" name="Mã bộ phận sử dụng" id="" class="input input-width absolute" required value="" placeholder="Chọn mã bộ phận sử dụng" tabindex="1003">
                             <div class="icon icon-down1 icon__size-5 combobox__icon"></div>
@@ -55,8 +55,8 @@
             <div class="margin-text">
               Mã loại sản phẩm<span style="color: red">*</span>
             </div>
-            <ComboBox val="Chọn mã loại sản phẩm" v-bind:option="optionCBBox1" dialog_icon="true" optionTable="true"
-              @dataName="DataCategory" typeCombobox="category" :dataItemCombobox = item />
+            <ComboBox val="Chọn mã loại sản phẩm" v-bind:option="optionCBBox1" dialog_icon="true" optionTable="true" :categoryCheck="categoryCheck" @categoryCheck="categoryCheck=true"  @categoryCheckfalse="categoryCheck=false"
+              @dataName="DataCategory" typeCombobox="category" :dataItemCombobox = dataItemDetailFake @RemoveDataTwo="dataItemDetailFake.fixedAssetCategoryID=''"  />
           </div>
 
           <div class="group-input size-66 margin-lr-16">
@@ -137,7 +137,7 @@
             <div class="margin-text">
               Ngày mua <span style="color: red">*</span>
             </div>
-            <div class="combobox__control combobox__width  input-date" tabindex="1010">
+            <div class="combobox__control combobox__width  input-date" tabindex="1010" @focus="showMenuDateDepreciation" >
               <!-- <input
                 type="text"
                 name="Ngày mua"
@@ -151,8 +151,11 @@
                 ref="purchasedate"
                  @blur="checkRequired(this.$refs['purchasedate'])"
               />  -->
-              <datepicker format="MM/dd/yyyy" v-model="date.Depreciation" :hideInput="false" :full-month-name="true"
-                typeable="true"></datepicker>
+              <datepicker format="MM/dd/yyyy" v-model="date.Depreciation" :hideInput="false" :full-month-name="true" :inline="false" :minimum-view="'day'"
+      :maximum-view="'day'"
+                typeable="true"
+                :class="{'dateActive':isShowMenuDateDepreciation}"
+                ></datepicker >
               <div class="icon icon-calendar icon__size-18 combobox__icon"></div>
             </div>
           </div>
@@ -160,7 +163,7 @@
             <div class="margin-text">
               Ngày bắt đầu sử dụng <span style="color: red">*</span>
             </div>
-            <div class="combobox__control combobox__width input-date" tabindex="1011">
+            <div class="combobox__control combobox__width input-date" tabindex="1011" @focus="showMenuDateStartDay">
               <!-- <input
                 type="text"
                 name="Ngày bắt đầu sử dụng"
@@ -174,8 +177,11 @@
                 tabindex="1011"
                 @blur="checkRequired(this.$refs['startday'])"
               /> -->
-              <datepicker format="MM/dd/yyyy" typeable="true" v-model="date.Startday" :hideInput="false"
-                :full-month-name="true">
+              <datepicker format="MM/dd/yyyy" typeable="true" v-model="date.Startday" :hideInput="false" :minimum-view="'day'" :class="{'dateActive':isShowMenuDateStart}"
+      :maximum-view="'day'"
+                :full-month-name="true"
+                :inline="false"
+                >
               </datepicker>
               <div class="icon icon-calendar icon__size-18 combobox__icon"></div>
             </div>
@@ -193,7 +199,7 @@
     </div>
   </div>
 
-  <Notify v-if="DialogNotify" v-bind:dataError="errors" @isShowDialogNotify="DialogNotify = false" :buttonNames="buttonNames" @isSaveData="SaveData" @RemoveDialog="RemoveDialog" />
+  <Notify v-if="DialogNotify" v-bind:dataError="errors" @isShowDialogNotify="DialogNotify = false" :buttonNames="buttonNames" @isSaveData="SaveData" @RemoveDialog="RemoveDialog" :errorName="errorName"  />
   
 
 </template>
@@ -215,6 +221,11 @@ export default {
   data() {
     return {
       dataItemDetail: [],
+      display:"none",
+      isShowMenuDateStart:false,
+      isShowMenuDateDepreciation:false,
+      categoryCheck:false,
+      departmentCheck:false,
       dataName:
       {
         AssetCode: 'Mã tài sản',
@@ -230,7 +241,6 @@ export default {
       }
       ,
        buttonNames:['Đồng ý'],
-       dataItemCombobox:[],
       errors: [],
       DialogNotify: false,
       date: {
@@ -255,6 +265,8 @@ export default {
       ],
       optionCBBox: [],
       optionCBBox1: [],
+      errorName:"",
+      dataItemDetailFake:[]
     }
   },
   methods: {
@@ -327,7 +339,7 @@ export default {
           }
 
           else {
-            debugger
+            
             // tạo object loại kiểu json
             var cost = this.unFormNumber(this.dataItemDetail.cost);
             var depreciationYear = this.unFormNumber(this.dataItemDetail.depreciationYear);
@@ -363,19 +375,21 @@ export default {
                   this.$emit('BtnCloseDialog');
                   this.emitter.emit("LoadData", this.dataItemDetail.fixedAssetCode);
                   console.log(response);
+                  this.$emit("handlerName", "Sửa");
 
 
                 })
                 .catch((error) => {
                   console.log(error.message);
                 });
-              this.$emit("handlerName", "Sửa");
+              
 
 
 
 
 
             }
+            debugger
             // Kiểm tra nếu là thêm mới thì xử lý 
             if (this.handler == "add") {
               axios
@@ -389,14 +403,30 @@ export default {
                   }
                 )
                 .then((response) => {
+                  debugger
                   this.$emit('BtnCloseDialog');
                   this.emitter.emit("LoadData", this.dataItemDetail.fixedAssetCode);
                   console.log(response);
+                  this.$emit("handlerName", "Thêm");
+                  debugger
                 })
                 .catch((error) => {
+                  debugger
                   console.log(error.message);
+                  // Nếu lỗi trùng mã thì hiển thị thông báo cho người dùng
+                  if (error.response.data.error == "e1002")
+                  {
+                    
+                        this.DialogNotify = true;
+                        this.errors =[];
+                        this.buttonNames=['Đồng ý'],
+                        
+                        this.errors.push(`Mã tài sản  đã có trong hệ thống !`)
+                        this.errorName=error.response.data.data[1];
+
+                  }
                 });
-              this.$emit("handlerName", "Thêm");
+              
 
             }
 
@@ -489,7 +519,7 @@ export default {
    * Date:10/08/2022
    */
     DataDepartment(e) {
-
+      debugger
       this.dataItemDetail.departmentName = e.DepartmentName;
       this.dataItemDetail.departmentID = e.DepartmentID;
     },
@@ -591,6 +621,15 @@ export default {
     RemoveDialog(){
       this.DialogNotify = false;
       this.$emit('BtnCloseDialog');
+    },
+    showMenuDateStartDay(){
+      this.display = "block";
+      this.isShowMenuDateStart = true;
+    },
+
+    showMenuDateDepreciation(){
+      this.display = "block";
+      this.isShowMenuDateDepreciation= true;
     }
     
 
@@ -600,6 +639,7 @@ export default {
     // gám mảng DataItemDetail vào Cho item để có thể sử dụng v-model
 
     this.dataItemDetail = this.item
+    this.dataItemDetailFake = this.dataItemDetail;
     // Lấy dữ liệu từ api đổ vào combobox
     axios.get("http://localhost:13846/api/v1/Departments")
       .then(res => {
@@ -627,6 +667,8 @@ export default {
     this.isFocusInput();
     this.dataItemDetail.cost = formatCash(this.dataItemDetail.cost);
     this.dataItemDetail.depreciationYear = formatCash(this.dataItemDetail.depreciationYear);
+
+    
   },
 
   props: {
@@ -640,3 +682,10 @@ export default {
 
 }
 </script>
+<style>
+.dateActive .vuejs3-datepicker__calendar.vuejs3-green
+{
+    display: v-bind('display') !important;
+}
+
+</style>

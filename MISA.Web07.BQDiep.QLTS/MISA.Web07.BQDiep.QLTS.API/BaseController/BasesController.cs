@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MISA.QLSP.Common.Entities.Entities;
 using MISA.QLTS.BL.BaseBL;
+using MySqlConnector;
 using System.Web.Http.ModelBinding;
 
 
@@ -98,15 +99,29 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
         [HttpPost]
         public IActionResult InsertOneRecord([FromBody] T record)
         {
-           
+
             try
             {
-               
+
                 var validateResult = HandleError.HandleError.IsValidate(ModelState);
                 if (validateResult != null)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, validateResult);
                 }
+
+                var checkType = typeof(T).Name;
+                if (checkType == "FixedAsset")
+                {
+                    var asset = record as FixedAsset;
+                    var validateProfessional = HandleError.HandleError.checkProfessional(asset);
+
+                    if(validateProfessional != null)
+                    {
+                        return StatusCode(StatusCodes.Status400BadRequest, validateProfessional);
+                    }    
+                }    
+                   
+               
                  var recordID= _baseBL.InsertOneRecord(record);
                 if (recordID != Guid.Empty)
                 {
@@ -116,6 +131,10 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, "e004");
                 }
+            }
+            catch (MySqlException mySqlException)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, HandleError.HandleError.GenerateDuplicateCodeErrorResult(mySqlException));
             }
             catch (Exception ex)
             {
@@ -140,6 +159,34 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
             error.DevMsg = ex.Message;
             return StatusCode(500, error);
         }
+
+        ///// <summary>
+        ///// Lấy danh sách một bản ghi 
+        ///// </summary>
+        ///// <param name="ID"></param>
+        ///// <returns>Danh sách một bản ghi</returns>
+        //[HttpGet("Detail")]
+        
+        //public IActionResult GetOneRecord(Guid id)
+        //{
+        //    try
+        //    {
+        //        var res = _baseBL.GetOneRecord(id);
+        //        if (res !=null)
+        //        {
+        //            // Trả về dữ liệu cho client
+        //            return StatusCode(StatusCodes.Status200OK, res);
+        //        }
+        //        else
+        //        {
+        //            return StatusCode(StatusCodes.Status400BadRequest, "e002");
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return HandleException(ex);
+        //    }
+        //}
         #endregion
     }
 }

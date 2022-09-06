@@ -59,7 +59,6 @@ D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.AssemblyInfoInputs.cache
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.AssemblyInfo.cs
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.csproj.CoreCompileInputs.cache
-D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.MvcApplicationPartsAssemblyInfo.cs
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.MvcApplicationPartsAssemblyInfo.cache
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\staticwebassets.build.json
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\staticwebassets.development.json
@@ -76,3 +75,4 @@ D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.BL.pdb
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.Common.pdb
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.DL.pdb
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.Error.resources

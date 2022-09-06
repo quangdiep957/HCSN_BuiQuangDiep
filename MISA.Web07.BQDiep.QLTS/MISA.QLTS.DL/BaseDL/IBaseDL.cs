@@ -40,5 +40,13 @@ namespace MISA.QLTS.DL
         /// <returns>Trả về mã bản ghi đã được sửa</returns>
         public Guid UpdateOneRecord(T record,Guid id);
 
+        /// <summary>
+        /// Danh sách một bản ghi
+        /// </summary>
+        /// <returns>Danh sách một bản ghi</returns>
+        /// /// Createed By :Bùi Quang Điệp (23/08/2022)
+        //public IEnumerable<dynamic> GetOneRecord(Guid id);
+
+
     }
 }

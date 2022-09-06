@@ -107,5 +107,7 @@ namespace MISA.QLTS.BL
         /// <returns>Xóa nhiều tài sản</returns>
         /// Create By : Bùi Quang Điệp (22/08/2022)
         public int DeleteAssetMulti(List<Guid> fixedAssetID);
+
+        public FixedAsset GetOneAsset(Guid id);
     }
 }

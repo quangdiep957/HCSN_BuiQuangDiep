@@ -160,5 +160,28 @@ namespace MISA.QLTS.DL
                 return result;
             }    
         }
+
+        /// <summary>
+        /// Danh sách một bản ghi
+        /// </summary>
+        /// <returns>Danh sách một bản ghi </returns>
+        /// CreateBy :Bùi Quang Điệp(23/08/2022)
+        //public IEnumerable<dynamic> GetOneRecord(Guid id)
+        //{
+        //    using (var sqlConection = new MySqlConnection(CONNECTING))
+        //    {
+        //        // Lấy tên của bảng tương ứng với class (nếu có thiết lập thông qua Attribut custom)
+        //        var name = GetTableName();
+        //        var attribute = Attribute.GetCustomAttribute(typeof(T), typeof(KeyAttribute));
+        //        var vlkey = (attribute as KeyAttribute).Key;
+        //        var sqlCommand = $"select * from {name} where {vlkey} = @ID";
+
+        //        var parameters = new DynamicParameters();
+        //        parameters.Add("@ID", id);
+        //        var res = sqlConection.Query<dynamic>(sql: sqlCommand, param: parameters);
+
+        //        return res;
+        //    }
+        //}
     }
 }

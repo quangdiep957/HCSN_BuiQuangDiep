@@ -127,7 +127,7 @@ namespace MISA.QLTS.DL
         //    return assets;
         //}
 
-        public IEnumerable<FixedAssetCodeNew> GetNewAsset()
+        public string GetNewAsset()
         {
             // 1 Khai báo thông tin Database
             var connectionString = "Host=localhost;Database=misa.web07.hcsn.diep;port=3306;User Id=root;password=Quangdiep@2001";
@@ -136,10 +136,26 @@ namespace MISA.QLTS.DL
             var sqlConection = new MySqlConnection(connectionString);
 
             // 3 Lấy dữ liệu
-            var sqlCommand = "SELECT FixedAssetCode FROM fixed_asset order by ModifiedDate desc limit 0,2";
-            var assetCode = sqlConection.Query<FixedAssetCodeNew>(sql: sqlCommand);
+            var sqlCommand = "SELECT FixedAssetCode FROM fixed_asset order by ModifiedDate desc limit 1";
+            var assetCode = sqlConection.QueryFirstOrDefault<string>(sql: sqlCommand);
 
-            return assetCode;
+            return (string)assetCode;
+        }
+
+        public FixedAsset GetOneAsset(Guid id)
+        {
+            // 1 Khai báo thông tin Database
+            var connectionString = "Host=localhost;Database=misa.web07.hcsn.diep;port=3306;User Id=root;password=Quangdiep@2001";
+
+            // 2 Khởi tạo kết nối tới Mysql
+            var sqlConection = new MySqlConnection(connectionString);
+
+            // 3 Lấy dữ liệu
+            var sqlCommand = $"SELECT * FROM fixed_asset  WHERE FixedAssetID = '{id}'";
+            var paramater = new DynamicParameters();
+            paramater.Add("@ID", id);
+            var res = sqlConection.QueryFirstOrDefault<FixedAsset>(sql: sqlCommand);
+            return res;
         }
 
         //public int Post(FixedAsset asset)

@@ -225,6 +225,34 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
 
         }
 
+        /// <summary>
+        /// Lấy danh sách một bản ghi 
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns>Danh sách một bản ghi</returns>
+        [HttpGet("Detail")]
+
+        public IActionResult GetOneRecord(Guid id)
+        {
+            try
+            {
+                var res = _assetBL.GetOneAsset(id);
+                if (res != null)
+                {
+                    // Trả về dữ liệu cho client
+                    return StatusCode(StatusCodes.Status200OK, res);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "e002");
+                }
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
 
 
     }

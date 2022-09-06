@@ -1,7 +1,7 @@
 .managetable{
     width: 100%;
     overflow: auto;
-     height: calc(100vh - 66px - 60px - 15px - 45px); 
+     height: calc(100vh - 66px - 65px - 15px - 45px); 
      margin: 0 15px;
      border-radius: 3px;
      border: 1px solid rgb(32 26 25 / 14%);
@@ -133,10 +133,16 @@ tbody tr:hover{
 }
 .paging_item{
     position: fixed !important;
-    width: calc(100% - 275px);
+    width: calc(100% - 256px);
     border-radius: 3px;
     background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(32 26 25 / 14%);
     height: 40px !important;
     /* margin-top: 12px; */
+    border-top:none;
     padding-left: 17px !important;
+}
+
+.setWidthPage{
+   width:calc(100% - 96px) !important
 }

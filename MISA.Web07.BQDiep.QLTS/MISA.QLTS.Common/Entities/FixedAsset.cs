@@ -24,7 +24,6 @@ namespace MISA.QLSP.Common.Entities.Entities
         /// <summary>
         /// Id tài sản
         /// </summary>
-        [Required(ErrorMessage = "e005")]
         public Guid fixedAssetID { get; set; } = Guid.NewGuid();
         /// <summary>
         /// Mã tài sản

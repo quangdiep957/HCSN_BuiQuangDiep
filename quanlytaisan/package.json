@@ -12,6 +12,7 @@
     "cjs-loader": "^0.1.0",
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
+    "cssprops": "^0.0.7",
     "inherits": "^2.0.4",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",

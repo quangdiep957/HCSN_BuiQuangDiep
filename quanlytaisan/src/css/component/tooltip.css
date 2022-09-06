@@ -1,6 +1,10 @@
 
   
-
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
   [attr='left']:before,
   [attr='left']:after {
     right: 100%;
@@ -163,11 +167,11 @@
 }
 .tooltipHandlerEdit [attr="top"]::before {
   position: absolute;
-  left: 25px !important;
+  left: 30px !important;
 }
 .tooltipHandlerRemove [attr="top"]::before {
   position: absolute;
-  left: 13px !important;
+  left: 15px !important;
 }
 .tooltipHandler [attr="top"]::after {
   position: absolute;

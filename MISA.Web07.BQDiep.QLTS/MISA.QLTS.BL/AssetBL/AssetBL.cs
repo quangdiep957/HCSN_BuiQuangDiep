@@ -1,5 +1,6 @@
 ﻿using MISA.QLSP.Common.Entities.Entities;
 using MISA.QLTS.BL;
+using MISA.QLTS.BL.BaseBL;
 using MISA.QLTS.Common.Entities.DTO;
 using System;
 using System.Collections;
@@ -145,58 +146,70 @@ namespace MISA.QLTS.DL
 
         public string GetCodeAsset()
         {
-            var assetNew = "";
+          
             var assetCodes = _assetDL.GetNewAsset();
-            var results = new List<string>();
-            var resultString = "";
-            var isCheck = 0;
-            var prefix = "TS";
+            //var results = new List<string>();
+            //var resultString = "";
+            //var isCheck = 0;
+            //var prefix = "TS";
 
-            foreach (var assetCode in assetCodes)
-            {
-                var textFormat = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
-                results.Add(textFormat);
-                if (textFormat != "TS")
-                {
-                    isCheck = isCheck + 1;
-                }
+            //foreach (var assetCode in assetCodes)
+            //{
+            //    var textFormat = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
+            //    results.Add(textFormat);
+            //    if (textFormat != "TS")
+            //    {
+            //        isCheck = isCheck + 1;
+            //    }
 
-            }
+            //}
 
-            if (isCheck >= 2)
-            {
-                foreach (var assetCode in assetCodes)
-                {
-                    if (Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty) != "TS")
-                    {
-                        prefix = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
-                        if (resultString == "")
-                            resultString = assetCode.FixedAssetCode.ToString();
-                    }
+            //if (isCheck >= 2)
+            //{
+            //    foreach (var assetCode in assetCodes)
+            //    {
+            //        if (Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty) != "TS")
+            //        {
+            //            prefix = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
+            //            if (resultString == "")
+            //                resultString = assetCode.FixedAssetCode.ToString();
+            //        }
 
-                }
-            }
-            else
-            {
-                foreach (var assetCode in assetCodes)
-                {
-                    if (Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty) == "TS")
-                    {
-                        prefix = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
-                        if (resultString == "")
-                            resultString = assetCode.FixedAssetCode.ToString();
-                    }
-                }
-            }
+            //    }
+            //}
+            //else
+            //{
+            //    foreach (var assetCode in assetCodes)
+            //    {
+            //        if (Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty) == "TS")
+            //        {
+            //            prefix = Regex.Replace(assetCode.FixedAssetCode.ToString(), @"[\d-]", string.Empty);
+            //            if (resultString == "")
+            //                resultString = assetCode.FixedAssetCode.ToString();
+            //        }
+            //    }
+            //}
 
 
             // tách chuỗi thành số
-            if (resultString != "")
+            var assetNew = "";
+            var prefix = "TS";
+            if (assetCodes != "")
             {
-                assetNew = Regex.Match(resultString.ToString(), @"\d{3}").Value;
+                prefix = Regex.Replace(assetCodes, @"[\d-]", string.Empty);
+                assetNew = Regex.Match(assetCodes.ToString(), @"\d{3}").Value;
                 int number = int.Parse(assetNew);
                 number = number + 1;
-                assetNew = prefix + number;
+                if(number <100)
+                {
+                    assetNew = prefix + "0" + number;
+                }
+                else
+                {
+                    assetNew = prefix + number;
+                }
+
+                
             }
             else
             {
@@ -260,6 +273,12 @@ namespace MISA.QLTS.DL
         {
            return _assetDL.DeleteAssetMulti(fixedAssetID);
         }
+
+        public FixedAsset GetOneAsset(Guid id)
+        {
+            return _assetDL.GetOneAsset(id);
+        }
+
 
 
 

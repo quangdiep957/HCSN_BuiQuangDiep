@@ -32,5 +32,13 @@ namespace MISA.QLTS.BL.BaseBL
         /// <returns>Giá trị cảu bản ghi được thêm mới</returns>
         ///  /// createdBy : Bùi Quang Điệp (24/08/2022)
         public Guid InsertOneRecord(T record);
+
+        /// <summary>
+        /// Lấy danh sách một bản ghi 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Danh sách một bản ghi</returns>
+        /// Createed By :Bùi Quang Điệp (23/08/2022)
+
     }
 }

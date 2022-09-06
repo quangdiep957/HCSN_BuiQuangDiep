@@ -162,3 +162,10 @@ a{
 .setWidth{
     width: calc(100% - 66px) !important;
 }
+.cbtooltip #TooltipComBoBox{
+    position: absolute;
+    width: 200px;
+    height: 30px;
+    z-index: 1000;
+
+}

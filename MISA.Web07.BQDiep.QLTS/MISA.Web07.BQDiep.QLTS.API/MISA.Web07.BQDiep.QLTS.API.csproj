@@ -20,6 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Resource\Error.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Error.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resource\ResourceN.Designer.cs">
       <DependentUpon>ResourceN.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -38,6 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resource\Error.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Error.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resource\ResourceN.resx">
       <LastGenOutput>ResourceN.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>

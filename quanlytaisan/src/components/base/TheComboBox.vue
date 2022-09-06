@@ -4,7 +4,7 @@
   <div class="combobox">
     <div
       v-on:click="btnClickShow()"
-      class="combobox__control"
+      class="combobox__control cbtooltip"
       :class="{ combobox__width: dialog_icon }"
       v-if="!ComboboxQuantity"
     >
@@ -32,6 +32,14 @@
           positiontooltip="bottom"
           style="margin-top: 10px"
         />
+          <!-- vị trí tooltip -->
+        <div id="TooltipComBoBox" class="tooltip" v-show="isShowTooltip">
+          <Tooltip
+              :tooltiptext="optionText"
+                positiontooltip="bottom"
+                id ="tooltipText"
+              />
+           </div>
       </div>
     </div>
     <div
@@ -41,28 +49,24 @@
       v-clickoutside="hideListData"
     >
       <div
-        v-for="item in option"
-        :key="item"
+      v-for="(item,index) in option" :key="item"
         class="combobox__option--item tooltip tooltipCombobox"
-        v-on:click="btnTickedBody(item)"
+        @click="btnTickedBody(item)"
+        ref="item"
+        @mouseover="GetPos(item,index)"
+        @mouseleave="RemovePos()"
         :class="{ 'combobox__option--active': isTicked == item }"
-        style="position: relative"
-      >
+        style="position: relative">
         <span v-if="isTicked == item" class="combobox__option--item-icon"
           ><i class="fa-solid fa-check"></i
         ></span>
         <div v-if="typeCombobox == 'department'" class="combobox__option--item-text">
-          {{ item.DepartmentName }}
-        </div>
-        <div v-if="typeCombobox == 'department'" style="position: absolute">
-          <Tooltip positiontooltip="right" :tooltiptext="item.DepartmentName" />
+          {{ item.DepartmentName}}
         </div>
         <div v-if="typeCombobox == 'category'" class="combobox__option--item-text">
           {{ item.FixedAssetCategoryName }}
         </div>
-        <div v-if="typeCombobox == 'category'" style="position: absolute">
-          <Tooltip positiontooltip="right" :tooltiptext="item.FixedAssetCategoryName" />
-        </div>
+   
       </div>
     </div>
     <!-- combobox phân trang   -->
@@ -139,6 +143,8 @@
       </div>
     </div>
   </div>
+
+
 </template>
 <script>
 /**
@@ -147,24 +153,36 @@
  */
 const clickoutside = {
   mounted(el, binding) {
-    el.clickOutsideEvent = (event) => {
-      // Nếu element hiện tại không phải là element đang click vào
+    try {
+      el.clickOutsideEvent = (event) => {
+     
+           // Nếu element hiện tại không phải là element đang click vào
       // Hoặc element đang click vào không phải là button trong combobox hiện tại thì ẩn đi.
-      if(el == null)
-      {
-        if (
+        if(el.previousElementSibling != null)
+        {
+          if (
         !((
             el === event.target || // click phạm vi của combobox__data
             el.contains(event.target) || //click vào element con của combobox__data
-            el.previousElementSibling.contains(event.target)
+            (el.previousElementSibling.contains(event.target))
           ))
       ) {
         // Thực hiện sự kiện tùy chỉnh:
         binding.value(event, el);
       }
-      }
+        }
+        
+      
+     
+      
       
     };
+      
+    } catch (error) {
+      console.log(error)
+      
+    }
+   
     document.body.addEventListener("click", el.clickOutsideEvent);
   },
   beforeUnmount: (el) => {
@@ -185,19 +203,28 @@ export default {
 
   data() {
     return {
+      left:"0px",
+      top:"0px",
+      opacity:0,
       isShow: false,
       isTicked: "",
       isShowCombo: false,
       value_input: "",
       value_quantity: "20",
       combobox_quantity: [10, 20, 30, 40,50],
+      optionText:"",
+      isShowTooltip : false,
+      handlerCombobox:true,
+      handlerOne:false,
+      handlerTwo:false,
+      itemDetail:[],
       searchArray: {
         keyword: "",
         categoryAssetID: "",
         departmentID: "",
         dataPage: {
           pageSize: "",
-          itemDetail:[],
+
         },
       },
     };
@@ -234,8 +261,15 @@ export default {
     },
     dataItemCombobox :{
       type:Array
+    },
+    categoryCheck:{
+      type: Boolean,
+    },
+    departmentCheck:{
+      type: Boolean,
     }
   },
+
   methods: {
      /**
       * click hiển thị option Combobox
@@ -262,18 +296,31 @@ export default {
       * Date:10/08/2022
       * */
     btnTicked(item) {
-      
+      debugger
       this.isTicked = item;
       this.isShow = false;
-      // Kiểm tra xem combobõ đang hiển thị bảng nào
+      // Kiểm tra xem combobox đang hiển thị bảng nào
       if (this.typeCombobox == "department") {
         this.value_input = item.DepartmentCode;
         this.$emit("dataName", item);
+        if(this.departmentCheck == true)
+        {
+          this.$emit("departmentCheckfalse");
+          this.$emit("RemoveDataOne");
+        }
+        
       }
       if (this.typeCombobox == "category") {
         this.value_input = item.FixedAssetCategoryCode;
         this.$emit("dataName", item);
+        if(this.categoryCheck == true)
+        {
+          this.$emit("categoryCheckfalse");
+          this.$emit("RemoveDataTwo");
+        }
+        
       }
+   
     },
 
       /**
@@ -316,6 +363,57 @@ export default {
       this.dataPage = item;
       this.emitter.emit("dataPageSize", this.dataPage);
     },
+
+
+  /**
+      * lấy vị trí hiện tại cảu combobox Option
+      * Author : Bùi Quang Điệp
+      * Date:10/08/2022
+      * */
+    GetPos(item,index) {
+      debugger
+      this.opacity = 1;
+         //const left = this.$refs.item[index].getBoundingClientRect().left;
+         const top = this.$refs.item[index].getBoundingClientRect().top;
+        // Gán giá trị tooltip
+        
+        if(item.FixedAssetCategoryName != undefined)
+        {
+          if(item.FixedAssetCategoryName.length >20)
+          {
+            this.isShowTooltip = true;
+            this.optionText = item.FixedAssetCategoryName;
+          }
+         
+        }
+        else{
+          if(item.DepartmentName.length >20)
+          {
+            this.isShowTooltip = true;
+            this.optionText = item.DepartmentName;
+          }
+          
+        }
+      
+
+        // Gán vị trí của tooltip combobox
+        this.left = 30 + "px";
+        this.top = top - 90 + "px";
+
+    },
+
+    /**
+      * Khi không hover thì đóng tooltip và xóa text cũ
+      * Author : Bùi Quang Điệp
+      * Date:10/08/2022
+      * */
+    RemovePos(){
+      this.isShowTooltip = false;
+      this.optionText = "";
+
+    }
+
+   
   },
 
     /**
@@ -323,33 +421,50 @@ export default {
       * Author : Bùi Quang Điệp
       * Date:25/08/2022
       * */
-  updated(){
-
-      if(this.dataItemCombobox != undefined && this.option != undefined)
+  beforeUpdate(){
+      debugger
+       if(this.dataItemCombobox != undefined)
       {
-        if(this.optionTable)
-     {
-        
-               if(this.typeCombobox == "category")
-                  {
-                        for(let i =0 ;i<this.option.length ;i++)
-                    {
-                      if(this.option[i].FixedAssetCategoryID == this.dataItemCombobox.fixedAssetCategoryID)
+            if(this.optionTable && this.dataItemCombobox.departmentID != "" && this.dataItemCombobox.fixedAssetCategoryID != "")
+        {
+            if(this.typeCombobox == "category") 
                       {
-                          this.btnTicked(this.option[i]);
+                        if(this.categoryCheck == false){
+                          for(let i =0 ;i<this.option.length ;i++)
+                                {
+                                  if(this.option[i].FixedAssetCategoryID == this.dataItemCombobox.fixedAssetCategoryID)
+                                  {
+                                    this.$emit("categoryCheck");
+                                      this.btnTicked(this.option[i]);
+                                      
+                                  }
+                                }
+                        }
+                          
                       }
+                    else{
+                      if(this.departmentCheck == false)
+                      {
+                        for(let i =0 ;i<this.option.length ;i++)
+                      {
+                        if(this.option[i].DepartmentID == this.dataItemCombobox.departmentID)
+                        {
+                          this.$emit("departmentCheck");
+                            this.btnTicked(this.option[i]);
+                           
+
+                            
+                        }
+                      }
+                      }
+                       
                     }
-                  }
-                else{
-                    for(let i =0 ;i<this.option.length ;i++)
-                  {
-                    if(this.option[i].DepartmentID == this.dataItemCombobox.departmentID)
-                    {
-                        this.btnTicked(this.option[i]);
-                    }
-                  }
-                }
-       }
+                
+          
+     
+                  
+          }
+     
       }
      
     }
@@ -361,5 +476,13 @@ export default {
 @import url(../../css/component/input.css);
 #app {
   background-color: #f4f7ff;
+}
+#TooltipComBoBox {
+        left : v-bind('left');
+        top : v-bind('top');
+    }
+#tooltipText{
+  opacity: v-bind('opacity');
+  position:initial;
 }
 </style>

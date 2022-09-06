@@ -37,7 +37,7 @@
     </div>
     <TheDialog v-if="isShowDialog" @BtnCloseDialog="isShowDialog = false" :title="title"
     v-bind:item="itemAssetDetail" :handler=handler @handlerName="ShowSuccess" />
-  <Notify v-if="isShowDialogNotify" :dataError=titleWarning @isShowDialogNotify ="isShowDialogNotifyFuntion()" :dataAsset=dataTicks :buttonNames="['Xóa','Không']" />  
+  <Notify v-if="isShowDialogNotify" :dataError=titleWarning @isShowDialogNotify ="isShowDialogNotifyFuntion()" @removeData="isRemove =true" :dataAsset=dataTicks :buttonNames="['Xóa','Không']" />  
     <div class="toast__box" v-show="isShowSuccess == true">
                     <div class="toast__box--item">
                     <div class="toast__box--body"><div class ="toast__box--item-icon"><div class="icon icon-tick-white icon__size-11x2"></div></div></div>
@@ -80,7 +80,8 @@ export default {
 
             }
             ,
-            dataReplication:[]
+            dataReplication:[],
+            isRemove :false
         };
     },
     methods: {
@@ -105,6 +106,7 @@ export default {
             if(this.dataReplication != undefined)
             {
                 this.itemAssetDetail = this.dataReplication;
+                this.dataReplication = [];
             }
              this.itemAssetDetail.fixedAssetCode = res.data;
              })
@@ -126,7 +128,7 @@ export default {
          */
         HandleRemove(){
             try {
-                debugger
+                
             this.titleWarning = [];
              this.isShowDialogNotify = true;
            var quantity = this.dataTicks.length;
@@ -151,9 +153,14 @@ export default {
          * Date:10/08/2022
          */
         isShowDialogNotifyFuntion(){
+            
             this.isShowDialogNotify = false;
-            this.dataTicks = [];
-            this.titleWarning=[]
+            if(this.isRemove)
+            {
+                this.dataTicks = [];
+                this.isRemove = false;
+            }
+
         },
 
          /**
@@ -162,7 +169,7 @@ export default {
          * Date:10/08/2022
          */
         HandlerSearch(item){
-            debugger
+            
             if(item=="")
             {
                 this.searchArray.departmentID = "";
@@ -199,7 +206,7 @@ export default {
          * Date :14 /08/ 2021
          */
         ShowSuccess(item){
-           debugger
+           
             if(item == "Sửa")
             {
                 this.handlerName="Sửa"
@@ -269,7 +276,7 @@ export default {
          * Date :09 /08/ 2021
          */
         try {
-            debugger
+            
             // nhận dữ liệu từ table
              this.emitter.on("itemDialog", (item) => {
                 // gán giá trị mở dialog bằng true
@@ -293,6 +300,7 @@ export default {
             // Nhận dữ liệu từ Cần xóa từ table
              this.emitter.on("titleWarning", (item) => {
              // truyền data vào cho mảng 
+             
              this.dataTicks = item
             }),
             this.emitter.on("dataPageSize",(item)=>{

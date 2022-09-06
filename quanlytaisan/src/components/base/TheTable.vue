@@ -54,7 +54,7 @@
                                 style="margin-left:15px">
                                 <Tooltip tooltiptext="Sửa" positiontooltip="top" style="top: 20px;" />
                             </div>
-                            <div @click="ReplicationAsset(item)"
+                            <div @click="isShowDialogDetail(item,true)"
                                 class="icon-mini icon-replication-mini icon__size-14 tooltip tooltipHandler tooltipHandlerEdit"
                                 style="margin-left:10px">
                                 <Tooltip tooltiptext="Nhân bản" positiontooltip="top"
@@ -96,7 +96,7 @@
 
     </div>
     <div class="display-flex paging">
-        <div class="display-flex paging_item">
+        <div class="display-flex paging_item" :class="{'setWidthPage':isSetWidth}">
             <p class="page__table--text">Tổng số : <span style="font-weight: bold;">{{ sumItem }}</span>
                 bản ghi</p>
             <Combobox ComboboxQuantity="true" style="width:100px" />
@@ -193,6 +193,7 @@ export default {
     data() {
         return {
             isLoading: false,
+          
             directives: {
                 contextmenu: directive,
                 // isLoading :false,
@@ -225,8 +226,11 @@ export default {
             numberPage: "10",
             numberPageArray: [],
             numberTwo: 0,
-            isCheckNumber:1
-        };
+            isCheckNumber:1,
+            isSetWidth:false,
+            tickedOld:false,
+            replication:false
+        }
     },
     computed: {
         computedSumPrice() {
@@ -251,10 +255,28 @@ export default {
         btnRowTable(item) {
             console.log(item);
         },
-        isShowDialogDetail(item) {
+        isShowDialogDetail(item,replication) {
+            
+            axios.get(`http://localhost:13846/api/v1/FixedAssets/Detail?id=${item.fixedAssetID}`)
+            .then(res=>{
+                console.log(res);
 
-            this.emitter.emit("itemDialog", item);
-            this.emitter.emit("handlerEdit");
+                if(replication == true){
+                   
+                    this.emitter.emit("replication", item);
+                    replication = false;
+                }
+                else
+                {
+                    this.emitter.emit("itemDialog", res.data);
+                 this.emitter.emit("handlerEdit");
+                }
+              
+            })
+            .catch(error=>{
+                console.log(error)
+            })
+           
         },
         /**
          * Xử lý sự kiện nhấn phím ctrl thì chọn nhiều
@@ -266,6 +288,8 @@ export default {
          */
         selectTick(e, item, index) {
             try {
+                
+
                 // Kiểm tra xem mã tài sản mới đã được thêm vào table chưa 
                 // Nếu đã có thì focus vào dòng đó
                 if (this.assetCode != "") {
@@ -281,7 +305,30 @@ export default {
                 // Nếu có thì thêm vào mảng và không reset lại mảng 
                 // Ngược lại thì reset mảng
                 if (e.ctrlKey == true) {
-                    this.dataTicks.push(item);
+                     var dataTicksFake =[];
+
+                  
+                    for(let i = 0 ; i<this.dataTicks.length;i++)
+                    {
+                        if(item == this.dataTicks[i])
+                        {
+                            this.dataTicks.splice(i, 1);
+                            dataTicksFake = this.dataTicks;
+                        }
+                       
+                    }
+                    
+                    if(dataTicksFake.length == 0)
+                    {
+                        this.dataTicks.push(item);
+                    }
+                    else{
+                        this.dataTicks = dataTicksFake;
+                    }
+                    
+
+                    
+                   
 
                 }
                 /**
@@ -326,6 +373,7 @@ export default {
                 else {
                     this.checked = false;
                 }
+                
                 this.emitter.emit("titleWarning", this.dataTicks);
             } catch (error) {
                 console.log(error);
@@ -456,7 +504,7 @@ export default {
          * Date:17/08/2022
          */
         BackPage() {
-            debugger
+            
             let number = 1;
             if(this.numberTwo!=0)  
             {
@@ -583,23 +631,13 @@ export default {
 
         },
         CheckNumber(item){
-            debugger
+            
             if(item == this.isCheckNumber)
             {
                 return item;
             }
         },
 
-        /**
-        * Xử lý sự kiện Nhân bản 1 bản ghi
-        * Author : Bùi Quang Điệp
-        * Date:10/08/2022
-        */
-        ReplicationAsset(item) {
-
-            this.emitter.emit("replication", item);
-
-        },
 
         startDrag(evt, item) {
             evt.dataTransfer.dropEffect = 'move'
@@ -689,6 +727,18 @@ export default {
                 this.numberTwo=0;
                 this.NextPage(this.numberTwo);
 
+            }),
+
+              // Nhận dữ liệu set lại width navbar
+              this.emitter.on("setWidth", () => {
+                // gán giá trị width lại cho body
+             this.isSetWidth = true
+            }),
+
+            // Nhận dữ liệu reset width navbar
+            this.emitter.on("setWidthClear", () => {
+                // gán giá trị width lại cho body
+             this.isSetWidth = false
             })
 
 
@@ -699,4 +749,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  
 </style>
