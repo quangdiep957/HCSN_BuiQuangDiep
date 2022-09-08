@@ -30,7 +30,9 @@
 .m-row__form .combobox__input {
     padding-left: 20px !important;
     width: 100%;
+    min-width: 219px;
 }
+
 .m-row__form 
 .combobox{
     margin-right: 10px;
@@ -126,4 +128,9 @@
     top: 0% !important;
     height: 75px;
     width: 80% !important;
+}
+@media only screen and (max-width: 1024px){
+    .m-row__form .combobox__input {
+       min-width: unset;
+    }
 }

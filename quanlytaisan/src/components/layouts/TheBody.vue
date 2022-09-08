@@ -7,23 +7,23 @@
                     <!-- tạo input search -->
                     <div class="input-search" style="margin-right:10px" >
                         <div class="icon input__search--icon__item input__search--icon" data-toggle="tìm kiếm"></div>
-                        <input type="text" name="" id="" class="input input__search--text" @keydown.enter="HandlerSearch"
+                        <input type="text" name="" id="" class="input input__search--text" @keydown.enter="handlerSearch"
                             placeholder="Tìm kiếm tài sản">
                     </div>
-                    <ComboBox val="Loại tài sản" v-bind:option=optionCategory icon="true"  typeCombobox="category" @dataCategory="HandlerSearch" @remove="HandlerSearch" />
-                    <ComboBox val="Bộ phận sử dụng" v-bind:option=optionDepartment icon="true" typeCombobox="department" @dataDepartment="HandlerSearch" @remove="HandlerSearch" />
+                    <ComboBox val="Loại tài sản" v-bind:option=optionCategory icon="true"  nameTable="FixedAssetCategory" @dataComBoBoxSearch="handlerSearch" @remove="handlerSearch" />
+                    <ComboBox val="Bộ phận sử dụng" v-bind:option=optionDepartment icon="true" nameTable="Department" @dataComBoBoxSearch="handlerSearch" @remove="handlerSearch" />
                 </div>
 
                 <div class="m-row__right display-flex">
                     <div @click="btnShowDialog()" class="btn btn__icon" id="btn--add">
                         <div class="btn__icon--item">
-                            <div class="icon icon-add icon__size-8"></div>
+                            <!-- <div class="icon icon-add icon__size-8"></div> -->
                             <div class="btn--text">Thêm tài sản</div>
                         </div>
                     </div>
-                    <button class="btnfunction distance tooltip">
+                    <button class="btnfunction distance tooltip" @click="Export">
                         <div class="bntfunction__more icon icon-more icon__size-18"></div>
-                         <Tooltip tooltiptext="Chỉnh sửa" positiontooltip="bottom"/>
+                         <Tooltip tooltiptext="Xuất Excel" positiontooltip="bottom"/>
                     </button>
                     <button class="btnfunction tooltip" @click="HandleRemove()">
                         <div class="bntfunction__remove icon icon-remove icon__size-18"></div>
@@ -81,7 +81,7 @@ export default {
             }
             ,
             dataReplication:[],
-            isRemove :false
+            isRemove :false,
         };
     },
     methods: {
@@ -92,6 +92,7 @@ export default {
          */
         btnShowDialog(){
             try {
+                debugger
             // đặt lại input về rỗng
              this.itemAssetDetail=[]
             this.handler="add";
@@ -168,11 +169,15 @@ export default {
          * Author : Bùi Quang Điệp
          * Date:10/08/2022
          */
-        HandlerSearch(item){
-            
-            if(item=="")
+        handlerSearch(item){
+            debugger
+            if(item.DepartmentID=="")
             {
                 this.searchArray.departmentID = "";
+               
+            }
+            if(item.FixedAssetCategoryID =="")
+            {
                 this.searchArray.fixedAssetCategoryID = "";
             }
             if(item.DepartmentID != undefined)
@@ -182,7 +187,6 @@ export default {
             }
             if(item.FixedAssetCategoryID != undefined)
             {   
-                
                  this.searchArray.fixedAssetCategoryID= item.FixedAssetCategoryID;
             }
             if(event.currentTarget.value != undefined)
@@ -220,6 +224,21 @@ export default {
 
                 this.isShowSuccess = false },3000);
 
+        },
+
+        Export(){
+            axios.post("http://localhost:13846/api/v1/FixedAssets/Export",this.dataTicks)
+            .then(res=>{
+                console.log(res);
+                const blob = new Blob([res.data], { // Make a BLOB object
+                    type : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+
+             (blob, "ExcelReport", 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') // use the DownloadJS library and download the file
+            })
+            .catch(error=>{
+                console.log(error)
+            })
         }
         
     },
@@ -306,12 +325,12 @@ export default {
             this.emitter.on("dataPageSize",(item)=>{
                   // truyền data vào cho mảng 
                     this.searchArray.pageSize = item
-                    this.HandlerSearch(item)
+                    this.handlerSearch(item)
             }),
             this.emitter.on("pageNumber",item=>{
                 // truyền data vào cho mảng 
                 this.searchArray.pageNumber = item
-                this.HandlerSearch(item)
+                this.handlerSearch(item)
             })
             this.emitter.on("replication",item=>{
                 // Nhận dữ liệu cần nhân bản

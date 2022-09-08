@@ -26,8 +26,10 @@ button:focus{
 
 .btn__icon--item {
     display: flex;
-    padding: 12px 14px 10px 12px;
+    /* padding: 12px 14px 10px 12px; */
     align-items: center;
+    justify-content: center;
+    line-height: 36px;
 }
 
 .btn--text {

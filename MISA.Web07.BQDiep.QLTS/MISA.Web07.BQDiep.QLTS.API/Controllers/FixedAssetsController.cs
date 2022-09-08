@@ -6,6 +6,7 @@ using MISA.QLSP.Common.Entities.Entities;
 using MISA.QLTS.BL;
 using MISA.Web07.BQDiep.QLTS.API.BaseController;
 using MySqlConnector;
+using OfficeOpenXml;
 using System.Data;
 using System.Text.RegularExpressions;
 
@@ -223,6 +224,50 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
             }
 
 
+        }
+        [HttpPost("Export")]
+        public IActionResult Export(List<FixedAsset> fixedAssets)
+        {
+            var stream = new MemoryStream();
+            var row = 2;
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var sheet = package.Workbook.Worksheets.Add("Tài sản");
+                sheet.Cells[1, 1].Value = "Số thứ tự";
+                sheet.Cells[1, 2].Value = "Mã tài sản";
+                sheet.Cells[1, 3].Value = "Tên tài sản";
+                sheet.Cells[1, 4].Value = "Loại sản phẩm";
+                sheet.Cells[1, 5].Value = "Bộ phận sử dụng";
+                sheet.Cells[1, 6].Value = "Số lượng";
+                sheet.Cells[1, 7].Value = "Nguyên giá";
+                sheet.Cells[1, 8].Value = "Hao mòn/Khấu hao lũy kế";
+                sheet.Cells[1, 9].Value = "Giá trị còn lại";
+                sheet.Cells[1, 10].Value = "chức năng";
+                
+                foreach (var fixedAsset in fixedAssets)
+                {
+                    sheet.Cells[row, 1].Value = fixedAsset.cost;
+                    sheet.Cells[row, 2].Value = "Mã tài sản";
+                    sheet.Cells[row, 3].Value = "Tên tài sản";
+                    sheet.Cells[row, 4].Value = "Loại sản phẩm";
+                    sheet.Cells[row, 5].Value = "Bộ phận sử dụng";
+                    sheet.Cells[row, 6].Value = "Số lượng";
+                    sheet.Cells[row, 7].Value = "Nguyên giá";
+                    sheet.Cells[row, 8].Value = "Hao mòn/Khấu hao lũy kế";
+                    sheet.Cells[row, 9].Value = "Giá trị còn lại";
+                    sheet.Cells[row, 10].Value = "chức năng";
+                    row++;
+                }
+
+              //  sheet.Cells.LoadFromCollection(fixedAssets, true);
+                package.Save();
+
+            }
+            stream.Position = 0;
+            var fileName = "FixedAsset.xlsx";
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", fileName);
         }
 
         /// <summary>

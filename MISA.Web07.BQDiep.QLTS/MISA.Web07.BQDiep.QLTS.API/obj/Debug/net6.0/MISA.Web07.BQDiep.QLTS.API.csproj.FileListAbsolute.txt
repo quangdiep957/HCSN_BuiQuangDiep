@@ -76,3 +76,13 @@ D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.Common.pdb
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\MISA.QLTS.DL.pdb
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.Resource.Error.resources
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\EPPlus.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\EPPlus.Interfaces.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\EPPlus.System.Drawing.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Microsoft.IO.RecyclableMemoryStream.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\System.Drawing.Common.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.Web07.BQDiep.QLTS.API\obj\Debug\net6.0\MISA.Web07.BQDiep.QLTS.API.MvcApplicationPartsAssemblyInfo.cs

@@ -53,3 +53,6 @@
     border: none !important;
     min-width: unset !important;
 }
+.vuejs3-datepicker__inputvalue{
+    padding: 12px 10px 13px 15px !important;
+}

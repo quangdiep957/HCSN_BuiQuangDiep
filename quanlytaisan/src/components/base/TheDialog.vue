@@ -5,101 +5,125 @@
       <div class="dialog__header">
         <h3 id="handle">{{ title }}</h3>
         <div @click="this.$emit('BtnCloseDialog')" class="icon icon-close icon__size-18 tooltip" id="btn--close">
-          <Tooltip tooltiptext="Đóng" positiontooltip="left" style="margin-left:-30px" />
+          <Tooltip tooltiptext="Đóng" positiontooltip="left" style="margin-left:15px" />
         </div>
       </div>
       <div class="dialog__body">
         <div class="m-row">
-          <div class="group-input size-33">
+          <div class="group-input size-33 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Mã tài sản<span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.fixedAssetCode positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.fixedAssetCode!= ''" />
             </div>
-            <input v-model="dataItemDetail.fixedAssetCode" type="text" id="txtAssetCode" class="input input-width"
-              required ref="txtAssetCode" tabindex="1001" @blur="checkRequired(this.$refs['txtAssetCode'])" @input="capitalizationText()" />
+            <input v-model="dataItemDetail.fixedAssetCode" type="text" id="fixedAssetCode" class="input input-width "
+              ref="fixedAssetCode" required tabindex="1001" @blur="checkRequired('fixedAssetCode')"
+              @input="capitalizationText()" />
           </div>
 
-          <div class="group-input size-66 margin-lr-16">
+          <div class="group-input size-66 margin-lr-16 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Tên tài sản <span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.fixedAssetName positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.fixedAssetName!=''" />
             </div>
-            <input v-model="dataItemDetail.fixedAssetName" type="text" name="Tên tài sản" id="txtNameAsset"
-              class="input input-width" required placeholder="Nhập tên tài sản" tabindex="1002" ref="txtNameAsset"
-              @blur="checkRequired(this.$refs['txtNameAsset'])" 
-              @input="capitalizationText()"
-              />
+            <input v-model="dataItemDetail.fixedAssetName" type="text" name="Tên tài sản" id="fixedAssetName"
+              class="input input-width tooltip" required placeholder="Nhập tên tài sản" tabindex="1002"
+              ref="fixedAssetName" @blur="checkRequired('fixedAssetName')" @input="capitalizationText()" />
           </div>
         </div>
         <div class="m-row">
-          <div class="group-input size-33">
+          <div class="group-input size-33 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Mã bộ phận sử dụng<span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.departmentID positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.departmentID!=''" />
             </div>
-            <ComboBox val="Chọn mã bộ phận sử dụng" :option="optionCBBox" dialog_icon="true" optionTable="true" :departmentCheck="departmentCheck" @departmentCheck="departmentCheck=true"  @departmentCheckfalse="departmentCheck=false"
-              @dataName="DataDepartment" typeCombobox="department" :dataItemCombobox = dataItemDetailFake @RemoveDataOne="dataItemDetailFake.departmentID=''" />
+            <ComboBox val="Chọn mã bộ phận sử dụng" :option="optionCBBox" dialog_icon="true" optionTable="true"
+              :isCheck="departmentCheck" @isCheck="departmentCheck=true" @checkFalse="isCheck=false"
+              @dataName="DataDepartment" nameTable="Department" :dataItemCombobox=dataItemDetailFake
+              @removeData="dataItemDetailFake.departmentID=''" @checkRequired="checkRequiredComboboxDepartment"
+              :borderRed="borderRedDepartment" />
             <!-- <button class="combobox__control combobox__width">
-                            <input type="text" name="Mã bộ phận sử dụng" id="" class="input input-width absolute" required value="" placeholder="Chọn mã bộ phận sử dụng" tabindex="1003">
+                            <input type="text" name="Mã bộ phận sử dụng" id="" class="input input-width tooltip absolute" required value="" placeholder="Chọn mã bộ phận sử dụng" tabindex="1003">
                             <div class="icon icon-down1 icon__size-5 combobox__icon"></div>
                         </button> -->
           </div>
 
           <div class="group-input size-66 margin-lr-16">
             <div class="margin-text">Tên bộ phận sử dụng</div>
-            <input type="text" name="Tên bộ phận sử dụng" id="" class="input input-width"
-              v-bind:value="dataItemDetail.departmentName" disabled
-               @input="capitalizationText()"
-               />
+            <input type="text" name="Tên bộ phận sử dụng" id="" class="input input-width tooltip"
+              v-bind:value="dataItemDetail.departmentName" disabled @input="capitalizationText()" />
           </div>
         </div>
         <div class="m-row">
-          <div class="group-input size-33">
+          <div class="group-input size-33 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Mã loại sản phẩm<span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.fixedAssetCategoryID positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.fixedAssetCategoryID!=''" />
             </div>
-            <ComboBox val="Chọn mã loại sản phẩm" v-bind:option="optionCBBox1" dialog_icon="true" optionTable="true" :categoryCheck="categoryCheck" @categoryCheck="categoryCheck=true"  @categoryCheckfalse="categoryCheck=false"
-              @dataName="DataCategory" typeCombobox="category" :dataItemCombobox = dataItemDetailFake @RemoveDataTwo="dataItemDetailFake.fixedAssetCategoryID=''"  />
+            <ComboBox val="Chọn mã loại sản phẩm" v-bind:option="optionCBBox1" dialog_icon="true" optionTable="true"
+              :isCheck="categoryCheck" @isCheck="categoryCheck=true" @checkFalse="categoryCheck=false"
+              @dataName="DataCategory" nameTable="FixedAssetCategory" :dataItemCombobox=dataItemDetailFake
+              @removeData="dataItemDetailFake.fixedAssetCategoryID=''" @checkRequired="checkRequiredComboboxCategory"
+              :borderRed="borderRedCategory" />
           </div>
 
           <div class="group-input size-66 margin-lr-16">
             <div class="margin-text">Loại tài sản</div>
-            <input type="text" name="Loại tài sản" id="" class="input input-width"
-              v-bind:value="dataItemDetail.fixedAssetCategoryName" disabled 
-                 @input="capitalizationText()"
-              />
+            <input type="text" name="Loại tài sản" id="" class="input input-width tooltip"
+              v-bind:value="dataItemDetail.fixedAssetCategoryName" disabled @input="capitalizationText()" />
           </div>
         </div>
         <div class="m-row">
-          <div class="group-input size-33">
+          <div class="group-input size-33 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Số lượng<span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.quantity positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.quantity!=''" />
             </div>
             <button class="combobox__control combobox__width" style="border: none !important">
-              <input type="text" name="Số lượng" number required id="txtQuantity"
-                class="input input-width text-align-right absolute" placeholder="" style="padding-right: 40px"
-                v-model="dataItemDetail.quantity" tabindex="1005" ref="txtQuantity"
-                @input="FormatNumberInput(dataItemDetail.quantity, 'quantity')" @keypress="CheckNumber($event)"
-                @blur="checkRequired(this.$refs['txtQuantity'])" />
+              <input type="text" name="Số lượng" number required id="quantity"
+                class="input input-width tooltip text-align-right absolute" placeholder="" style="padding-right: 40px"
+                v-model="dataItemDetail.quantity" tabindex="1005" ref="quantity"
+                @input="formatNumberInput(dataItemDetail.quantity, 'quantity')" @keypress="CheckNumber($event)"
+                @blur="checkRequired('quantity')" />
               <div class="combobox__icon">
                 <div class="header-group__icon--item icon icon-up icon__size-8"></div>
                 <div class="header-group__icon--item icon icon-down2 icon__size-8"></div>
               </div>
             </button>
           </div>
-          <div class="group-input size-33">
+          <div class="group-input size-33 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Nguyên giá<span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.cost positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.cost !=''" />
             </div>
-            <input type="text" name="Nguyên giá" number required id="txtPrice"
-              class="input input-width text-align-right" v-model="dataItemDetail.cost" tabindex="1006" ref="txtPrice"
-              @blur="checkRequired(this.$refs['txtPrice'])" @input="FormatNumberInput(dataItemDetail.cost, 'cost')" />
+            <input type="text" name="Nguyên giá" number required id="cost"
+              class="input input-width tooltip text-align-right" v-model="dataItemDetail.cost" tabindex="1006"
+              ref="cost" @blur="checkRequired('cost')" @input="formatNumberInput(dataItemDetail.cost, 'cost')" />
           </div>
-          <div class="group-input size-33 margin-right-10">
+          <div class="group-input size-33 margin-right-10 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Số năm sử dụng <span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.lifeTime positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.lifeTime!=''" />
             </div>
             <button class="combobox__control combobox__width">
-              <input type="text" name="Số năm sử dụng" number required id="yearuse"
-                class="input input-width text-align-right absolute" placeholder="" style="padding-right: 40px"
-                v-model="dataItemDetail.lifeTime" tabindex="1007" />
+              <input type="text" name="Số năm sử dụng" number required id="yearuse" ref="lifeTime"
+                class="input input-width tooltip text-align-right absolute" placeholder="" style="padding-right: 40px"
+                v-model="dataItemDetail.lifeTime" tabindex="1007" 
+                @blur="checkRequired('lifeTime')" />
+                />
               <div class="combobox__icon">
                 <div class="header-group__icon--item icon icon-up icon__size-8"></div>
                 <div class="header-group__icon--item icon icon-down2 icon__size-8"></div>
@@ -108,26 +132,32 @@
           </div>
         </div>
         <div class="m-row">
-          <div class="group-input size-33">
+          <div class="group-input size-33 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Tỉ lệ hao mòn (%) <span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.depreciationRate positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.depreciationRate!=''" />
             </div>
-            <input type="text" name="Tỉ lệ hao mòn" number required ref="txtAtrophy" id="txtAtrophy"
-              class="input input-width text-align-right" v-model="dataItemDetail.depreciationRate" tabindex="1008"
-              @blur="checkRequired(this.$refs['txtAtrophy'])" />
+            <input type="text" name="Tỉ lệ hao mòn" number required ref="depreciationRate" id="txtAtrophy"
+              class="input input-width tooltip text-align-right" v-model="dataItemDetail.depreciationRate"
+              tabindex="1008" @blur="checkRequired('depreciationRate')" />
           </div>
-          <div class="group-input size-33">
+          <div class="group-input size-33 tooltip tooltipRequired" @mouseover="showTooltip($event)"
+            @mouseleave="hideTooltip($event)">
             <div class="margin-text">
               Giá trị hao mòn năm<span style="color: red">*</span>
+              <Tooltip class="tooltipRequiredDetail" :tooltiptext=requiredData.depreciationYear positiontooltip="top"
+                v-if="isShowTooltipRequired && requiredData.depreciationYear!=''" />
             </div>
-            <input type="text" name="Giá trị hao mòn" number required id="txtdepreciation"
-              class="input input-width text-align-right" v-model="dataItemDetail.depreciationYear" ref="txtdepreciation"
-              tabindex="1009" @blur="checkRequired(this.$refs['txtdepreciation'])"
-              @input="FormatNumberInput(dataItemDetail.depreciationYear, 'depreciation')" />
+            <input type="text" name="Giá trị hao mòn" number required id="depreciationYear"
+              class="input input-width tooltip text-align-right" v-model="dataItemDetail.depreciationYear"
+              ref="depreciationYear" tabindex="1009" @blur="checkRequired('depreciationYear')"
+              @input="formatNumberInput(dataItemDetail.depreciationYear, 'depreciation')" />
           </div>
           <div class="group-input size-33 margin-right-10">
             <div class="margin-text">Năm theo dõi</div>
-            <input type="text" name="Năm theo dõi" required id="" class="input input-width text-align-right"
+            <input type="text" name="Năm theo dõi" required id="" class="input input-width tooltip text-align-right"
               value="2021" disabled />
           </div>
         </div>
@@ -137,13 +167,14 @@
             <div class="margin-text">
               Ngày mua <span style="color: red">*</span>
             </div>
-            <div class="combobox__control combobox__width  input-date" tabindex="1010" @focus="showMenuDateDepreciation" >
+            <div class="combobox__control combobox__width  input-date" tabindex="1010"
+              @focus="showMenuDateDepreciation">
               <!-- <input
                 type="text"
                 name="Ngày mua"
                 id="purchasedate"
                 required
-                class="input input-width absolute"
+                class="input input-width tooltip absolute"
                 calender
                 v-model="dataItemDetail.Startday"
                 placeholder=""
@@ -151,11 +182,9 @@
                 ref="purchasedate"
                  @blur="checkRequired(this.$refs['purchasedate'])"
               />  -->
-              <datepicker format="MM/dd/yyyy" v-model="date.Depreciation" :hideInput="false" :full-month-name="true" :inline="false" :minimum-view="'day'"
-      :maximum-view="'day'"
-                typeable="true"
-                :class="{'dateActive':isShowMenuDateDepreciation}"
-                ></datepicker >
+              <datepicker format="MM/dd/yyyy" v-model="date.Depreciation" :hideInput="false" :full-month-name="true"
+                :inline="false" :minimum-view="'day'" :maximum-view="'day'" typeable="true"
+                :class="{'dateActive':isShowMenuDateDepreciation}"></datepicker>
               <div class="icon icon-calendar icon__size-18 combobox__icon"></div>
             </div>
           </div>
@@ -169,7 +198,7 @@
                 name="Ngày bắt đầu sử dụng"
                 id="startday"
                 required
-                class="input input-width absolute"
+                class="input input-width tooltip absolute"
                 calender
                 value=""
                 placeholder=""
@@ -177,11 +206,9 @@
                 tabindex="1011"
                 @blur="checkRequired(this.$refs['startday'])"
               /> -->
-              <datepicker format="MM/dd/yyyy" typeable="true" v-model="date.Startday" :hideInput="false" :minimum-view="'day'" :class="{'dateActive':isShowMenuDateStart}"
-      :maximum-view="'day'"
-                :full-month-name="true"
-                :inline="false"
-                >
+              <datepicker format="MM/dd/yyyy" typeable="true" v-model="date.Startday" :hideInput="false"
+                :minimum-view="'day'" :class="{'dateActive':isShowMenuDateStart}" :maximum-view="'day'"
+                :full-month-name="true" :inline="false">
               </datepicker>
               <div class="icon icon-calendar icon__size-18 combobox__icon"></div>
             </div>
@@ -199,8 +226,9 @@
     </div>
   </div>
 
-  <Notify v-if="DialogNotify" v-bind:dataError="errors" @isShowDialogNotify="DialogNotify = false" :buttonNames="buttonNames" @isSaveData="SaveData" @RemoveDialog="RemoveDialog" :errorName="errorName"  />
-  
+  <Notify v-if="DialogNotify" v-bind:dataError="errors" @isShowDialogNotify="DialogNotify = false"
+    :buttonNames="buttonNames" @isSaveData="SaveData" @RemoveDialog="RemoveDialog" :errorName="errorName" />
+
 
 </template>
 <script>
@@ -221,11 +249,11 @@ export default {
   data() {
     return {
       dataItemDetail: [],
-      display:"none",
-      isShowMenuDateStart:false,
-      isShowMenuDateDepreciation:false,
-      categoryCheck:false,
-      departmentCheck:false,
+      display: "none",
+      isShowMenuDateStart: false,
+      isShowMenuDateDepreciation: false,
+      categoryCheck: false,
+      departmentCheck: false,
       dataName:
       {
         AssetCode: 'Mã tài sản',
@@ -238,9 +266,9 @@ export default {
         Depreciation: 'Giá trị hao mòn năm',
         Atrophy: 'Tỉ lệ hao mòn'
 
-      }
-      ,
-       buttonNames:['Đồng ý'],
+      },
+
+      buttonNames: ['Đồng ý'],
       errors: [],
       DialogNotify: false,
       date: {
@@ -265,8 +293,25 @@ export default {
       ],
       optionCBBox: [],
       optionCBBox1: [],
-      errorName:"",
-      dataItemDetailFake:[]
+      errorName: "",
+      dataItemDetailFake: [],
+      requiredData:
+      {
+        fixedAssetCode: "",
+        fixedAssetName: "",
+        quantity: "",
+        depreciationYear: "",
+        depreciationRate: "",
+        cost: "",
+        departmentID: "",
+        fixedAssetCategoryID: "",
+        lifeTime:""
+      },
+      opacity: 0,
+      isShowTooltipRequired: false,
+      borderRed: false,
+      isCheckRequiredComboboxDepartment: false,
+      isCheckRequiredComboboxCategory: false
     }
   },
   methods: {
@@ -276,6 +321,7 @@ export default {
      * Date:10/08/2022
      */
     Validation() {
+
       var isCheckRequired = false;
       var res = this.dataItemDetail;
       console.log(res);
@@ -329,9 +375,9 @@ export default {
           if (1 / res.lifeTime != res.depreciationRate) {
             this.errors.push(`Tỉ lệ hao mòn phải bằng phải bằng 1 / số năm sử dụng`);
           }
-          // if (res.Atrophy / yeardepreciation > price){
-          //     errorMsgs.push(`Hao mòn năm phải lớn hơn nguyên giá`);
-          // }
+          if (res.depreciationRate / depreciationYear > cost) {
+            this.errors.push(`Hao mòn năm phải lớn hơn nguyên giá`);
+          }
           // this.dataItemDetail.depreciationYear = (res.depreciationRate)*(res.price);
           if (this.errors.length >= 1) {
 
@@ -339,7 +385,7 @@ export default {
           }
 
           else {
-            
+            this.opacity = 0;
             // tạo object loại kiểu json
             var cost = this.unFormNumber(this.dataItemDetail.cost);
             var depreciationYear = this.unFormNumber(this.dataItemDetail.depreciationYear);
@@ -382,14 +428,9 @@ export default {
                 .catch((error) => {
                   console.log(error.message);
                 });
-              
-
-
-
-
 
             }
-            debugger
+
             // Kiểm tra nếu là thêm mới thì xử lý 
             if (this.handler == "add") {
               axios
@@ -403,30 +444,29 @@ export default {
                   }
                 )
                 .then((response) => {
-                  debugger
+
                   this.$emit('BtnCloseDialog');
                   this.emitter.emit("LoadData", this.dataItemDetail.fixedAssetCode);
                   console.log(response);
                   this.$emit("handlerName", "Thêm");
-                  debugger
+
                 })
                 .catch((error) => {
-                  debugger
+
                   console.log(error.message);
                   // Nếu lỗi trùng mã thì hiển thị thông báo cho người dùng
-                  if (error.response.data.error == "e1002")
-                  {
-                    
-                        this.DialogNotify = true;
-                        this.errors =[];
-                        this.buttonNames=['Đồng ý'],
-                        
-                        this.errors.push(`Mã tài sản  đã có trong hệ thống !`)
-                        this.errorName=error.response.data.data[1];
+                  if (error.response.data.error == "e1002") {
+
+                    this.DialogNotify = true;
+                    this.errors = [];
+                    this.buttonNames = ['Đồng ý'],
+
+                      this.errors.push(`Mã tài sản  đã có trong hệ thống !`)
+                    this.errorName = error.response.data.data[1];
 
                   }
                 });
-              
+
 
             }
 
@@ -434,12 +474,73 @@ export default {
           }
         }
         else {
-          alert("Vui lòng nhập trường còn trống");
+
+          if (!res.fixedAssetCode) {
+            this.requiredData.fixedAssetCode = 'Mã tài sản không được bỏ trống .';
+            this.checkRequired('fixedAssetCode');
+          }
+       
+          if (!res.fixedAssetName) {
+            this.requiredData.fixedAssetName = 'Tên tài sản không được bỏ trống .';
+            this.checkRequired('fixedAssetName');
+          }
+        
+          if (!res.quantity) {
+            this.requiredData.quantity = 'Số lượng không được bỏ trống .';
+            this.checkRequired('quantity');
+          }
+
+          if (!res.depreciationYear) {
+
+            this.requiredData.depreciationYear = 'Giá trị hao mòn không được bỏ trống .';
+            this.checkRequired('depreciationYear');
+          }
+         
+          if (!res.lifeTime) {
+            this.requiredData.lifeTime = 'Số năm sử dụng không được bỏ trống .';
+            this.checkRequired('lifeTime');
+            }
+
+          if (!res.depreciationRate) {
+            this.requiredData.depreciationRate = 'Tỉ lệ hao mòn không được bỏ trống .';
+            this.checkRequired('depreciationRate');
+          }
+         
+
+          if (!res.cost) {
+            this.requiredData.cost = 'Nguyên giá không được bỏ trống .';
+            this.checkRequired('cost');
+          }
+
+          
+          if (this.isCheckRequiredComboboxDepartment == false) {
+            this.requiredData.departmentID = 'Mã phòng ban không được để trống .';
+            this.borderRedDepartment = true;
+          }
+          else {
+            this.requiredData.departmentID = '';
+            this.borderRedDepartment = false;
+          }
+
+
+          if (this.isCheckRequiredComboboxCategory == false) {
+            this.requiredData.fixedAssetCategoryID = 'Mã loại tài sản không được để trống .';
+            this.borderRedCategory = true;
+          }
+          else {
+            this.requiredData.fixedAssetCategoryID = '';
+            this.borderRedCategory = false;
+          }
+
+          this.isShowTooltipRequired = true;
+          this.opacity = 1;
+          setTimeout(() => {
+            this.opacity = 0;
+            this.isShowTooltipRequired = false;
+          }, 2000)
+
+
         }
-
-
-
-
       } catch (error) {
         console.log(error)
       }
@@ -449,18 +550,22 @@ export default {
     * Author : Bùi Quang Điệp
     * Date:10/08/2022
     */
-    checkRequired(res) {
-      // Kiểm tra nếu input rỗng thì hiển thị border đỏ và thông báo cho người dùng
-      if (!res.value) {
-        res.classList.add("border-red");
-        // this.isRequired = true;
-
+    checkRequired(name) {
+      debugger
+      // Kiểm tra name có dữ liệu hay không
+      if (name != '') {
+        if (!event.currentTarget.value) {
+          this.$refs[name].classList.add("border-red");
+          // this.isRequired = true;
+        }
+        else {
+          //  this.isRequired = false;
+          this.requiredData[name] = '';
+          this.$refs[name].classList.remove("border-red");
+        }
 
       }
-      else {
-        //  this.isRequired = false;
-        res.classList.remove("border-red");
-      }
+
     },
     /**
   * Kiểm tra xem nhập liệu đầu vào có phải là số hay không
@@ -482,9 +587,9 @@ export default {
     * Author : Bùi Quang Điệp
     * Date:10/08/2022
     */
-    FormatNumberInput(val, item) {
+    formatNumberInput(val, item) {
       try {
-        debugger
+
         if (item == "cost") {
           this.dataItemDetail.cost = formatCash(val);
         }
@@ -510,7 +615,7 @@ export default {
      * Date:10/08/2022
      */
     isFocusInput() {
-      this.$refs['txtAssetCode'].focus();
+      this.$refs['fixedAssetCode'].focus();
     },
 
     /**
@@ -519,7 +624,7 @@ export default {
    * Date:10/08/2022
    */
     DataDepartment(e) {
-      debugger
+
       this.dataItemDetail.departmentName = e.DepartmentName;
       this.dataItemDetail.departmentID = e.DepartmentID;
     },
@@ -562,46 +667,43 @@ export default {
       return val.split('.').join('');
     },
 
-     /**
-    * Tự động viết hoa chữ cái đầu cho các trường
-    *   - Mã tài sản
-    *   - Tên tài sản
-    *   - Tên bộ phận sử dụng
-    *   - Loại tài sản
-    * Author : Bùi Quang Điệp
-    * Date:10/08/2022
-    */
-    capitalizationText()
-    {
-      debugger
-        var text = event.currentTarget.value;
-        if(text != "")
-        {
+    /**
+   * Tự động viết hoa chữ cái đầu cho các trường
+   *   - Mã tài sản
+   *   - Tên tài sản
+   *   - Tên bộ phận sử dụng
+   *   - Loại tài sản
+   * Author : Bùi Quang Điệp
+   * Date:10/08/2022
+   */
+    capitalizationText() {
 
-          text =  text.charAt(0).toLocaleUpperCase() + text.slice(1);
-         
-        }
-        event.currentTarget.value = text;
-         
+      var text = event.currentTarget.value;
+      if (text != "") {
+
+        text = text.charAt(0).toLocaleUpperCase() + text.slice(1);
+
+      }
+      event.currentTarget.value = text;
+
     }
     ,
-     /**
-    * Đóng dialog thêm mới và show thông báo nếu người dùng hủy lưu khi chỉnh sửa
-    * Author : Bùi Quang Điệp
-    * Date:10/08/2022
-    */
-    CloseDialog(){
-      if(this.handler=="edit")
-      {
+    /**
+   * Đóng dialog thêm mới và show thông báo nếu người dùng hủy lưu khi chỉnh sửa
+   * Author : Bùi Quang Điệp
+   * Date:10/08/2022
+   */
+    CloseDialog() {
+      if (this.handler == "edit") {
         this.DialogNotify = true;
-        this.errors =[];
-         this.buttonNames=['Lưu','Không Lưu','Hủy bỏ'],
-       this.errors.push("Thông tin thay đổi sẽ không được cập nhật nếu bạn không lưu. Bạn có muốn lưu các thay đổi này ?")
+        this.errors = [];
+        this.buttonNames = ['Lưu', 'Không Lưu', 'Hủy bỏ'],
+          this.errors.push("Thông tin thay đổi sẽ không được cập nhật nếu bạn không lưu. Bạn có muốn lưu các thay đổi này ?")
       }
-      else{
-          this.$emit('BtnCloseDialog');
+      else {
+        this.$emit('BtnCloseDialog');
       }
-     
+
     },
 
     /**
@@ -609,35 +711,85 @@ export default {
     * Author : Bùi Quang Điệp
     * Date:10/08/2022
     */
-    SaveData(){
+    SaveData() {
       this.Validation();
     },
 
-      /**
-    * Đóng cả 2 dialog
-    * Author : Bùi Quang Điệp
-    * Date:15/08/2022
-    */
-    RemoveDialog(){
+    /**
+  * Đóng cả 2 dialog
+  * Author : Bùi Quang Điệp
+  * Date:15/08/2022
+  */
+    RemoveDialog() {
       this.DialogNotify = false;
       this.$emit('BtnCloseDialog');
     },
-    showMenuDateStartDay(){
+
+    /**
+  * khi focus mở chọn ngày
+  * Author : Bùi Quang Điệp
+  * Date:15/08/2022
+  */
+    showMenuDateStartDay() {
       this.display = "block";
       this.isShowMenuDateStart = true;
     },
 
-    showMenuDateDepreciation(){
+    showMenuDateDepreciation() {
       this.display = "block";
-      this.isShowMenuDateDepreciation= true;
+      this.isShowMenuDateDepreciation = true;
+    },
+
+    /**
+  * Hiển thị tooltip required khi hover 
+  * Author : Bùi Quang Điệp
+  * Date:07/09/2022
+  */
+    showTooltip(event) {
+      event.currentTarget.classList.add("activeTooltip");
+      this.isShowTooltipRequired = true;
+    },
+
+    /**
+  * ẩn tooltip required khi bỏ hover
+  * Author : Bùi Quang Điệp
+  * Date:07/09/2022
+  */
+    hideTooltip(event) {
+      event.currentTarget.classList.remove("activeTooltip");
+      this.isShowTooltipRequired = false;
+    },
+
+    /**
+     * Check required combobox
+     * Author : Bùi Quang Điệp
+     * Date:07/09/2022
+     */
+    checkRequiredComboboxDepartment(item) {
+      
+      this.isCheckRequiredComboboxDepartment = item;
+    },
+
+     /**
+     * Check required combobox
+     * Author : Bùi Quang Điệp
+     * Date:07/09/2022
+     */
+    checkRequiredComboboxCategory(item) {
+      this.isCheckRequiredComboboxCategory = item;
     }
-    
+
+
+
 
   },
   created() {
-
-    // gám mảng DataItemDetail vào Cho item để có thể sử dụng v-model
-
+  /**
+  *  Lấy dữu liệu các combobox đổ vào dialog
+  * Author : Bùi Quang Điệp
+  * Date:07/09/2022
+  */
+  //gán mảng DataItemDetail vào Cho item để có thể sử dụng v-model
     this.dataItemDetail = this.item
     this.dataItemDetailFake = this.dataItemDetail;
     // Lấy dữ liệu từ api đổ vào combobox
@@ -663,12 +815,40 @@ export default {
 
 
   mounted() {
-
+    /**
+  *  Khi mở dialog mặc định focus vào input đầu tiên
+  * Author : Bùi Quang Điệp
+  * Date:07/09/2022
+  */
     this.isFocusInput();
     this.dataItemDetail.cost = formatCash(this.dataItemDetail.cost);
     this.dataItemDetail.depreciationYear = formatCash(this.dataItemDetail.depreciationYear);
 
-    
+   
+
+
+  },
+  updated(){
+   
+  /**
+  *  Khi combobox thay đổi thì kiểm tra nếu đã có dữ lieju thì bỏ tooltip
+  * Author : Bùi Quang Điệp
+  * Date:07/09/2022
+  */
+    if (this.isCheckRequiredComboboxDepartment == true) {
+      this.requiredData.departmentID = '';
+      this.borderRedDepartment = false;
+    }
+
+   /**
+  *  Khi combobox thay đổi thì kiểm tra nếu đã có dữ lieju thì bỏ tooltip
+  * Author : Bùi Quang Điệp
+  * Date:07/09/2022
+  */
+    if (this.isCheckRequiredComboboxCategory == true) {
+      this.requiredData.fixedAssetCategoryID = '';
+      this.borderRedCategory = false;
+    }
   },
 
   props: {
@@ -683,9 +863,15 @@ export default {
 }
 </script>
 <style>
-.dateActive .vuejs3-datepicker__calendar.vuejs3-green
-{
-    display: v-bind('display') !important;
+.dateActive .vuejs3-datepicker__calendar.vuejs3-green {
+  display: v-bind('display') !important;
 }
 
+.group-input.tooltip .tooltiptext.tooltipRequiredDetail {
+  opacity: v-bind('opacity') !important;
+}
+
+.activeTooltip.group-input.tooltip .tooltiptext.tooltipRequiredDetail {
+  opacity: 1 !important;
+}
 </style>
