@@ -1,0 +1,10 @@
+number forrmat ok làm lại 
+xoa nhiều 
+cập nhật nguồn hình thành
+giá tiền khi sửa chưa format ok
+ngày tháng khi thêm chưa được byding ok
+ghi tăng tài sản chưa focus vào ô input đầu tiên ok
+cột chức năng cho đứng yên
+nguồn hình thành khi sửa chưa format ok
+xóa chưa có thông báo ok
+không có dữ liệu của bảng chi tiết

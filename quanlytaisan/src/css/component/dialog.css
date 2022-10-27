@@ -1,0 +1,124 @@
+.dialog{
+    width:  55%;
+    min-width: 440px;
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    background-color:#fff;
+    border-radius: 3px;
+    z-index: 99999;
+}
+.dialog__header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 15px;
+}
+.dialog__body{
+
+}
+
+.group-input{
+    width: 100%;
+    margin-bottom: 15px;
+    position: relative;
+}
+.margin-text{
+    margin: 8px 0;
+    font-size: 13px;
+}
+.size-33{
+    width: 33%;
+    margin-left:16px;
+}
+.size-75{
+    width: 75%;
+    margin-left:16px;
+}
+.size-20{
+    width: 20%;
+}
+.size-30{
+    width: 30%;
+}
+.size-50{
+    width: 50%;
+    margin-left:16px;
+}
+.size-100{
+    width: 100%;
+    margin-left:16px;
+}
+.size-66{
+    width: calc(66% + 10px);
+}
+.dialog__footer{
+ 
+    display: flex;
+    height: 66px;
+    background-color:#f5f5f5;
+    align-items: center;
+    justify-content: right;
+    direction: rtl;
+    padding-right: 16px;
+    border-radius: 3px;
+
+}
+.dialog__handle{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: #0000007a;
+    z-index: 1000;
+}
+/* dialog cảnh báo */
+.dialog__notify{
+    position: absolute;
+    width: 450px;
+    background-color: #f5f5f5;
+    border-radius: 3px;
+    display: grid;
+    box-sizing: border-box;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.dialog__notify--header{
+    display: flex;
+    align-items: center;
+    padding: 35px;
+
+}
+.text--notify{
+}
+.text--notify p {
+    margin:0
+}
+.dialog__notify--footer{
+        /* height: 62px; */
+        padding-top: 15px;
+        padding: 10px;
+        display: flex;
+        background-color: #eee;
+        /* margin-right: 15px; */
+        direction: rtl;
+        border-radius: 3px;
+    
+}
+.text__error{
+    color: red;
+    font-size: 13px;
+    position: absolute;
+    top:100%;
+    margin: 0;
+    text-align: left;
+    width: 100%;
+}
+#btn--close{
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}

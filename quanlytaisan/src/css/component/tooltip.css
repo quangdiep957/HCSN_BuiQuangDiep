@@ -1,0 +1,222 @@
+
+  
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+  [attr='left']:before,
+  [attr='left']:after {
+    right: 100%;
+    bottom: 50%;
+    left: auto;
+  }
+  [attr='left']:before {
+    margin-left: 0;
+    margin-right: -12px;
+    margin-bottom: 0;
+    border-top-color: transparent;
+    border-left-color: #000;
+    border-left-color: rgba(51, 51, 51, 0.9);
+  }
+  [attr='left']:hover:before,
+  [attr='left']:hover:after,
+  [attr='left']:focus:before,
+  [attr='left']:focus:after {
+    -webkit-transform: translateX(-12px);
+    -moz-transform: translateX(-12px);
+    transform: translateX(-12px);
+  }
+  /* Bottom */
+  [attr='bottom']:before,
+  [attr='bottom']:after {
+    top: 100%;
+    bottom: auto;
+    left: 50%;
+  }
+  [attr='bottom']:before {
+    margin-top: -12px;
+    margin-bottom: 0;
+    border-top-color: transparent;
+    border-bottom-color: #000;
+    border-bottom-color: rgba(51, 51, 51, 0.9);
+  }
+  [attr='bottom']:hover:before,
+  [attr='bottom']:hover:after,
+  [attr='bottom']:focus:before,
+  [attr='bottom']:focus:after {
+    -webkit-transform: translateY(12px);
+    -moz-transform: translateY(12px);
+    transform: translateY(12px);
+  }
+  /* Right */
+  [attr='right']:before,
+  [attr='right']:after {
+    bottom: 50%;
+    left: 100%;
+  }
+  [attr='right']:before {
+    margin-bottom: 0;
+    margin-left: -12px;
+    border-top-color: transparent;
+    border-right-color: #000;
+    border-right-color: rgba(51, 51, 51, 0.9);
+  }
+  [attr='right']:hover:before,
+  [attr='right']:hover:after,
+  [attr='right']:focus:before,
+  [attr='right']:focus:after {
+    -webkit-transform: translateX(12px);
+    -moz-transform: translateX(12px);
+    transform: translateX(12px);
+  }
+
+  [attr='left']:before,
+  [attr='right']:before {
+    top: 3px;
+  }
+
+  [attr='left']:after,
+  [attr='right']:after {
+    margin-left: 0;
+    margin-bottom: -16px;
+  }
+
+  /**/
+  .tooltip {}
+.tooltipMenu{
+  
+}
+.tooltip .tooltiptext {
+      /* height: 20px; */
+      background-color: #000;
+      color: #fff;
+      box-shadow: 2px 1px 1px #000;
+      border-radius: 5px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      /* margin-left: -60px; */
+      opacity: 0;
+      display: block;
+      transition: opacity 0.3s;
+      z-index: 100000;
+      white-space: nowrap;
+      pointer-events: none;
+      /* color: #000 !important; */
+      font-weight: normal !important;
+      font-size: 13px;
+}
+
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+[attr="left"] {
+    left: 105% !important;
+    margin-left: 11px;
+}
+[attr="bottom"]{
+  top:80% !important;
+  left : auto !important;
+
+}
+
+[attr="left"]::after {
+    top: 0% !important;
+    transform: rotate(135deg) !important;
+    -webkit-transform: rotate(90deg) !important;
+    margin-right: 14px !important;
+    left: auto !important;
+}
+
+[attr="bottom"]::after {
+  top: -20% !important;
+  left: 50% !important;
+  transform: rotate(90deg) !important;
+  -webkit-transform: rotate(180deg) !important;
+  margin-right: 14px !important;
+}
+[attr="top"] {
+  position: absolute;
+  margin-left: 0px !important;
+}
+.b [attr="top"] {
+  margin-left: -20px !important;
+}
+
+[attr="top"]::after {
+  top: -10px !important;
+  transform: rotate(135deg) !important;
+  -webkit-transform: rotate(180deg) !important;
+  margin-right: 14px !important;
+}
+.tooltipHandler [attr="top"]::before {
+  content: "";
+  width: 25px;
+  height: 25px;
+  background-color: #f5f5f573;
+  position: absolute;
+  opacity: 1;
+  border-radius: 50%;
+  left: -5px !important;
+  top: -25px !important;
+
+}
+.tooltipHandlerEdit [attr="top"]::before {
+  position: absolute;
+  left: 30px !important;
+}
+.tooltipHandlerRemove [attr="top"]::before {
+  position: absolute;
+  left: 13px !important;
+}
+.tooltipHandler [attr="top"]::after {
+  position: absolute;
+  left: -20px !important;
+}
+.navbar .tooltip:hover .tooltiptext {
+  opacity: 0;
+}
+.setnavbar .tooltip:hover .tooltiptext {
+  opacity: 1 !important;
+}
+.tooltipMenu [attr="top"]{
+  top:22px !important;
+}
+.tooltipCombobox [attr="right"]
+{
+  position: absolute;
+  white-space: nowrap;
+  margin-top: -15px;
+  z-index:9999;
+}
+.tooltipRequired [attr="top"]{
+  top:0px !important;
+}
+
+.tooltipHandler .tooltipDelete[attr="top"]::before {
+  top: -2px !important;
+}
+.tooltipHandlerRemove .tooltipDelete[attr="top"]::before {
+  position: absolute;
+  left: 45px !important;
+}
+
+.tooltipHandler .tooltipUpdate[attr="top"]::before {
+  top: -2px !important;
+}
+.tooltipUpdate[attr="top"]::before {
+    position: absolute;
+    left: 45px !important;
+}
+.tooltipUpdate{
+  top: -5px !important;
+    left: -20px !important;
+}
+.tooltipDelete{
+  top: -5px !important;
+    left: 25px !important;
+}

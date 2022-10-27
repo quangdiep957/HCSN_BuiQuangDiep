@@ -1,0 +1,24 @@
+
+.el-input__wrapper{
+    padding: 0 14px !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .el-date-editor.el-input, .el-date-editor.el-input__wrapper{
+    width: 100% !important;
+  }
+
+  .el-input__wrapper:hover{
+    border: none !important;
+   
+  }
+  .el-input__prefix{
+    display: none !important;
+  }
+  .el-icon{
+    position: absolute !important;
+    right: 40px !important;
+  }
+  .el-date-picker__next-btn,.el-date-picker__prev-btn{
+    display: none !important;
+  }

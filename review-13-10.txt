@@ -1,0 +1,45 @@
+THÔNG BÁO: CHỌN ÍT NHẤT 1 BẢN GHI LÀ CỦA BTN XÓA NHIỀU
+XEM LẠI BTN XÓA 1
+CĂN CHỈNH LẠI GRID
+BACKGROUND INPUT DISABLE
+ĐỔI LẠI THÔNG BÁO" TÀI SẢN TS001 ĐÃ PHÁT SINH CHỨNG TỪ GHI TĂNG GT002. Không thể xóa!
+tự động binding detail khi thêm
+chức năng thu phóbng
+ngày tháng, stt căn giữa
+chỉnh lại kích thức cột ngày tháng
+cột chức năng lệch, cho vừa
+tổng nguyên giá
+margin table base
+chiều cao form thêm thấp lại
+thay đổi ảnh khi không có dữ liệu
+dialog chọn tài sản cần hiện tất cả thông tin
+thêm input tìm kiếm ở dialgo chọn tài sản
+tích all hiển thị số bản ghi đã chọn
+nếu grid k có dữ liệu vẫn hiện header
+icon ngày tháng dialog lệch
+form thêm rộng ra
+dialog thêm ko cần paging(có summary)
+tìm kiếm (chỉnh lại padding trên dưới)
+sửa xóa ở dialog thêm
+margin footer dialog
+xóa nhiều
+thay đổi layout
+nổi màu icon co kéo
+paging grid
+thêm cột trẠNG THÁI
+chức năng check không xóa được tài sản khi trạng thái đang sử dụng
+sửa tài sản disable các thông tin không được sửa
+xem lại padding, margin của màn tài sản
+chỉnh lại form confirm xóa tài sản
+active khi chọn ghi tăng ở menu
+chỉnh lại độ rộng cột mã
+hiện sẵn các chức năng ở cột chức năng
+thiếu cột tổng số tiền
+chỉnh paging ở cột chi tiết chứng từ
+cột stt , check box lệch
+ngày tháng chưa căn giữua
+sibar lỗi khi thu nhỏ
+chưa có chức năng thu phóng, thay đổi layout
+chức năng sửa nguồn hình thành, xóa nhiều
+ảnh chưa có dữ liệu nhỏ lại
+tính summary khi chọn tài sản

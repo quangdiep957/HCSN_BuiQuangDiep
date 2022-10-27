@@ -1,0 +1,27 @@
+- Ngay thang mặc định ngày hiện tại
+- Thêm ảnh khi không có dữ liệu grid
+- Các tài sản có 2 trạng thái: 1 - Chưa ghi tăng 2 - Đang sử dụng
+- Form chọn tài sản chỉ show lên các tài sản chưa ghi tăng và chưa được chọn
+- Bổ sung icon sửa, xóa trên dòng tài sản ở form detail
+- Mặc định giá trị nhập ở gdd1 là của ngân sách tỉnh
+- Tối thiểu một nguồn 
+- Validate nguồn: 
+	+ Không cho phép hai nguồn trùng nhau
+	+ Khi lưu thì không được bỏ trống nguồn
+- Tự động tính giá trị còn lại
+- Một chứng từ cần chọn ít nhất một tài sản mới lưu
+- Validate tài sản không cho phép xóa khi đã ghi tăng
+- Tài sản đã ghi tăng thì chỉ cho phép sửa tên, bộ phận, ... ( trừ mã và số tiền, tỉ lệ)
+- Khi chọn nhiều chung từ thì hiển thị button xóa
+- Click vào mã chứng từ thì show form sửa
+- fixed_asset_increment: ghi tăng tài sản
+- fixed_asset_increment_detail: lưu các tài sản đã ghi tăng
+- fixed_asset
+voucher_id: 
+voucher_code:
+voucher_date
+increment_date:
+description:
+price: vachar(max) 
+
+'[{"budget_id":"12333","budget_name":"Nguồn ngân sách tỉnh","mount":20000},{"budget_id":"12333","budget_name":"Nguồn ngân sách tỉnh","mount":20000}]'
