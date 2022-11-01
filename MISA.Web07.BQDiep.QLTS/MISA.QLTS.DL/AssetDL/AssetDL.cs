@@ -2,6 +2,7 @@
 using MISA.QLSP.Common.Entities.Entities;
 using MISA.QLTS.Common.Entities.DTO;
 using MISA.QLTS.Common.Enum;
+using MISA.QLTS.Common.Resource;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace MISA.QLTS.DL
 
         public PagingData<FixedAsset> FilterAsset(string? where, int pageSize = 10, int pageNumber = 1)
         {
-            var sqlCommand = "Proc_asset_GetPaging";
+            var sqlCommand = ResourceProcedure.GetAssetPaging;
             // Chuẩn bị tham số đầu vào cho stored procedure
             var parameters = new DynamicParameters();
             parameters.Add("@v_Offset", (pageNumber - 1) * pageSize);
@@ -33,38 +34,14 @@ namespace MISA.QLTS.DL
                 // Xử lý kết quả trả về từ DB
                 if (multipleResults != null)
                 {
-                    var employees = multipleResults.Read<FixedAsset>().ToList();
-                    var totalCount = multipleResults.Read<long>().Single();
-                    var summary = multipleResults.Read<SummaryAsset>().ToList();
-                    decimal sumQuantity = 0;
-                    decimal sumPrice = 0;
-                    decimal sumDepreciations = 0;
-                    decimal sumAtrophy = 0;
-                    const int hundredPercent = 100;
-                    var now = DateTime.Now.Year;
-                    foreach (var val in summary)
-                    {
-                        sumQuantity = sumQuantity + val.Quantity;
-                        sumPrice = sumPrice + val.Cost;
-                        var year = val.ProductionDate.Year;
-                        var yearUse = now - year;
-                        if (yearUse == 0)
-                        {
-                            yearUse = 1;
-                        }
-                        var sumDepreciation = val.Cost * (val.DepreciationRate * yearUse / hundredPercent);
-                        sumDepreciations = sumDepreciations + sumDepreciation;
-                        var residualValue = val.Cost - sumDepreciation;
-                        sumAtrophy = sumAtrophy + residualValue;
-                    }
-                    var dataSummary = new List<decimal>();
-                    dataSummary.Add(sumQuantity);
-                    dataSummary.Add(sumPrice);
-                    dataSummary.Add(sumDepreciations);
-                    dataSummary.Add(sumAtrophy);
+                    var assets = multipleResults.Read<FixedAsset>().ToList();
+                    long totalCount;
+                    Summary dataSummary;
+                    // Gọi hàm tính tổng và lấy tổng số bản ghi
+                    SummaryCount(multipleResults, out totalCount, out dataSummary);
                     var res = new PagingData<FixedAsset>()
                     {
-                        Data = employees,
+                        Data = assets,
                         TotalCount = totalCount,
                         Summary = dataSummary
                     };
@@ -75,6 +52,45 @@ namespace MISA.QLTS.DL
                     return new PagingData<FixedAsset>();
                 }
             }
+        }
+
+        /// <summary>
+        /// Tính tổng giá tiền và tổng số trang
+        /// </summary>
+        /// <param name="multipleResults"></param>
+        /// <param name="totalCount"></param>
+        /// <param name="dataSummary"></param>
+        /// createBy : Bùi Quang Điệp (24/10/2022)
+        private static void SummaryCount(SqlMapper.GridReader multipleResults, out long totalCount, out Summary dataSummary2)
+        {
+            totalCount = multipleResults.Read<long>().Single();
+            var summary = multipleResults.Read<SummaryAsset>().ToList();
+            decimal sumQuantity = 0;
+            decimal sumPrice = 0;
+            decimal sumDepreciations = 0;
+            decimal sumAtrophy = 0;
+            const int hundredPercent = 100;
+            var now = DateTime.Now.Year;
+            foreach (var val in summary)
+            {
+                sumQuantity = sumQuantity + val.Quantity;
+                sumPrice = sumPrice + val.Cost;
+                var year = val.ProductionDate.Year;
+                var yearUse = now - year;
+                if (yearUse == 0)
+                {
+                    yearUse = 1;
+                }
+                var sumDepreciation = val.Cost * (val.DepreciationRate * yearUse / hundredPercent);
+                sumDepreciations = sumDepreciations + sumDepreciation;
+                var residualValue = val.Cost - sumDepreciation;
+                sumAtrophy = sumAtrophy + residualValue;
+            }
+            dataSummary2 = new Summary();
+            dataSummary2.SumAtrophy = sumAtrophy;
+            dataSummary2.SumQuantity=sumQuantity;
+            dataSummary2.SumPrice = sumPrice;
+            dataSummary2.SumDepreciation = sumDepreciations;
         }
 
         /// <summary>
@@ -90,7 +106,7 @@ namespace MISA.QLTS.DL
         {
             var paramater = new DynamicParameters();
             paramater.Add("@v_ID", id);
-            var sqlCommand = "Proc_Fixed_Asset_Detail";
+            var sqlCommand = ResourceProcedure.GetAssetDetail;
             using (var sqlConection = new MySqlConnection(DatabaseContext.ConnectionString))
             {
                 var res = sqlConection.QueryFirstOrDefault<FixedAsset>(sql: sqlCommand, paramater, commandType: System.Data.CommandType.StoredProcedure);
@@ -105,16 +121,15 @@ namespace MISA.QLTS.DL
         /// /// Create By : Bùi Quang Điệp (22/08/2022)
         public bool CheckDuplicateCode(FixedAsset asset, Guid id)
         {
-
             var procName = string.Empty;
             var parametes = new DynamicParameters();
             if (id != Guid.Empty)
             {
-                procName ="Proc_FixedAsset_CheckDuplicateAssetCode_Update";
+                procName = ResourceProcedure.CheckDuplicateCodeAssetUpdate;
             }
             else
             {
-                procName ="Proc_FixedAsset_CheckDuplicateAssetCode_Create";
+                procName = ResourceProcedure.CheckDuplicateCodeAssetCreate;
             }    
             parametes.Add("v_FixedAssetCode", asset.FixedAssetCode);
             parametes.Add("v_FixedAssetID", id);

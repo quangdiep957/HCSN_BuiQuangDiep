@@ -6,7 +6,7 @@ v-model="dataItemDetail.fixedAssetCode"
 
 
 <script>
-  import {API} from '../js/callapi'
+  import {API} from '../js/callApi'
   import Resource  from '@/js/resource';
   import TheDialogIncrementVue from '@/components/base/BaseInputNumber.vue';
 export default {

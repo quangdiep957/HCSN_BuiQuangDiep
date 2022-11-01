@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Resource from '../js/resource'
+import Resource from './resource'
 import { VueCookieNext } from 'vue-cookie-next'
 var author ='';
 if(VueCookieNext.getCookie('login')!=undefined)

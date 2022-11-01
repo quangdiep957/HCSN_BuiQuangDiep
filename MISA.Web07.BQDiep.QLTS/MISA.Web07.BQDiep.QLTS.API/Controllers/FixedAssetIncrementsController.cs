@@ -30,7 +30,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
 
         #endregion
 
-        #region method
+        #region method 
 
         /// <summary>
         /// Lấy danh sách tài sản theo mã ghi tăng
@@ -41,7 +41,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         /// <param name="keyword"></param>
         /// <returns></returns>
         /// CreatedBy : Bùi Quang Điệp(16/10/2022)
-        [HttpGet("AssetMulti")]
+        [HttpPost("AssetMulti")]
         public IActionResult GetMultiAsset(Guid? id, string? key, string? keyword, int filterID = (int)Filter.None)
         {
             try
@@ -187,7 +187,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         /// <param name="status"></param>
         /// <returns></returns>
         /// CreatedBy:Bùi Quang Điệp(12/10/2022)
-        [HttpGet("filter")]
+        [HttpPost("filter")]
         public IActionResult FilterIncrement([FromQuery] string? keyword, [FromQuery] int pageSize = 20, [FromQuery] int pageNumber = 1)
         {
             try

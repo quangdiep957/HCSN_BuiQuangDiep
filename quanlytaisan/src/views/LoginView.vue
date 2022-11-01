@@ -21,9 +21,6 @@
               <div style="color:#1a73e8;text-align: center;">Quên mật khẩu?</div>
             </div>
         </form>
-       
-         
-
       </div>
 
     </div>
@@ -33,7 +30,7 @@
 </template>
 <script>
   import { VueCookieNext } from 'vue-cookie-next'
-import {API} from '@/js/callapi'
+import {API} from '@/js/callApi'
 import Resource from '@/js/resource'
 export default {
   components:{

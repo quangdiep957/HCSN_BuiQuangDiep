@@ -41,21 +41,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
                 _memoryCache.Remove(data.key);
                 dataValue = cacheValue;
                 dataValue.AddRange(data.value);
-
-                //foreach (var item in cacheValue)
-                //{
-                //    foreach (var res in data.value)
-                //    {
-                //        if (item == res)
-                //        {
-                //            continue;
-                //        }
-                //        else
-                //        {
-                //            dataValue.Add(res);
-                //        }
-                //    }    
-                //}    
+          
             }
             else
             {

@@ -73,7 +73,7 @@ namespace MISA.QLTS.BL
         {
 
 
-            var checkDoubleCode = _fixedAssetIncrementDL.CheckDoubleKeyCode(increment, id);
+            var checkDoubleCode = _fixedAssetIncrementDL.CheckDuplicationCode(increment, id);
             if (!checkDoubleCode)
             {
                 var error = new ErrorSevice();
@@ -96,7 +96,7 @@ namespace MISA.QLTS.BL
         protected override void ValidateCheckCreate(FixedAssetIncrement increment)
         {
 
-            var checkDoubleCode = _fixedAssetIncrementDL.CheckDoubleKeyCode(increment, Guid.Empty);
+            var checkDoubleCode = _fixedAssetIncrementDL.CheckDuplicationCode(increment, Guid.Empty);
             if (!checkDoubleCode)
             {
                 var error = new ErrorSevice();

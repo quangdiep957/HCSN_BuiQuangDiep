@@ -59,7 +59,7 @@ namespace MISA.QLTS.DL
         /// Lấy mã tài sản mới nhất
         /// <returns>mã tài sản  mới nhất</returns>
         /// Created by: Bùi Quang Điệp (07/10/2022)
-        public List<string> GetNewAsset();
+        public List<string> GetNewCode();
 
         /// <summary>
         /// Lấy danh sách 1 bản ghi theo id

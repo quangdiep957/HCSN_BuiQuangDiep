@@ -10,7 +10,7 @@ import { VueCookieNext } from "vue-cookie-next";
 import router from "./router";
 import Navbar from "./components/layouts/TheNavbar.vue";
 import Body from "./components/layouts/TheBody.vue";
-import { API } from "@/js/callapi";
+import { API } from "@/js/callApi";
 import Resource from "@/js/resource";
 export default {
   name: "QuanlytaisanAssetView",
@@ -31,8 +31,8 @@ export default {
     redirectRouter() {
       try {
         // Kiểm tra xem token có rỗng hay không nếu rỗng thì chuyển sang trang đăng nhập
-        var a = VueCookieNext.getCookie("login");
-        if (a != null) {
+        var checkCookie = VueCookieNext.getCookie("login");
+        if (checkCookie != null) {
           router.push("asset");
         } else {
           router.push("login");

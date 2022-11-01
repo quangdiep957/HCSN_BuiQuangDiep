@@ -130,35 +130,35 @@ namespace MISA.QLTS.BL.BaseBL
         {
             // Check các trường không được bỏ trống
             var props = record.GetType().GetProperties();
-            var lableName = string.Empty;
-            // Lấy ra các trường được định nghĩa là không dược phép để trống
+            var labelName = string.Empty;
+            // Lấy ra các trường được định nghĩa là không được phép để trống
 
             var propertisNoEmpties = record.GetType().GetProperties().Where(p => Attribute.IsDefined(p, typeof(NoEmpty)));
-            var errorsdata = new List<string>();
+            var dataErrors = new List<string>();
             foreach (var prop in propertisNoEmpties)
             {
                 var propValue = prop.GetValue(record);
                 var propName = prop.Name;
 
                 // Lấy tên của properties
-                var Nameproperty = prop.GetCustomAttributes(typeof(NameProperty), true);
+                var proLabel = prop.GetCustomAttributes(typeof(NameProperty), true);
 
 
-                // gán lablename bằng NameProperty nếu NameProperty có
-                if (Nameproperty.Length > 0)
+                // gán lablename bằng proLabel nếu proLabel có
+                if (proLabel.Length > 0)
                 {
-                    lableName = (Nameproperty[0] as NameProperty).Name;
+                    labelName = (proLabel[0] as NameProperty).Name;
                 }
 
                 // Kiểm tra có trống
 
                 if (string.IsNullOrEmpty(propValue.ToString()))
                 {
-                    lableName = (lableName == string.Empty ? propName : lableName);
+                    labelName = (labelName == string.Empty ? propName : labelName);
 
 
 
-                    errorsdata.Add($"{lableName}" + ResourceValidate.Required1);
+                    dataErrors.Add($"{labelName}" + ResourceValidate.Required1);
 
 
                 }
@@ -176,17 +176,17 @@ namespace MISA.QLTS.BL.BaseBL
 
                 if (propValueText.ToString().Length > length)
                 {
-                    errorsdata.Add($" {propNameText} " + ResourceValidate.MaxLength);
+                    dataErrors.Add($" {propNameText} " + ResourceValidate.MaxLength);
                 }
             }
 
-            if (errorsdata.Count > 0)
+            if (dataErrors.Count > 0)
             {
                 var errorResult = new ErrorSevice();
                 errorResult.Handle = (int)Handler.Required;
                 errorResult.DevMsg = ResourceVN.Error_ValidateData;
                 errorResult.UserMsg = ResourceValidate.Required;
-                errorResult.DataError = errorsdata;
+                errorResult.DataError = dataErrors;
 
                 throw errorResult;
             }
@@ -222,59 +222,17 @@ namespace MISA.QLTS.BL.BaseBL
         /// </summary>
         /// <returns></returns>
         /// Create By:Bùi Quang Điệp( 07/10/2022)
-        public string GetCodeAsset()
+        public string GetNewCode()
         {
-            var recordCodes = _baseDL.GetNewAsset();
-
+            var recordCodes = _baseDL.GetNewCode();
             // tách chuỗi thành số
-            var results = new List<string>();
-            var resultsPrefix = new List<string>();
-            var recordCodeNew = "";
-            var prefix = string.Empty;
-            var stringResult = "";
-            foreach (var assetCode in recordCodes)
-            {
-                var checknumber = Regex.Match(assetCode, @"\d+").Value;
-                var checkprefix = Regex.Replace(assetCode, @"[\d-]", string.Empty);
-                if (decimal.Parse(checknumber) < hundreds)
-                {
-                    if (decimal.Parse(checknumber) < dozens)
-                    {
-                        checknumber = "0" + checknumber;
-                    }
-                    else
-                    {
-                        checknumber = "00" + checknumber;
-                    }
-
-                }
-
-                results.Add(checknumber);
-                resultsPrefix.Add(checkprefix);
-
-            }
-            if (resultsPrefix[0] == resultsPrefix[1])
-            {
-                if (decimal.Parse(results[0]) > decimal.Parse(results[1]))
-                {
-                    stringResult = recordCodes[0];
-                }
-                else
-                {
-                    stringResult = recordCodes[1];
-                }
-            }
-            else
-            {
-                stringResult = recordCodes[1];
-            }
-
-
-
-
+            string recordCodeNew, prefix, stringResult;
+            // Lấy ra mã code được chọn đề xử lý
+            getCode(recordCodes, out stringResult);
+            prefix = string.Empty;
+            recordCodeNew = "";
             if (stringResult != "")
             {
-                //  prefix = Regex.Replace(stringResult, @"[\d-]", string.Empty);
                 // tách chuỗi ra lấy phần prefix
                 string[] arrListStr = Regex.Split(stringResult, @"\d");
                 prefix = arrListStr[0];
@@ -333,9 +291,6 @@ namespace MISA.QLTS.BL.BaseBL
                         recordCodeNew = prefix + number;
                     }
                 }
-
-
-
             }
             else
             {
@@ -343,6 +298,59 @@ namespace MISA.QLTS.BL.BaseBL
             }
 
             return recordCodeNew;
+        }
+
+        /// <summary>
+        /// Hàm xử lý chọn ra mã tài sản nào được chọn để tăng thêm 1
+        /// </summary>
+        /// <param name="recordCodes"></param>
+        /// <param name="recordCodeNew"></param>
+        /// <param name="prefix"></param>
+        /// <param name="stringResult"></param>
+        /// CreateBy : Bùi Quang Điệp(30/10/2022)
+        private static void getCode(List<string> recordCodes, out string stringResult)
+        {
+            var results = new List<string>();
+            var resultsPrefix = new List<string>();
+            stringResult = "";
+            // lặp qua 2 mã được trả về
+            foreach (var assetCode in recordCodes)
+            {
+                var checknumber = Regex.Match(assetCode, @"\d+").Value;
+                var checkprefix = Regex.Replace(assetCode, @"[\d-]", string.Empty);
+                if (decimal.Parse(checknumber) < hundreds)
+                {
+                    if (decimal.Parse(checknumber) < dozens)
+                    {
+                        checknumber = "0" + checknumber;
+                    }
+                    else
+                    {
+                        checknumber = "00" + checknumber;
+                    }
+
+                }
+                results.Add(checknumber);
+                resultsPrefix.Add(checkprefix);
+            }
+            // Kiểm tra xem Tiền tố của 2 mã lấy được có trùng nhau hay không
+            // nếu trùng nhau thì sẽ so sánh giá trị xem mã nào lớn hơn
+            if (resultsPrefix[0] == resultsPrefix[1])
+            {
+                if (decimal.Parse(results[0]) > decimal.Parse(results[1]))
+                {
+                    stringResult = recordCodes[0];
+                }
+                else
+                {
+                    stringResult = recordCodes[1];
+                }
+            }
+            // ngược lại sẽ chọn giá trị là gần nhất
+            else
+            {
+                stringResult = recordCodes[1];
+            }
         }
 
         #endregion

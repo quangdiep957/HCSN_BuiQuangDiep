@@ -27,8 +27,6 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
             _baseBL = baseBL;
             _memoryCache = memoryCache; 
         }
-
-
         #endregion
 
         #region method
@@ -111,21 +109,11 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
         // - 500 Lỗi từ phía sever
         //</returns>
         // Created By:Bùi Quang Điệp (14/08/2022)
-
         [HttpPost("delete")]
         public IActionResult Delete(List<Guid> id)
         {
             try
             {
-                if (typeof(T).Name == "FixedAssetIncrement")
-                {
-
-                    for (int i = 0; i < id.Count; i++)
-                    {
-                        _memoryCache.Remove(id[i]);
-                    }
-                    
-                }
                 int res = _baseBL.Delete(id);
                 if (res >= 1)
                 {
@@ -158,20 +146,6 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
 
             try
             {
-                if (typeof(T).Name == "FixedAssetIncrement")
-                {
-                    var properties = typeof(T).GetProperties();
-                    var propropertyValue = string.Empty;
-                foreach (var propertie in properties)
-                {
-                    var propertyName = $"{propertie.Name}";
-                    if(propertyName == "FixedAssetIncrementCode")
-                    {
-                        propropertyValue = propertie.GetValue(record).ToString();
-                    }    
-                }
-                    _memoryCache.Remove(propropertyValue);
-                }    
                 var recordID = _baseBL.InsertOneRecord(record);
                 if (recordID != Guid.Empty)
                 {
@@ -208,20 +182,6 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
         {
             try
             {
-                if (typeof(T).Name == "FixedAssetIncrement")
-                {
-                    var properties = typeof(T).GetProperties();
-                    var propropertyValue = string.Empty;
-                    foreach (var propertie in properties)
-                    {
-                        var propertyName = $"{propertie.Name}";
-                        if (propertyName == "FixedAssetIncrementCode")
-                        {
-                            propropertyValue = propertie.GetValue(record).ToString();
-                        }
-                    }
-                    _memoryCache.Remove(propropertyValue);
-                }
                 var recordID = _baseBL.UpdateRecord(record, FixedAssetID);
                 if (recordID != Guid.Empty)
                 {
@@ -293,7 +253,6 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
             return StatusCode(500, error);
         }
 
-
         ///// <summary>
         ///// Hiển thị lỗi cho người dùng
         ///// </summary>
@@ -312,7 +271,6 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
             return StatusCode(500, error);
         }
 
-
         //<summary>
         //Lấy mã tài sản mới nhất
         //</summary>
@@ -323,23 +281,19 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
         //</returns>
         // Author:14/08/2022 Bùi Quang Điệp
         [HttpGet("CodeAsset")]
-        public IActionResult GetCodeAsset()
+        public IActionResult GetNewCode()
         {
             string assetNew = "";
             try
             {
-               
-                assetNew = _baseBL.GetCodeAsset();
-
-                // 4 Trả về kết quả
+                assetNew = _baseBL.GetNewCode();
                 return Ok(assetNew);
             }
-
             catch (Exception ex)
             {
-                if (ex.Message == "Value cannot be null. (Parameter 'input')")
+                if (ex.Message == ResourceNewCode.NoData)
                 {
-                    assetNew = "TS001";
+                    assetNew = ResourceNewCode.NewCode;
                     return Ok(assetNew);
                 }
                 return HandleException(ex);

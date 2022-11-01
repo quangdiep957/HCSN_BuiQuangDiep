@@ -398,5 +398,5 @@ export default {
 .a {
   border: 1px solid #1aa4c8 !important;
 }
-@import url(../../css/component/DatimePicker.css);
+@import url(../../css/component/datimePicker.css);
 </style>

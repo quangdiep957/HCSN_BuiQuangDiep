@@ -27,7 +27,6 @@
               <Input
                 Type="number"
                 :disable="true"
-               
                 classBorderInput="group-input size-100"
                 @mouseover="showTooltip"
                 @mouseleave="hideTooltip"
@@ -58,7 +57,8 @@
             <div class="voucher__detail--body">
               <div class="voucher__detail--body-item">
                 <div
-                  class="m-row" style="height: 55px;"
+                  class="m-row"
+                  style="height: 55px"
                   v-for="(value, index) in dataUpdate"
                   :key="value"
                 >
@@ -88,7 +88,7 @@
                       @dataComBoBoxSearch="getDataCombobox"
                       :borderRed="borderRedCombobox[index]"
                       @checkRequired="checkBorderRedCombobox"
-                      nameTable="budget"
+                      nameTable="Budget"
                       @removeBudget="removeBudget"
                     />
                   </div>
@@ -220,7 +220,7 @@ import InputNumber from "@/components/base/BaseInputNumber.vue";
 import Combobox from "@/components/base/BaseComboBox.vue";
 import Notify from "@/components/base/BaseDialogNotify.vue";
 import Resource from "@/js/resource";
-import { API } from "@/js/callapi";
+import { API } from "@/js/callApi";
 import { formatCash } from "@/js/common";
 export default {
   name: "QuanlytaisanTheDialogIncrement",
@@ -381,7 +381,6 @@ export default {
      */
     checkRequired(name, event, position) {
       try {
-
         // Kiểm tra name có dữ liệu hay không
         if (name != "") {
           if (!event.value) {
@@ -455,7 +454,6 @@ export default {
     },
 
     checkBorderRedCombobox(item, position) {
-      debugger;
       this.isCheckRequiredCombobox[position] = item;
       if (item) {
         this.requiredDataCombobox[position] = "";
@@ -467,7 +465,7 @@ export default {
      * Date :09 /08/ 2021
      */
     getDataCombobox(item, index) {
-      this.dataUpdate[index].budget = item.budgetID;
+      this.dataUpdate[index].budget = item.BudgetID;
       this.id[index] = item.budgetID;
     },
 
@@ -480,14 +478,13 @@ export default {
       this.id.splice(position, 1);
     },
 
-     /**
+    /**
      * Xóa nguồn tiền khi bỏ chọn
      * Author : Bùi Quang Điệp
      * Date :09 /08/ 2021
      */
-    removeBudget(position){
-      debugger
-            this.dataUpdate[position].budget = '';
+    removeBudget(position) {
+      this.dataUpdate[position].budget = "";
     },
 
     /**
@@ -496,7 +493,6 @@ export default {
      * Date :09 /08/ 2021
      */
     validation() {
-      debugger
       // validation
       this.positionInputRequired = [];
       this.requiredDataCombobox = [];
@@ -508,9 +504,8 @@ export default {
           this.errors = [];
           //this.requiredData.budget = Resource.Required.RequiredBudget;
           this.requiredDataCombobox.push(Resource.Required.RequiredBudget);
-          if(this.borderRedCombobox.length==0)
-          {
-            this.borderRedCombobox.push('');
+          if (this.borderRedCombobox.length == 0) {
+            this.borderRedCombobox.push("");
           }
           this.borderRedCombobox[i] = true;
           //this.errors.push(Resource.Required.RequiredBudget);
@@ -519,7 +514,6 @@ export default {
           this.requiredDataCombobox.push("");
         }
         if (this.dataUpdate[i].cost == 0 || this.dataUpdate[i].cost == "") {
-  
           this.errors = [];
           this.positionInputRequired.push(true);
           this.requiredData.cost = Resource.Required.RequiredCost;
@@ -540,8 +534,7 @@ export default {
               this.DialogNotify = true;
               this.buttonNames = ["Đồng ý"];
               return (isCheck = false);
-            }
-            else{
+            } else {
               this.DialogNotify = false;
             }
           }

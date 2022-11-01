@@ -24,7 +24,7 @@ namespace MISA.QLTS.DL
     {
 
         #region Field
-        //private const string CONNECTING = "Server=localhost;Port=3306;Database=misa.web07.hcsn.diep;Uid=root;Pwd=Quangdiep@2001;";
+
         #endregion
         #region method
 
@@ -37,13 +37,13 @@ namespace MISA.QLTS.DL
         {
             // Lấy tên của bảng tương ứng với class (nếu có thiết lập thông qua Attribut custom)
             var name = GetTableName();
-            var procName = Procedure.GetAllRecord;
+            var procName = ResourceProcedure.GetAllRecord;
             var pram = new DynamicParameters();
             pram.Add("v_TableName", name);
             //  Lấy dữ liệu
             using (var sqlConection = new MySqlConnection(DatabaseContext.ConnectionString))
             {
-                var res = sqlConection.Query(procName,pram,commandType: System.Data.CommandType.StoredProcedure);
+                var res = sqlConection.Query(procName, pram, commandType: System.Data.CommandType.StoredProcedure);
 
                 // 4 Trả về kết quả
                 return res;
@@ -59,13 +59,11 @@ namespace MISA.QLTS.DL
         {
             var numbers = 0;
             // Lấy tên của bảng tương ứng với Class
-            var name = GetTableName();
-
-            // Lấy Id của bảng tương ứng
-            // var key =(typeof(T).Name).FindPrimaryKey();
+            var nameTable = GetTableName();
             // truy vấn dữ liệu
             var attribute = Attribute.GetCustomAttribute(typeof(T), typeof(KeyAttribute));
-            var vlkey = (attribute as KeyAttribute).Key;
+            // lấy tên key của bảng
+            var nameKey = (attribute as KeyAttribute).Key;
 
             using (var sqlConection = new MySqlConnection(DatabaseContext.ConnectionString))
             {
@@ -73,53 +71,27 @@ namespace MISA.QLTS.DL
 
                 using (var trans = sqlConection.BeginTransaction())
                 {
-                    var parameters = new DynamicParameters();
+                    var conditionWhere = " IN(";
                     for (int i = 0; i < ids.Count; i++)
                     {
-                        var sqlCommands = string.Empty;
+                        conditionWhere = conditionWhere + $"'{ids[i]}',";
                         if (typeof(T).Name == "FixedAssetIncrement")
                         {
-                            // Lấy danh sách ID tài sản
-                            var proc = Procedure.GetAssetByIncrement;
-                            var queryDelete = string.Empty;
-                            var param = new DynamicParameters();
-                            var dataFixedAssetID = $"fai.fixedAssetIncrementID='{ids[i]}'";
-                            param.Add("v_where", dataFixedAssetID);
-                            queryDelete = "Update fixed_asset set status = 0 where fixedAssetID IN(";
-                            var fixedAssetIDs = sqlConection.Query<FixedAssetMulti>(proc, param, commandType: System.Data.CommandType.StoredProcedure, transaction: trans);
-                            foreach (var id in fixedAssetIDs)
-                            {
-                                queryDelete = queryDelete + $"'{id.FixedAssetID}',";
-
-                            }
-                            queryDelete = queryDelete.Remove(queryDelete.Length - 1) + ")";
-                            // tạo câu truy vấn 
-                            sqlConection.Execute(queryDelete, transaction: trans);
-
-                            sqlCommands = $"Delete From {name}_detail where {vlkey} = @Delete";
-
-
-                            parameters.Add("@Delete", ids[i]);
-                            var numberRowsDetail = sqlConection.Execute(sqlCommands, param: parameters, transaction: trans);
+                            HandlerMajorDeleteIncrement(ids[i], sqlConection, trans);
 
                         }
-
-                        var parameter = new DynamicParameters();
-                        parameter.Add("@Delete", ids[i]);
-                        var sqlCommand = $"Delete From {name} where {vlkey} = @Delete";
-                        var numberRows = sqlConection.Execute(sqlCommand, param: parameter, transaction: trans);
-                        numbers = numbers + numberRows;
-
-
                     }
-
+                    conditionWhere = conditionWhere.Remove(conditionWhere.Length - 1) + ")";
+                    var parameter = new DynamicParameters();
+                    parameter.Add("v_nameTable", nameTable);
+                    parameter.Add("v_nameCode", nameKey);
+                    parameter.Add("v_where", conditionWhere);
+                    var proc = ResourceProcedure.DeleteRecord;
+                    var numberRows = sqlConection.QueryFirstOrDefault<int>(proc, parameter, transaction: trans, commandType: System.Data.CommandType.StoredProcedure);
                     trans.Commit();
-                    return numbers;
+                    return numberRows;
                 }
-
             }
-
-
         }
 
         /// <summary>
@@ -136,7 +108,6 @@ namespace MISA.QLTS.DL
                 // Lấy ra tên:
                 var name = (attribute as TableName).Name; // ép về kiểu Attribute TableName mà mình tự định nghĩa;
                 return name;
-
             }
             else
             {
@@ -159,7 +130,6 @@ namespace MISA.QLTS.DL
                 // Lấy ra tên:
                 var name = (attribute as CodeAtrribute).Name; // ép về kiểu Attribute mà mình tự định nghĩa;
                 return name;
-
             }
             else
             {
@@ -206,7 +176,6 @@ namespace MISA.QLTS.DL
                     proppertiesAssetIDs = (List<Guid>?)propertie.GetValue(record);
                 }
             }
-
             // Kết nối đến database
             using (var sqlConnection = new MySqlConnection(DatabaseContext.ConnectionString))
             {
@@ -286,106 +255,13 @@ namespace MISA.QLTS.DL
                         // Kiểm tra xem có phải bảng ghi tăng hay không
                         if (typeof(T).Name == "FixedAssetIncrement")
                         {
-                            RemoveBudgetOld(id, sqlConnection, trans);
+                            HandlerMajorDeleteIncrement(id, sqlConnection, trans);
                             UpdateBudget(proppertiesAssetIDs, propertiesAssets, sqlConnection, trans, result);
                         }
                         trans.Commit();
                     }
                     return result;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Cập nhật lại tất cả trạng thái của tài sản về chưa sử dụng
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="sqlConnection"></param>
-        /// <param name="trans"></param>
-        /// createdBy : Bùi Quang Điệp (24/08/2022)
-        private static void RemoveBudgetOld(Guid id, MySqlConnection sqlConnection, MySqlTransaction trans)
-        {
-            // Lấy danh sách ID tài sản
-            var nameProcAssetID = "Proc_fixed_asset_GetDetail_Multi";
-            var conditionWhere = $"fai.fixedAssetIncrementID='{id}'";
-            var paramAssetID = new DynamicParameters();
-            paramAssetID.Add("v_where", conditionWhere);
-            var queryDelete = "Update fixed_asset set status = 0 where fixedAssetID IN(";
-            var AssetIDs = sqlConnection.Query<FixedAsset>(nameProcAssetID, paramAssetID, commandType: System.Data.CommandType.StoredProcedure, transaction: trans);
-            foreach (var assetID in AssetIDs)
-            {
-                queryDelete = queryDelete + $"'{assetID.FixedAssetID}',";
-            }
-            queryDelete = queryDelete.Remove(queryDelete.Length - 1) + ")";
-            // tạo câu truy vấn 
-            sqlConnection.Execute(queryDelete, transaction: trans);
-            var removeDetail = $"delete from fixed_asset_increment_detail where FixedAssetIncrementID = '{id}'";
-            var numberAffectedDetail = sqlConnection.Execute(removeDetail, transaction: trans);
-        }
-
-        /// <summary>
-        /// Xử lý nghiệp vụ ghi tăng tài sản
-        /// </summary>
-        /// <param name="proppertiesAssetIDs"></param>
-        /// <param name="propertiesAssets"></param>
-        /// <param name="sqlConnection"></param>
-        /// <param name="trans"></param>
-        /// <param name="result"></param>
-        /// createdBy : Bùi Quang Điệp (24/08/2022)
-        private static void UpdateBudget(List<Guid>? proppertiesAssetIDs, List<UpdateSourceCost>? propertiesAssets, MySqlConnection sqlConnection, MySqlTransaction trans, Guid result)
-        {
-            var paramaters = new DynamicParameters();
-            var paramaterUpdateAsset = new DynamicParameters();
-            var valueInsert = " INSERT INTO fixed_asset_increment_detail VALUES";
-            var valueUpdateAsset = "UPDATE fixed_asset SET Status=1 WHERE FixedAssetID IN(";
-            // lấy danh sách Asset ID 
-            for (int i = 0; i < proppertiesAssetIDs.Count; i++)
-            {
-                if (i < proppertiesAssetIDs.Count - 1)
-                {
-                    valueInsert = valueInsert + $"('{result}','{proppertiesAssetIDs[i]}')" + ",";
-                    valueUpdateAsset = valueUpdateAsset + "'" + proppertiesAssetIDs[i] + "'" + ",";
-                }
-                else
-                {
-                    valueInsert = valueInsert + $"('{result}','{proppertiesAssetIDs[i]}')";
-                    valueUpdateAsset = valueUpdateAsset + "'" + proppertiesAssetIDs[i] + "'" + ")";
-                }
-
-            }
-
-            // Cập nhật nguồn hình thành
-            var updateAsset = "UPDATE fixed_asset fa ";
-            var sumCosts = " SET fa.Cost = (case ";
-            var dataSource = " fa.Price = (case ";
-            var fixedAssetIDs = " WHERE FixedAssetID in (";
-            // lấy danh sách Asset ID 
-            for (int i = 0; i <= propertiesAssets.Count; i++)
-            {
-
-                if (i < propertiesAssets.Count)
-                {
-
-                    sumCosts = sumCosts + $"when fa.FixedAssetID = '{propertiesAssets[i].FixedAssetID}' then '{propertiesAssets[i].Sumcost}'";
-                    fixedAssetIDs = fixedAssetIDs + $"'{propertiesAssets[i].FixedAssetID}',";
-                    dataSource = dataSource + $"when fa.FixedAssetID = '{propertiesAssets[i].FixedAssetID}' then '{propertiesAssets[i].DataSource}'";
-                }
-                else
-                {
-                    sumCosts = sumCosts + "end),";
-                    fixedAssetIDs = fixedAssetIDs.Remove(fixedAssetIDs.Length - 1) + ")";
-                    dataSource = dataSource + "end)";
-                }
-
-            }
-            paramaters.Add("valueInsert", valueInsert);
-            paramaterUpdateAsset.Add("value", valueUpdateAsset);
-            var numberAffectedRows = sqlConnection.Execute(valueInsert, transaction: trans);
-            var numberAffectedRowsUpdate = sqlConnection.Execute(valueUpdateAsset, transaction: trans);
-            if (propertiesAssets.Count > 0)
-            {
-                updateAsset = updateAsset + sumCosts + dataSource + fixedAssetIDs;
-                var numberAffectedRowsUpdateCost = sqlConnection.Execute(updateAsset, transaction: trans);
             }
         }
 
@@ -421,21 +297,18 @@ namespace MISA.QLTS.DL
                         propertyCode = property.Name;
                     }
                 }
-
                 search = $"{propertyCode} LIKE '%{keyword}%'  or {propertyName} LIKE '%{keyword}%' ";
-
             }
             var paramater = new DynamicParameters();
 
-            paramater.Add("@Key", search);
-
-            var sqlCommand = $"select * from {nameTable} where {search}";
+            paramater.Add("v_KeyWord", search);
+            paramater.Add("v_NameTable", nameTable);
+            var procSearch = ResourceProcedure.SearchRecord;
 
             // Kết nối đến database
             using (var sqlConnection = new MySqlConnection(DatabaseContext.ConnectionString))
             {
-                var res = sqlConnection.Query(sqlCommand, paramater);
-
+                var res = sqlConnection.Query(procSearch, paramater, commandType: System.Data.CommandType.StoredProcedure);
                 return res;
             }
         }
@@ -444,25 +317,54 @@ namespace MISA.QLTS.DL
         /// Lấy mã tài sản mới nhất
         /// <returns>mã tài sản  mới nhất</returns>
         /// Created by: Bùi Quang Điệp (07/10/2022)
-        public List<string> GetNewAsset()
+        public List<string> GetNewCode()
         {
             var recordCodes = new List<string>();
-            var sqlConection = new MySqlConnection(DatabaseContext.ConnectionString);
             // Lấy tên của table
             var nameTable = GetTableName();
             // Lấy trường Code 
             var codeTable = GetCodeTable();
             // 3 Lấy dữ liệu
-            var sqlCommand = $"SELECT {codeTable} FROM {nameTable} ORDER BY {codeTable} DESC LIMIT 1";
-            var assetCode = sqlConection.QueryFirstOrDefault<string>(sql: sqlCommand);
-            recordCodes.Add(assetCode);
-            var sqlCommand1 = $"SELECT {codeTable} FROM {nameTable} ORDER BY ModifiedDate DESC limit 1";
-            var assetCode1 = sqlConection.QueryFirstOrDefault<string>(sql: sqlCommand1);
-
-
-            recordCodes.Add(assetCode1);
-            return recordCodes;
+            var proc = ResourceProcedure.GetNewCode;
+            var param = new DynamicParameters();
+            param.Add("nameTable", nameTable);
+            param.Add("codeTable", codeTable);
+            using (var sqlConection = new MySqlConnection(DatabaseContext.ConnectionString))
+            {
+                var multipleResults = sqlConection.QueryMultiple(proc, param, commandType: System.Data.CommandType.StoredProcedure);
+                if (multipleResults != null)
+                {
+                    recordCodes.Add(multipleResults.Read<string>().Single());
+                    recordCodes.Add(multipleResults.Read<string>().Single());
+                }
+                return recordCodes;
+            }
         }
+
+        /// <summary>
+        /// Xử lý các nghiệp vụ xóa của ghi tăng tài sản
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <param name="nameTable"></param>
+        /// <param name="valueKey"></param>
+        /// <param name="sqlConection"></param>
+        /// <param name="trans"></param>
+        /// <param name="parameterDeleteDetail"></param>
+        /// <param name="i"></param>
+        /// <returns></returns>
+        /// createBy : Bùi Quang Điệp (24/10/2022)
+        protected virtual void HandlerMajorDeleteIncrement(Guid fixedAssetIncrementID, MySqlConnection sqlConection, MySqlTransaction trans){}
+
+        /// <summary>
+        /// Xử lý nghiệp vụ ghi tăng tài sản
+        /// </summary>
+        /// <param name="proppertiesAssetIDs"></param>
+        /// <param name="propertiesAssets"></param>
+        /// <param name="sqlConnection"></param>
+        /// <param name="trans"></param>
+        /// <param name="result"></param>
+        /// createdBy : Bùi Quang Điệp (24/08/2022)
+        protected virtual void UpdateBudget(List<Guid>? proppertiesAssetIDs, List<UpdateSourceCost>? propertiesAssets, MySqlConnection sqlConnection, MySqlTransaction trans, Guid result) { }
         #endregion
     }
 }

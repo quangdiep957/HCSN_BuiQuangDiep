@@ -56,7 +56,7 @@ namespace MISA.QLTS.BL.BaseBL
         /// </summary>
         /// <returns></returns>
         /// Create By:Bùi Quang Điệp( 07/10/2022)
-        public string GetCodeAsset();
+        public string GetNewCode();
 
         /// <summary>
         /// Lấy danh sách 1 bản ghi theo id

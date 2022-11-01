@@ -55,7 +55,10 @@ export default {
       type: String
     },
     position:Number,
-    positionInputRequired:Boolean,
+    positionInputRequired:{
+      type:Boolean,
+      default:false
+    },
     showIcon: {
       Type: Boolean,
       default: true,
@@ -123,7 +126,7 @@ export default {
 
   data() {
     return {
-      value: "0",
+      value: 0,
     };
   },
   components: {
@@ -173,10 +176,7 @@ export default {
     });
 
     this._numeric = numeric;
-
-    if (this.modelValue !== 0) {
       this._numeric.set(this.modelValue);
-    }
   },
   updated() {
     if (this.checkRequiredAll) {

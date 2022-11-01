@@ -60,7 +60,7 @@ import {formatDate} from   '@/js/common'
 import Tooltip from '../base/BaseTooltip.vue'
 import { VueCookieNext } from 'vue-cookie-next'
 import Resource from '../../js/resource'
-import {API} from '../../js/callapi'
+import {API} from '../../js/callApi'
 import Switch from '../base/BaseSwitch.vue'
 import clickOutSide from "@mahdikhashan/vue3-click-outside";
 export default {

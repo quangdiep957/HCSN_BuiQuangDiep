@@ -117,6 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CheckDuplicateCodeAssetCreate" xml:space="preserve">
+    <value>Proc_FixedAsset_CheckDuplicateAssetCode_Create</value>
+    <comment>Kiểm tra mã trùng khi thêm mới tài sản</comment>
+  </data>
+  <data name="CheckDuplicateCodeAssetUpdate" xml:space="preserve">
+    <value>Proc_FixedAsset_CheckDuplicateAssetCode_Update</value>
+    <comment>Kiểm tra mã trùng khi chỉnh sửa tài sản</comment>
+  </data>
+  <data name="CheckDuplicationIncrementCodeCreate" xml:space="preserve">
+    <value>Proc_Fixed_asset_CheckDuplication_IncrementCode_Create</value>
+    <comment>Kiểm tra mã trùng khi thêm mới ghi tăng tài sản</comment>
+  </data>
+  <data name="CheckDuplicationIncrementCodeUpdate" xml:space="preserve">
+    <value>Proc_Fixed_asset_CheckDuplication_IncrementCode_Update</value>
+    <comment>Kiểm tra mã trùng khi chỉnh sửa  ghi tăng tài sản</comment>
+  </data>
+  <data name="CreateAssetIncrementDetail" xml:space="preserve">
+    <value>Proc_fixed_asset_Increment_Detail_Create</value>
+    <comment>thêm mới bảng chi tiết ghi tăng</comment>
+  </data>
+  <data name="DeleteAssetIncrementDetail" xml:space="preserve">
+    <value>Proc_fixed_asset_IncrementDetail_Delete</value>
+    <comment>xóa dữ liệu trong bảng chi tiết ghi tăng</comment>
+  </data>
+  <data name="DeleteIncrementDetail" xml:space="preserve">
+    <value>Proc_fixed_asset_IncrementDetail_Delete</value>
+    <comment>xóa dữ liệu ghi tăng chi tiết</comment>
+  </data>
+  <data name="DeleteRecord" xml:space="preserve">
+    <value>Proc_Delete_Record</value>
+    <comment>Xóa bản ghi </comment>
+  </data>
   <data name="GetAllRecord" xml:space="preserve">
     <value>Proc_GetAll_Record</value>
     <comment>lấy toàn bộ thông tin theo tên bảng</comment>
@@ -124,5 +156,45 @@
   <data name="GetAssetByIncrement" xml:space="preserve">
     <value>Proc_fixed_asset_GetDetail_Multi</value>
     <comment>Lấy danh dách ID tài sản theo nguồn hình thành</comment>
+  </data>
+  <data name="GetAssetCache" xml:space="preserve">
+    <value>Proc_Asset_Multi</value>
+    <comment>lấy danh sách tài sản lưu trong cache</comment>
+  </data>
+  <data name="GetAssetDetail" xml:space="preserve">
+    <value>Proc_Fixed_Asset_Detail</value>
+    <comment>lấy chi tiết 1 tài sản</comment>
+  </data>
+  <data name="GetAssetIncrementDetail" xml:space="preserve">
+    <value>Proc_Fixed_Asset_Increment_Detail</value>
+    <comment>lấy chi tiết 1 chứng từ ghi tăng</comment>
+  </data>
+  <data name="GetAssetIncrementName" xml:space="preserve">
+    <value>Proc_FixedAsset_Increment_GetName</value>
+    <comment>Lấy tên chứng từ ghi tăng theo mã tài sản</comment>
+  </data>
+  <data name="GetAssetIncrementPaging" xml:space="preserve">
+    <value>Proc_asset_increment_GetPaging</value>
+    <comment>tìm kiếm và phân trang ghi tăng tài sản</comment>
+  </data>
+  <data name="GetAssetPaging" xml:space="preserve">
+    <value>Proc_asset_GetPaging</value>
+    <comment>tìm kiếm và phân trang tài sản</comment>
+  </data>
+  <data name="GetNewCode" xml:space="preserve">
+    <value>Proc_NewCode</value>
+    <comment>lấy mã mới nhất</comment>
+  </data>
+  <data name="SearchRecord" xml:space="preserve">
+    <value>Proc_Search_record</value>
+    <comment>tìm kiếm theo tên bảng</comment>
+  </data>
+  <data name="UpdateBudget" xml:space="preserve">
+    <value>Proc_Update_Budget</value>
+    <comment>Cập nhật nguồn hình thành</comment>
+  </data>
+  <data name="UpdateStatus" xml:space="preserve">
+    <value>Proc_Fixed_Asset_Update_Status</value>
+    <comment>cập nhật lại trạng thái tài sản</comment>
   </data>
 </root>

@@ -21,6 +21,9 @@ namespace MISA.QLTS.Common.Entities
         /// <summary>
         /// Mã ghi tăng tài sản
         /// </summary>
+        [NoEmpty]
+        [MaxLengthText(20)]
+        [NameProperty("Mã chứng từ ghi tăng")]
         public string FixedAssetIncrementCode { get; set; }
 
         /// <summary>
@@ -31,11 +34,15 @@ namespace MISA.QLTS.Common.Entities
         /// <summary>
         /// Ngày chứng từ
         /// </summary>
+        [NoEmpty]
+        [NameProperty("Ngày chứng từ")]
         public DateTime DateVocher { get; set; }
 
         /// <summary>
         /// Ngày ghi tăng
         /// </summary>
+        [NoEmpty]
+        [NameProperty("Ngày ghi tăng")]
         public DateTime DateIncrement { get; set; }
 
         /// <summary>
@@ -46,6 +53,7 @@ namespace MISA.QLTS.Common.Entities
         /// <summary>
         /// Nguyên giá
         /// </summary>
+        [NoEmpty]
         public decimal Price { get; set; }
 
         /// <summary>
@@ -72,11 +80,13 @@ namespace MISA.QLTS.Common.Entities
         /// <summary>
         /// Danh sách ID tài sản 
         /// </summary>
+        [NoEmpty]
         public List<Guid> FixedAssetIDs { get; set; }
 
         /// <summary>
         /// Danh sách tài sản 
         /// </summary>
+        [NoEmpty]
         public List<UpdateSourceCost>? FixedAssets { get; set; }
         #endregion
     }

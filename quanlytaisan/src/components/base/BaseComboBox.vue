@@ -177,6 +177,7 @@
               <td class="text-align-center idValue">{{ item[code] }}</td>
               <td class="text-align-left NameValue">{{ item[name] }}</td>
             </tr>
+            <tr style="height: 0px; border: none"></tr>
           </tbody>
         </table>
       </div>
@@ -224,7 +225,7 @@ const clickoutside = {
 // import axios from "axios"
 import Tooltip from "./BaseTooltip.vue";
 import Resource from "@/js/resource";
-import { API } from "@/js/callapi";
+import { API } from "@/js/callApi";
 export default {
   name: "ComboBox",
   components: {
@@ -432,17 +433,16 @@ export default {
      * */
     btnTickedBody(item) {
       try {
-        debugger
         if (this.isTicked == item) {
           // Gán giá trị khi xóa ID
           this.idOld = item[this.id];
-          // xóa trường hợp nguồn tiền 
+          // xóa trường hợp nguồn tiền
           this.$emit("removeBudget", this.position);
           this.isTicked[this.id] = "";
           this.value_input = "";
           this.isShow = false;
           this.$emit("remove", this.isTicked);
-          
+
           if (this.isShowRemove == true) {
             this.checkRemove = false;
           }
@@ -460,7 +460,7 @@ export default {
 
           this.isTicked = item;
           this.isShow = false;
-          
+
           this.value_input = item[this.name];
           if (this.position != undefined) {
             this.$emit("dataComBoBoxSearch", item, this.position);
@@ -767,7 +767,7 @@ export default {
 </script>
 
 <style scoped>
-@import url(../../css/component/combobox.css);
+@import url(../../css/component/comboBox.css);
 @import url(../../css/component/input.css);
 
 #app {

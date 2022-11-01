@@ -12,10 +12,15 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Resource\Procedure.Designer.cs">
+    <Compile Update="Resource\ResourceProcedure.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>Procedure.resx</DependentUpon>
+      <DependentUpon>ResourceProcedure.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resource\ResourceNewCode.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ResourceNewCode.resx</DependentUpon>
     </Compile>
     <Compile Update="Resource\ResourceN.Designer.cs">
       <DependentUpon>ResourceN.resx</DependentUpon>
@@ -39,9 +44,13 @@
       <LastGenOutput>Error.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resource\Procedure.resx">
+    <EmbeddedResource Update="Resource\ResourceProcedure.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Procedure.Designer.cs</LastGenOutput>
+      <LastGenOutput>ResourceProcedure.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\ResourceNewCode.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResourceNewCode.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resource\ResourceN.resx">
       <LastGenOutput>ResourceN.Designer.cs</LastGenOutput>

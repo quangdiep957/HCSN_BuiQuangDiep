@@ -59,6 +59,9 @@
                 @dataTick="dataTick"
                 @pageNumber="getPageNumber"
                 @dataPageSize="getDataPageSize"
+                :bodyData="assetIDs"
+                :focusTable="true"
+                :isShowContextMenu=false
               />
             </div>
           </div>
@@ -94,7 +97,6 @@ import Table from "@/components/base/BaseTable.vue";
 import Enum from "@/js/enum";
 import Resource from "@/js/resource";
 import Config from "@/js/config";
-import { API } from "@/js/callapi";
 export default {
   name: "TheDialogSelectAsset",
 
@@ -185,7 +187,7 @@ export default {
           summaryValue: "sumAtrophy",
         },
       ],
-      urlTable: Resource.APIs.AssetFilter + `status=0` +'&filterID=2',
+      urlTable: "",
       numberRecord: 1,
       searchArray: {
         keyword: "",
@@ -204,6 +206,7 @@ export default {
   props: {
     labelDialog: String,
     id: String,
+    assetIDs: [],
   },
   components: {
     Button,
@@ -219,7 +222,9 @@ export default {
   updated() {
     this.key = this.id;
   },
-
+  created() {
+    this.urlTable = Resource.APIs.AssetFilter + `status=0` + "&filterID=2";
+  },
   methods: {
     /**
      * Đóng dialog thêm mới và show thông báo nếu người dùng hủy lưu khi chỉnh sửa
@@ -228,7 +233,7 @@ export default {
      */
     closeDialog() {
       try {
-        this.$emit('btnCloseDialog')
+        this.$emit("btnCloseDialog");
       } catch (error) {
         console.log(error);
       }
@@ -259,7 +264,7 @@ export default {
     dataTick(item) {
       this.dataTemporary = [];
       for (let i = 0; i < item.length; i++) {
-        this.dataTemporary.push(item[i].fixedAssetID);
+        this.dataTemporary.push(item[i]);
         //this.$emit('btnCloseDialog');
       }
       this.numberRecord = this.dataTemporary.length;
@@ -270,19 +275,22 @@ export default {
      *   Date : 08/10/2022
      */
     saveData() {
-      var data = {
-        key: this.key,
-        value: this.dataTemporary,
-      };
-      API.post("Caches", JSON.stringify(data))
-        .then((res) => {
-          console.log(res);
-          this.$emit("btnCloseDialog");
-          // this.emitter.emit("dataUpdate");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // var data = {
+      //   key: this.key,
+      //   value: this.dataTemporary,
+      // };
+      // API.post("Caches", JSON.stringify(data))
+      //   .then((res) => {
+      //     console.log(res);
+      //     this.$emit("btnCloseDialog");
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   });
+
+      // gửi dữ liệu
+      this.$emit("btnCloseDialog");
+      this.$emit("sendDataAsset", this.dataTemporary);
     },
     /**
      *  Nhận dữ liệu lọc
@@ -319,9 +327,9 @@ export default {
             httpSearch =
               httpSearch + `pageNumber=${this.searchArray.pageNumber}&`;
           }
-        
-            httpSearch = httpSearch + `status=${this.searchArray.status}&`;
-            if (this.searchArray.filterID != "") {
+
+          httpSearch = httpSearch + `status=${this.searchArray.status}&`;
+          if (this.searchArray.filterID != "") {
             httpSearch = httpSearch + `filterID=${this.searchArray.filterID}&`;
           }
         }

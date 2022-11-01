@@ -15,4 +15,5 @@ D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.Common\obj\Debug\net6.0\MISA.QLT
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.Common\obj\Debug\net6.0\MISA.QLTS.Common.Resource.ResourceValidate.resources
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.Common\obj\Debug\net6.0\MISA.QLTS.Common.Resource.ResourceVN.resources
 D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.Common\obj\Debug\net6.0\MISA.QLTS.Common.csproj.GenerateResource.cache
-D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.Common\obj\Debug\net6.0\MISA.QLTS.Common.Resource.Procedure.resources
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.Common\obj\Debug\net6.0\MISA.QLTS.Common.Resource.ResourceNewCode.resources
+D:\ThucTapMISA\MISA.Web07.BQDiep.QLTS\MISA.QLTS.Common\obj\Debug\net6.0\MISA.QLTS.Common.Resource.ResourceProcedure.resources

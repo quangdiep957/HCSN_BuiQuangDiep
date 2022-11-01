@@ -19,8 +19,7 @@
           ref="txtSearch"
           @keyDownEnter="handlerSearch"
           :inputSearch="true"
-          :focus="isFocus"
-          @focus="isFocus = isFocus = false"
+          :focusInput="false"
           @keyDown="checkInput"
         />
         <ComboBox
@@ -74,6 +73,7 @@
       @hideTable="showTable = false"
       @pageNumber="getPageNumber"
       @dataPageSize="getDataPageSize"
+      :focusTable="true"
     />
   </div>
   <TheDialog
@@ -95,7 +95,6 @@
     @removeDialog="isShowDialogNotify = false"
     :dataError="titleWarning"
     @isShowDialogNotify="isShowDialogNotifyFuntion()"
-    @removeData="isRemove = true"
     :dataAsset="dataTicks"
     :buttonNames="buttonText"
     :lastName="lastName"
@@ -125,7 +124,7 @@ import Button from "../base/BaseButton.vue";
 import Input from "../base/BaseInput.vue";
 import Table from "../base/BaseTable.vue";
 import Resource from "@/js/resource";
-import { API } from "@/js/callapi";
+import { API } from "@/js/callApi";
 import Enum from "@/js/enum";
 export default {
   name: "QuanlytaisanAsset",
@@ -445,7 +444,6 @@ export default {
      */
     async handlerSearch(item) {
       try {
-        debugger
         if (item != undefined) {
           if (item.FixedAssetCategoryID == "") {
             this.searchArray.fixedAssetCategoryID = "";
@@ -676,9 +674,7 @@ export default {
       });
       this.emitter.on("focusBody", () => {
         this.$refs["body"].focus();
-      }),
-        // khi render trang luôn focus vào input tìm kiếm
-        this.$refs["txtSearch"].focus();
+      });
     } catch (error) {
       console.log(error);
     }

@@ -2,14 +2,14 @@
   <div
     class="dialog__handle"
     id="dialog__handle"
-    @keydown.esc="closeKeyESC"
+    @keydown.esc="closeDialog"
     ref="dialog"
   >
     <div class="dialog">
       <div class="dialog__header">
         <h3 id="handle">{{ title }}</h3>
         <div
-          @click="this.$emit('btnCloseDialog')"
+          @click="closeDialog"
           class="icon icon-close icon__size-18 tooltip"
           id="btn--close"
         >
@@ -193,6 +193,7 @@
             :focusRequired="dataRequiredTop[0]"
             :inputNumber="true"
             :checkRequiredAll="checkRequiredAll"
+            :positionInputRequired="true"
           />
           <InputNumber
             :focusRequired="dataRequiredTop[0]"
@@ -213,6 +214,7 @@
             tabindex="1006"
             @blur="blurHandle"
             :checkRequiredAll="checkRequiredAll"
+            :positionInputRequired="true"
           />
           <InputNumber
             :focusRequired="dataRequiredTop[0]"
@@ -231,8 +233,10 @@
             required="required"
             tabindex="1007"
             @blur="blurHandle"
+            @input="calculatedepreciation"
             :inputNumber="true"
             :checkRequiredAll="checkRequiredAll"
+            :positionInputRequired="true"
           />
         </div>
         <div class="m-row">
@@ -257,6 +261,7 @@
             @blur="blurHandle"
             :disable="disabled"
             :checkRequiredAll="checkRequiredAll"
+            :positionInputRequired="true"
           />
           <InputNumber
             Type="number"
@@ -279,6 +284,7 @@
             tabindex="1009"
             @blur="blurHandle"
             :checkRequiredAll="checkRequiredAll"
+            :positionInputRequired="true"
           />
 
           <div class="group-input size-33 margin-right-10">
@@ -357,8 +363,8 @@ import Button from "./BaseButton.vue";
 import Input from "./BaseInput.vue";
 import InputNumber from "./BaseInputNumber.vue";
 import DateTime from "../base/BaseDate.vue";
-import { formatCash, formatDate, unFormatDecimal } from "../../js/common.js";
-import { API } from "../../js/callapi";
+import { formatDate, unFormatDecimal } from "../../js/common.js";
+import { API } from "../../js/callApi";
 import Config from "@/js/config";
 export default {
   name: "TheDialog",
@@ -388,7 +394,7 @@ export default {
         cost: 0,
         lifeTime: 0,
         depreciationRate: 0,
-        depreciationYear: "",
+        depreciationYear: 0,
         purchaseDate: new Date(),
         productionDate: new Date(),
         status: "",
@@ -736,15 +742,6 @@ export default {
                         (this.isShowNumber = true);
                       this.errors.push(Resource.Errors.DoubleKey);
                       this.errorName = error.response.data.dataError[0];
-                      // gọi Api Lấy mã mới cho người dùng
-                      API.get(Resource.APIs.NewCode)
-                        .then((res) => {
-                          this.dataChange = true;
-                          this.dataItemDetail.fixedAssetCode = res.data;
-                        })
-                        .catch((res) => {
-                          console.log(res);
-                        });
                     }
 
                     // Lỗi phía backend
@@ -807,16 +804,6 @@ export default {
                       (this.isShowNumber = true);
                     this.errors.push(Resource.Errors.DoubleKey);
                     this.errorName = error.response.data.dataError[0];
-
-                    // gọi Api Lấy mã mới cho người dùng
-                    API.get(Resource.APIs.NewCode)
-                      .then((res) => {
-                        this.dataChange = true;
-                        this.dataItemDetail.fixedAssetCode = res.data;
-                      })
-                      .catch((res) => {
-                        console.log(res);
-                      });
                   }
 
                   // Lỗi phía backend
@@ -856,7 +843,7 @@ export default {
             this.requiredData[name] = "";
             event.classList.remove("border-red");
           }
-         // this.dataItemDetail[name] = event.value;
+          // this.dataItemDetail[name] = event.value;
         }
       } catch (error) {
         console.log(error);
@@ -895,36 +882,6 @@ export default {
     },
 
     /**
-     * Định dạng dấu phân cách hàng nghìn cho số lượng khi nhập liệu
-     * Author : Bùi Quang Điệp
-     * Date:10/08/2022
-     */
-    formatNumberInput(val, item) {
-      try {
-        val = this.unFormNumber(this.dataItemDetail[item]);
-        const mustyNumber = 1000;
-        if (val >= mustyNumber) {
-          if (item == "cost") {
-            this.dataItemDetail.cost = formatCash(val);
-          }
-          // if (item == "quantity") {
-          //   this.dataItemDetail.quantity = formatCash(val);
-          // }
-          if (item == "depreciation") {
-            this.dataItemDetail.depreciationYear = formatCash(val);
-          }
-          if (item == "lifeTime") {
-            this.dataItemDetail.lifeTime = formatCash(val);
-          }
-        }
-
-        // this.calculatedepreciationYear();
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    /**
      * Lấy dữ liệu bộ phận sử dụng
      * Author : Bùi Quang Điệp
      * Date:10/08/2022
@@ -947,6 +904,23 @@ export default {
       try {
         this.dataItemDetail.fixedAssetCategoryName = e.FixedAssetCategoryName;
         this.dataItemDetail.fixedAssetCategoryID = e.FixedAssetCategoryID;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    /**
+     * Tính tỉ lệ hao mòn khi năm sử dụng thay đổi
+     * Author : Bùi Quang Điệp
+     * Date:10/08/2022
+     */
+    calculatedepreciation() {
+      try {
+        const fixed = 2;
+        this.dataItemDetail.depreciationRate = (
+          (1 / Number(unFormatDecimal(this.dataItemDetail.lifeTime))) *
+          100
+        ).toFixed(fixed);
       } catch (error) {
         console.log(error);
       }
@@ -976,10 +950,9 @@ export default {
         var depreciationRate = parseFloat(
           this.dataItemDetail.depreciationRate
         ).toFixed(fixed);
-        this.dataItemDetail.depreciationYear = formatCash(
+        this.dataItemDetail.depreciationYear = Number(
           (cost * (depreciationRate / 100)).toFixed(0)
         );
-        this.dataChange = true;
       } catch (error) {
         console.log(error);
       }
@@ -1107,8 +1080,8 @@ export default {
      */
     getDatePurchaseDate(item) {
       try {
-        item.setDate( item.getDate() +1);
-        this.dataItemDetail.purchaseDate = (item);
+        item.setDate(item.getDate() + 1);
+        this.dataItemDetail.purchaseDate = item;
       } catch (error) {
         console.log(error);
       }
@@ -1134,8 +1107,8 @@ export default {
      */
     getDateProductionDate(item) {
       try {
-        item.setDate( item.getDate() +1);
-        this.dataItemDetail.productionDate = (item);
+        item.setDate(item.getDate() + 1);
+        this.dataItemDetail.productionDate = item;
       } catch (error) {
         console.log(error);
       }
@@ -1276,10 +1249,10 @@ export default {
         departmentID: this.item.departmentID,
         fixedAssetCategoryID: this.item.fixedAssetCategoryID,
         quantity: this.item.quantity,
-        cost: formatCash(this.item.cost),
+        cost: this.item.cost,
         lifeTime: this.item.lifeTime,
         depreciationRate: this.item.depreciationRate,
-        depreciationYear: formatCash(this.item.depreciationYear),
+        depreciationYear: this.item.depreciationYear,
         purchaseDate: this.item.purchaseDate,
         productionDate: this.item.productionDate,
         status: this.item.status,
@@ -1320,21 +1293,16 @@ export default {
       }
     },
     "dataItemDetail.depreciationRate": function (newValue, oldValue) {
-      if (newValue != oldValue) {
-        if (oldValue != "") {
-          if (oldValue != 0) {
-            this.calculatedepreciationYear();
-          }
-        }
-      }
       if (oldValue != undefined) {
+        this.calculatedepreciationYear();
         if (newValue != oldValue) {
-          if (oldValue != "") {
-            if (oldValue != 0) {
+          if (oldValue != 0) {
+            if (Number(newValue) != 0) {
               if (this.handler == Resource.CommandType.Edit)
                 this.isChange = true;
             }
           }
+          
         }
       }
     },

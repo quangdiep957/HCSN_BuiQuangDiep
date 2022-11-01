@@ -10,47 +10,57 @@
         <img :style="styleImage" src="../../assets/icon/img-EmptyData-L.svg" />
       </div>
     </div>
-    <table class="table" @click="this.$refs.menu.close">
+    <table
+      class="table"
+      @click="this.$refs.menu.close"
+      ref="table"
+      tabindex="1000"
+      @keydown="pressKeyMove()"
+    >
       <thead>
         <tr>
-          <th  :style="label.styleCss"
+          <th
+            :style="label.styleCss"
             @mousedown="startMove"
             tooltip--th
             v-for="label in dataLabel"
             :key="label"
             :id="label.maxWidth"
           >
-            <div class="buttonHandler" :class="{'margin-right': label.label=='Chức năng'}">
+            <div
+              class="buttonHandler"
+              :class="{ 'margin-right': label.label == 'Chức năng' }"
+            >
               <button
-              v-if="label.label != 'checkBox'"
-              class="resize-width tooltip"
-              :class="{
-                'text-align-left': label.textalign == 'left',
-                'text-align-right': label.textalign == 'right',
-                'text-align-center': label.textalign == 'center',
-              }"
-              :id="label.maxWidth"
-            >
-              {{ label.label }}
-              <Tooltip
-                :tooltiptext="label.tooltipText"
-                positiontooltip="top"
-                style="margin-top: 10px"
-                v-if="label.tooltip == 'block'"
-              />
-            </button>
-            <button
-              :id="label.maxWidth"
-              v-if="label.label == 'checkBox'"
-              class="resize-width"
-            >
-              <label class="checkbox"
-                ><input
-                  @click="isTicksAll()"
-                  type="checkbox"
-                  v-model="checked" /><span class="tick"></span
-              ></label>
-            </button>
+                v-if="label.label != 'checkBox'"
+                class="resize-width tooltip"
+                :class="{
+                  'text-align-left': label.textalign == 'left',
+                  'text-align-right': label.textalign == 'right',
+                  'text-align-center': label.textalign == 'center',
+                }"
+                :id="label.maxWidth"
+              >
+                {{ label.label }}
+                <Tooltip
+                  :tooltiptext="label.tooltipText"
+                  positiontooltip="top"
+                  style="margin-top: 10px"
+                  v-if="label.tooltip == 'block'"
+                />
+              </button>
+              <button
+                :id="label.maxWidth"
+                v-if="label.label == 'checkBox'"
+                class="resize-width"
+              >
+                <label class="checkbox"
+                  ><input
+                    @click="isTicksAll()"
+                    type="checkbox"
+                    v-model="checked" /><span class="tick"></span
+                ></label>
+              </button>
             </div>
           </th>
         </tr>
@@ -71,7 +81,6 @@
           }"
           @dblclick="isShowDialogDetail(item)"
           tabindex="0"
-          @keydown="pressKeyMove"
         >
           <td
             v-for="value in dataLabel"
@@ -167,7 +176,7 @@
                   tooltiptext="Sửa"
                   positiontooltip="top"
                   style="top: 18px; margin-left: 13px"
-                  :class="{'tooltipUpdate': styleTooltip}"
+                  :class="{ tooltipUpdate: styleTooltip }"
                   :classTooltip="tooltipUpdate"
                 />
               </div>
@@ -192,7 +201,7 @@
                   tooltiptext="Xóa"
                   positiontooltip="top"
                   style="top: 18px; margin-left: -18px !important"
-                  :class="{'tooltipDelete': styleTooltip}"
+                  :class="{ tooltipDelete: styleTooltip }"
                   :classTooltip="tooltipDelete"
                 />
               </div>
@@ -201,9 +210,9 @@
         </tr>
         <tr style="height: 0px; border: none"></tr>
         <tr class="page__table" v-show="isShowSummary">
-          <td 
-          :style="value.styleCss"
-          style="padding:0 !important"
+          <td
+            :style="value.styleCss"
+            style="padding: 0 !important"
             class="text-align-right sum-quantity bold"
             v-for="(value, index) in dataLabel"
             :key="value"
@@ -261,7 +270,7 @@
             <div
               v-else-if="index == this.dataLabel.length - 1"
               class="border-paging"
-              style="width: 100% !important;margin-left: 1px"
+              style="width: 100% !important; margin-left: 1px"
             ></div>
             <div v-else class="border-paging" style="width: 100%"></div>
           </td>
@@ -286,9 +295,9 @@
                     </td> -->
         </tr>
       </tbody>
-
     </table>
     <ContextMenu
+      v-if="isShowContextMenu"
       ref="menu"
       @add="showDialog('add')"
       @edit="isShowDialogDetail(this.dataTicks[0])"
@@ -344,10 +353,10 @@ import { formatCash, formatDate } from "../../js/common.js";
 import ContextMenu from "./ContextMenu/TheConTextMenu.vue";
 import Notify from "./BaseDialogNotify.vue";
 import Tooltip from "./BaseTooltip.vue";
-import { API } from "@/js/callapi";
+import { API } from "@/js/callApi";
 import Combobox from "./BaseComboBox.vue";
 import Resource from "@/js/resource";
-import Config from '@/js/config.js';
+import Config from "@/js/config.js";
 export default {
   name: "QuanlytaisanTheTable",
 
@@ -409,22 +418,32 @@ export default {
       dataSummary: [],
       summaryColum: {},
       countNumber: 0,
-      typeFormatDate:'DMY',
+      typeFormatDate: "DMY",
       summaryPaging: {
         sumPrice: 0,
         sumDepreciation: 0,
         sumAtrophy: 0,
       },
+      isFocusRow: true,
     };
   },
   props: {
-    originalTick:{
+    isShowContextMenu:{
       type:Boolean,
       default:true
     },
-    styleTooltip:{
-      type:Boolean,
-      default:false
+    focusTable: Boolean,
+    bodyData: {
+      type: Array,
+      default: () => [],
+    },
+    originalTick: {
+      type: Boolean,
+      default: true,
+    },
+    styleTooltip: {
+      type: Boolean,
+      default: false,
     },
     styleTable: Object,
     showReplication: {
@@ -436,13 +455,16 @@ export default {
     classTable: Boolean,
     colspan: Number,
     classCustom: String,
-    dataAsset: Array,
+    dataAsset: {
+      type: Array,
+      default: () => [],
+    },
     showTable: Boolean,
     styleImage: Object,
     summaryColumn: Boolean,
     changeData: {
-      Type:Object,
-      default:{}
+      Type: Object,
+      default: {},
     },
     moveData: {
       Type: Boolean,
@@ -483,9 +505,9 @@ export default {
      */
     formatCash,
     formatDate,
-     isEmptyObject(obj){
-    return JSON.stringify(obj) === '{}'
-},
+    isEmptyObject(obj) {
+      return JSON.stringify(obj) === "{}";
+    },
     /**
      *  Lấy số trang được hiển thị
      * Author : Bùi Quang Điệp
@@ -548,41 +570,11 @@ export default {
           // Nếu có thì thêm vào mảng và không reset lại mảng
           // Ngược lại thì reset mảng
           if (e.ctrlKey == true) {
-            var dataTicksFake = [];
-
-            for (let i = 0; i < this.dataTicks.length; i++) {
-              if (item == this.dataTicks[i]) {
-                this.dataTicks.splice(i, 1);
-                this.isRowHover = [];
-                dataTicksFake = this.dataTicks;
-              }
-            }
-
-            if (dataTicksFake.length == 0) {
-              this.dataTicks.push(item);
-            } else {
-              this.dataTicks = dataTicksFake;
-            }
+            // gọi hàm xử lý khi nhấn phím Ctrl
+            this.selectTickAndCtrl(item);
           } else if (e.shiftKey == true) {
-            /**
-             * Xử lý sự kiện nhấn phím Shift  thì chọn hàng loạt đến vị trí click
-             * Author : Bùi Quang Điệp
-             * Date:10/08/2022
-             * */
-            e.preventDefault();
-            this.IndexLast = index;
-            var tg = "";
-            // Kiểm tra vị trí nếu vị trí click bên trên thì đổi ngược lại vị trí index
-            if (this.IndexLast < this.IndexFirst) {
-              tg = this.IndexLast;
-              this.IndexLast = this.IndexFirst;
-              this.IndexFirst = tg;
-            }
-            // Gán số lượng được chọn về rỗng
-            this.dataTicks = [];
-            for (var i = this.IndexFirst; i <= this.IndexLast; i++) {
-              this.dataTicks.push(this.Asset[i]);
-            }
+            // gọi hàm xử lý khi nhấn phím Shift
+            this.selectTickAndShift(e, index);
           } else {
             // Khi click vào input checkbox
             if (checkbox == true) {
@@ -603,7 +595,6 @@ export default {
                   this.dataTicks = [];
                 }
               }
-
               // Nếu không phải thì xóa tài sản trước đó và thêm mới tài sản vừa chọn
               else {
                 if (checkbox == false) {
@@ -634,6 +625,53 @@ export default {
         // Kiểm tra nếu điều kiện khi chọn thì chuyển dữ liệu vào bộ nhớ tạm
         if (this.moveData) {
           this.emitter.emit("dataTick", this.dataTicks);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    /**
+     * Xử lý sự kiện nhấn phím Shift  thì chọn hàng loạt đến vị trí click
+     * Author : Bùi Quang Điệp
+     * Date:10/08/2022
+     * */
+    selectTickAndShift(e, index) {
+      e.preventDefault();
+      this.IndexLast = index;
+      var tg = "";
+      // Kiểm tra vị trí nếu vị trí click bên trên thì đổi ngược lại vị trí index
+      if (this.IndexLast < this.IndexFirst) {
+        tg = this.IndexLast;
+        this.IndexLast = this.IndexFirst;
+        this.IndexFirst = tg;
+      }
+      // Gán số lượng được chọn về rỗng
+      this.dataTicks = [];
+      for (var i = this.IndexFirst; i <= this.IndexLast; i++) {
+        this.dataTicks.push(this.Asset[i]);
+      }
+    },
+    /**
+     * xử lý sự kiện tick khi nhấn phím Ctrl
+     * Author : Bùi Quang Điệp
+     * Date:10/08/2022
+     */
+    selectTickAndCtrl(item) {
+      try {
+        var dataTicksFake = [];
+        for (let i = 0; i < this.dataTicks.length; i++) {
+          if (item == this.dataTicks[i]) {
+            this.dataTicks.splice(i, 1);
+            this.isRowHover = [];
+            dataTicksFake = this.dataTicks;
+          }
+        }
+
+        if (dataTicksFake.length == 0) {
+          this.dataTicks.push(item);
+        } else {
+          this.dataTicks = dataTicksFake;
         }
       } catch (error) {
         console.log(error);
@@ -686,7 +724,6 @@ export default {
      * Author : Bùi Quang Điệp
      * Date:10/08/2022
      */
-
     HandleRemoveDetail(item) {
       try {
         if (this.dataTicks.length > 0) {
@@ -867,6 +904,7 @@ export default {
 
     getDataTable() {
       try {
+        debugger
         this.summaryColum = [];
         this.countNumber = 0;
         this.isLoading = true;
@@ -879,7 +917,7 @@ export default {
           if (this.search != "") {
             domain = domain + this.search;
           }
-          API.get(domain)
+          API.post(domain, JSON.stringify(this.bodyData))
             .then((response) => {
               this.Asset =
                 response.data.data != undefined
@@ -894,8 +932,8 @@ export default {
               this.NumberPage(this.sumItem);
               this.showPaging();
               // focus dòng đầu tiên
-              if(this.originalTick)
-              {
+              if (this.originalTick) {
+                //this.isRowHover = this.Asset[0];
                 this.selectTick(event, this.Asset[0], 0, false);
               }
               this.isLoading = false;
@@ -1020,8 +1058,7 @@ export default {
      */
     pressKeyMove() {
       try {
-        var isShowHover = false;
-        event.preventDefault();
+        // event.preventDefault();
         if (event.code == "ArrowUp") {
           if (this.indexRow == 0) {
             this.indexRow = this.Asset.length;
@@ -1031,7 +1068,7 @@ export default {
             this.$refs["managetable"].scrollTop = 0;
           }
           this.indexRow = this.indexRow - 1;
-          isShowHover = true;
+          this.isFocusRow = true;
         }
         if (event.code == "ArrowDown") {
           if (this.indexRow == this.Asset.length) {
@@ -1043,10 +1080,13 @@ export default {
           }
 
           this.indexRow = this.indexRow + 1;
-          isShowHover = true;
+          this.isFocusRow = true;
         }
 
         if (event.code == "Enter") {
+          if (this.indexRow == 0) {
+            this.indexRow = 1;
+          }
           this.selectTick(
             event,
             this.Asset[this.indexRow - 1],
@@ -1057,11 +1097,11 @@ export default {
           this.backgroundColor = "rgba(26, 164, 200, .2)";
         }
 
-        if (isShowHover == true) {
-          isShowHover = false;
+        if (this.isFocusRow == true) {
+          this.isFocusRow = false;
           this.isRowHover = this.Asset[this.indexRow - 1];
         }
-
+        this.$emit("rowFocus", this.isRowHover);
         console.log(event);
       } catch (error) {
         console.log(error);
@@ -1215,38 +1255,6 @@ export default {
       this.$emit("showDialog");
       this.emitter.emit("showDialog");
     },
-
-    /*
-     * Lấy dữ liệu từ chuỗi json
-     * Author : Bùi Quang Điệp
-     * Date : 14/08/2022
-     */
-    //  getJson(id)
-    // {
-    //     try {
-    //     API.get(Resource.APIs.FixedAssetIncrements + `AssetMulti?id=${id}`)
-    //     .then(res=>{
-    //
-    //         this.dataAssetDetail = res.data;
-
-    //     })
-    //     .catch(error=>{
-    //         console.log(error);
-    //     })
-    //     if( this.dataAssetDetail.length >0)
-    //     {
-    //         for (let i=0;i<this.dataAssetDetail.length;i++)
-    //         {
-    //         var summary=0;
-    //          summary = summary + this.dataAssetDetail[i].cost;
-    //         }
-    //         return  summary;
-    //     }
-    //     } catch (error) {
-    //      console.log(error);
-    //     }
-
-    // }
   },
 
   created() {
@@ -1269,7 +1277,7 @@ export default {
      * Author : Bùi Quang Điệp
      * Date : 14/08/2022
      */
-    if (this.dataAsset != undefined) {
+    if (this.dataAsset.length > 0) {
       this.summaryColum = {};
       this.Asset = this.dataAsset;
       this.sumItem = this.Asset.length;
@@ -1323,10 +1331,25 @@ export default {
     // document.removeEventListener('mousemove', this.stopMove);
   },
   beforeUpdate() {
-    if (this.dataAsset != undefined) {
+    // kiểm tra nếu xóa hết bản ghi trong 1 trang thì tự động chuyển lên trang đầu
+    if (this.numberPage > 1) {
+      if (this.Asset.length == 0) {
+        this.numberPage = this.numberPage - 1;
+        this.btnPageNumber(this.numberPage);
+      }
+    }
+    if (this.dataAsset.length > 0) {
       this.Asset = this.dataAsset;
       this.sumItem = this.Asset.length;
       this.NumberPage(this.sumItem);
+      this.sumColumnsTable();
+    }
+
+    // Kiểm tra k có data thì hiện icon k có dữ liệu
+    if (this.Asset.length == 0) {
+      this.isNoData = true;
+    } else {
+      this.isNoData = false;
     }
   },
   updated() {
@@ -1341,21 +1364,21 @@ export default {
       this.sumColumnsTable();
     }
 
-      /**
+    /**
      *  Cập nhật lại giá tiền và nguồn hình thành khi được thay đổi
      * Author : Bùi Quang Điệp
      * Date:10/08/2022
      */
-      if (!this.isEmptyObject(this.changeData)) {
-        for (const asset of this.Asset) {
-          if (asset.fixedAssetID == this.changeData.fixedAssetID) {
-              asset.cost = this.changeData.sumCost;
-              asset.price = this.changeData.dataSource;
-          }
+    if (!this.isEmptyObject(this.changeData)) {
+      for (const asset of this.Asset) {
+        if (asset.fixedAssetID == this.changeData.fixedAssetID) {
+          asset.cost = this.changeData.sumCost;
+          asset.price = this.changeData.dataSource;
         }
-        this.$emit("changeData",this.Asset);
-        this.sumColumnsTable();
       }
+      this.$emit("changeData", this.Asset);
+      this.sumColumnsTable();
+    }
   },
 
   /*
@@ -1365,9 +1388,11 @@ export default {
    */
   mounted() {
     try {
+      if (this.focusTable) {
+        this.$refs["table"].focus();
+      }
       document.addEventListener("mouseup", this.stopMove);
       document.addEventListener("mousemove", this.move);
-
       // Nhận lời gọi loading lại data từ dialog
       this.emitter.on("LoadData", (assetCode) => {
         // Gọi hàm load data
@@ -1377,13 +1402,6 @@ export default {
         this.assetCode = assetCode;
         this.getDataTable();
       }),
-        // this.emitter.on("search", (search) => {
-        //
-        //     this.search = search;
-        //     // Gọi hàm load data
-        //     this.getDataTable();
-        // }),
-
         // Nhận số lượng bản ghi hiển thị
 
         // Nhận dữ liệu set lại width navbar
@@ -1456,26 +1474,26 @@ tbody tr:hover {
 .icon_not_active {
   background-color: #ffae04 !important;
 }
-.buttonHandler{
+.buttonHandler {
   height: 100%;
-    box-sizing: border-box;
-    margin: 0px;
-    padding: 0px;
-    border-left: none;
-    position: relative;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  border-left: none;
+  position: relative;
 }
-.tooltipUpdate{
+.tooltipUpdate {
   top: -5px !important;
-    left: -20px !important;
+  left: -20px !important;
 }
-.tooltipDelete{
+.tooltipDelete {
   top: -5px !important;
-    left: 25px !important;
+  left: 25px !important;
 }
-.margin-right{
+.margin-right {
   margin-right: -1px;
   top: -1px;
-    border-top: 1px solid #cdd3d6;
-    border-bottom: 3px solid #f5f5f5;
+  border-top: 1px solid #cdd3d6;
+  border-bottom: 3px solid #f5f5f5;
 }
 </style>

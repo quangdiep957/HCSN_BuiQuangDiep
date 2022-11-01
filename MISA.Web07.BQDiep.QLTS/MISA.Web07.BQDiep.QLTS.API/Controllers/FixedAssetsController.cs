@@ -35,7 +35,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         public FixedAssetsController(IAssetBL assetBL, IMemoryCache memoryCache) : base(assetBL, memoryCache)
         {
             _assetBL = assetBL;
-            _memoryCache = memoryCache; 
+            _memoryCache = memoryCache;
         }
 
 
@@ -67,33 +67,33 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         /// <param name="pageNumber"></param>
         /// <returns>Danh sách tàn sản</returns>
         /// Create By : Bùi Quang Điệp (22/08/2022)
-        [HttpGet("filter")]
-        public IActionResult FilterAsset([FromQuery] string? keyword, [FromQuery] Guid? categoryAssetID, [FromQuery] Guid? departmentID, [FromQuery] int pageSize = 20, [FromQuery] int pageNumber = 1,[FromQuery] int status=2,int filterID = (int)Filter.None)
-          {
+        [HttpPost("filter")]
+        public IActionResult FilterAsset([FromQuery] string? keyword, [FromQuery] Guid? categoryAssetID, [FromQuery] Guid? departmentID, [FromQuery] int pageSize = 20, [FromQuery] int pageNumber = 1, [FromQuery] int status = 2, int filterID = (int)Filter.None ,List<Guid> cacheValue = null)
+        {
             try
             {
-                var items = new List<Guid>();
-                var cacheValue = new List<Guid>();
-                if (filterID != (int)Filter.None)
-                {
-                    var field = typeof(MemoryCache).GetProperty("EntriesCollection", BindingFlags.NonPublic | BindingFlags.Instance);
-                    var collection = field.GetValue(_memoryCache) as ICollection;
-                    
-                    if (collection != null)
-                        foreach (var item in collection)
-                        {
-                            var methodInfo = item.GetType().GetProperty("Key");
-                            var val = methodInfo.GetValue(item);
-                            var dataCache = (List<Guid>)_memoryCache.Get(val);
-                            foreach(var data in dataCache)
-                            {
-                                items.Add(data);
-                            }
-                        }
+                //var items = new List<Guid>();
+                //var cacheValue = new List<Guid>();
+                //if (filterID != (int)Filter.None)
+                //{
+                //    var field = typeof(MemoryCache).GetProperty("EntriesCollection", BindingFlags.NonPublic | BindingFlags.Instance);
+                //    var collection = field.GetValue(_memoryCache) as ICollection;
 
-                }
+                //    if (collection != null)
+                //        foreach (var item in collection)
+                //        {
+                //            var methodInfo = item.GetType().GetProperty("Key");
+                //            var val = methodInfo.GetValue(item);
+                //            var dataCache = (List<Guid>)_memoryCache.Get(val);
+                //            foreach (var data in dataCache)
+                //            {
+                //                items.Add(data);
+                //            }
+                //        }
 
-                var res = _assetBL.FilterAsset(keyword, categoryAssetID, departmentID,items, pageSize, pageNumber,status);
+                //}
+
+                var res = _assetBL.FilterAsset(keyword, categoryAssetID, departmentID, cacheValue, pageSize, pageNumber, status);
 
                 if (res != null)
                 {
@@ -104,17 +104,17 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
                     return StatusCode(StatusCodes.Status400BadRequest, res);
                 }
             }
-            catch(MySqlException msql)
+            catch (MySqlException msql)
             {
                 var error = new ErrorSevice();
                 error.UserMsg = "Không được chứa các kí tự đặc biệt !";
                 return HandleException(error);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return HandleException(ex);
             }
-           
+
 
         }
 
@@ -165,77 +165,77 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         [HttpPost("ImportExcel")]
         public IActionResult UploadData(IFormFile file)
         {
-          
-                if (file?.Length > 0)
+
+            if (file?.Length > 0)
+            {
+                // convert to a stream
+                var stream = file.OpenReadStream();
+
+                List<FixedAsset> assets = new List<FixedAsset>();
+
+                try
                 {
-                    // convert to a stream
-                    var stream = file.OpenReadStream();
-
-                    List<FixedAsset> assets = new List<FixedAsset>();
-
-                    try
+                    using (var package = new ExcelPackage(stream))
                     {
-                        using (var package = new ExcelPackage(stream))
-                        {
-                            var worksheet = package.Workbook.Worksheets.First();
-                            var rowCount = worksheet.Dimension.Rows;
+                        var worksheet = package.Workbook.Worksheets.First();
+                        var rowCount = worksheet.Dimension.Rows;
 
-                            for (var row = 2; row <= rowCount; row++)
-                            {
-                                
-                                    var assetID = worksheet.Cells[row, 1].Value;
-                                    var assetCode = worksheet.Cells[row, 2].Value?.ToString();
-                                    var assetName = worksheet.Cells[row, 3].Value?.ToString();
-                                    var departmentID = worksheet.Cells[row, 4].Value;
-                                    var categoryID = worksheet.Cells[row, 5].Value;
-                                    var datePure = worksheet.Cells[row, 6].Value;
-                                    var cost = worksheet.Cells[row, 7].Value;
-                                    var quantity = worksheet.Cells[row, 8].Value;
-                                    var rate = worksheet.Cells[row, 9].Value;
-                                    var year = worksheet.Cells[row, 10].Value;
-                                    var yearUse = worksheet.Cells[row, 11].Value;
-                                    var createdBy = worksheet.Cells[row, 12].Value?.ToString();
-                                    var createdDate = worksheet.Cells[row, 13].Value;
-                                    var modifiedBy = worksheet.Cells[row, 14].Value?.ToString();
-                                    var modifiedDate = worksheet.Cells[row, 15].Value;
-                                    var productionDate = worksheet.Cells[row, 16].Value;
-                                    var depreciationYear = worksheet.Cells[row, 17].Value;
+                        for (var row = 2; row <= rowCount; row++)
+                        {
+
+                            var assetID = worksheet.Cells[row, 1].Value;
+                            var assetCode = worksheet.Cells[row, 2].Value?.ToString();
+                            var assetName = worksheet.Cells[row, 3].Value?.ToString();
+                            var departmentID = worksheet.Cells[row, 4].Value;
+                            var categoryID = worksheet.Cells[row, 5].Value;
+                            var datePure = worksheet.Cells[row, 6].Value;
+                            var cost = worksheet.Cells[row, 7].Value;
+                            var quantity = worksheet.Cells[row, 8].Value;
+                            var rate = worksheet.Cells[row, 9].Value;
+                            var year = worksheet.Cells[row, 10].Value;
+                            var yearUse = worksheet.Cells[row, 11].Value;
+                            var createdBy = worksheet.Cells[row, 12].Value?.ToString();
+                            var createdDate = worksheet.Cells[row, 13].Value;
+                            var modifiedBy = worksheet.Cells[row, 14].Value?.ToString();
+                            var modifiedDate = worksheet.Cells[row, 15].Value;
+                            var productionDate = worksheet.Cells[row, 16].Value;
+                            var depreciationYear = worksheet.Cells[row, 17].Value;
 
                             // valide check mã tài sản đã có chưa
                             // check mã bộ phận có hay không
                             // Check loại tài sản đó đã có chưa
 
                             var asset = new FixedAsset();
-                            
-                                asset.FixedAssetID = (Guid)assetID;
-                                asset.FixedAssetCode = assetCode;
-                                asset.FixedAssetName = assetName;
-                                asset.DepartmentID = (Guid)departmentID;
-                                asset.FixedAssetCategoryID = (Guid)categoryID;
-                                asset.PurchaseDate = (DateTime)datePure;
-                                asset.Cost = (decimal)cost;
-                                asset.Quantity = (decimal)quantity;
-                                asset.DepreciationRate = (decimal)rate;
-                                asset.TrackedYear =(decimal)year;
-                                asset.LifeTime = (decimal)yearUse;
-                                asset.CreatedBy = createdBy;
-                                asset.CreatedDate = (DateTime)createdDate;
-                                asset.ModifiedBy = modifiedBy;
-                                asset.ModifiedDate = (DateTime)modifiedDate;
-                                asset.ProductionDate = (DateTime)productionDate;
-                                asset.DepreciationYear = (decimal)depreciationYear;
+
+                            asset.FixedAssetID = (Guid)assetID;
+                            asset.FixedAssetCode = assetCode;
+                            asset.FixedAssetName = assetName;
+                            asset.DepartmentID = (Guid)departmentID;
+                            asset.FixedAssetCategoryID = (Guid)categoryID;
+                            asset.PurchaseDate = (DateTime)datePure;
+                            asset.Cost = (decimal)cost;
+                            asset.Quantity = (decimal)quantity;
+                            asset.DepreciationRate = (decimal)rate;
+                            asset.TrackedYear = (decimal)year;
+                            asset.LifeTime = (decimal)yearUse;
+                            asset.CreatedBy = createdBy;
+                            asset.CreatedDate = (DateTime)createdDate;
+                            asset.ModifiedBy = modifiedBy;
+                            asset.ModifiedDate = (DateTime)modifiedDate;
+                            asset.ProductionDate = (DateTime)productionDate;
+                            asset.DepreciationYear = (decimal)depreciationYear;
 
 
                             assets.Add(asset);
 
-                            if(assets.Count >0)
+                            if (assets.Count > 0)
                             {
                                 var sqlCommand = "INSERT INTO fixed_asset values";
 
                                 foreach (var ase in assets)
                                 {
-                                    sqlCommand = sqlCommand +'('+ $"{asset.FixedAssetID}" + ',' + $"{asset.FixedAssetCode}" + ',' + $"{asset.FixedAssetName}" + ',' + $"{asset.DepartmentID}" + ',' + $"{asset.FixedAssetCategoryID}" + ','+ $"{asset.PurchaseDate}" + ',' + $"{asset.Cost}" + ',' + $"{asset.Quantity}" + ',' + $"{asset.DepreciationRate}" + ',' + $"{asset.TrackedYear}" + ',' + $"{asset.LifeTime}" + ',' + $"{asset.CreatedBy}" + ',' + $"{asset.CreatedDate}" + ','+ $"{asset.ModifiedBy}" + ','+ $"{asset.ModifiedDate}" + ',' + $"{asset.DepreciationYear}" + ')';
-                                }    
+                                    sqlCommand = sqlCommand + '(' + $"{asset.FixedAssetID}" + ',' + $"{asset.FixedAssetCode}" + ',' + $"{asset.FixedAssetName}" + ',' + $"{asset.DepartmentID}" + ',' + $"{asset.FixedAssetCategoryID}" + ',' + $"{asset.PurchaseDate}" + ',' + $"{asset.Cost}" + ',' + $"{asset.Quantity}" + ',' + $"{asset.DepreciationRate}" + ',' + $"{asset.TrackedYear}" + ',' + $"{asset.LifeTime}" + ',' + $"{asset.CreatedBy}" + ',' + $"{asset.CreatedDate}" + ',' + $"{asset.ModifiedBy}" + ',' + $"{asset.ModifiedDate}" + ',' + $"{asset.DepreciationYear}" + ')';
+                                }
                                 using (var sqlConnection = new MySqlConnection(DatabaseContext.ConnectionString))
                                 {
                                     sqlConnection.Open();
@@ -256,28 +256,24 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
                                         }
                                     }
 
-                                 
+
                                 }
-                               
-                            }    
-                              
+
                             }
+
                         }
-                        return StatusCode(StatusCodes.Status200OK);
                     }
-                    catch (Exception ex)
-                    {
-                        return HandleException(ex);
-                    }
+                    return StatusCode(StatusCodes.Status200OK);
                 }
+                catch (Exception ex)
+                {
+                    return HandleException(ex);
+                }
+            }
             else
             {
                 return StatusCode(StatusCodes.Status400BadRequest);
             }
-            }
-
-        
-
-
+        }
     }
 }

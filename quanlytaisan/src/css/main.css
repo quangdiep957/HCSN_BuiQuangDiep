@@ -1,16 +1,16 @@
 @import url(../css/component/input.css);
 @import url(../css/layouts/navbar.css);
-@import url(../css/layouts/pagebody.css);
+@import url(../css/layouts/pageBody.css);
 @import url(../css/component/icon.css);
-@import url(../css/component/combobox.css);
+@import url(../css/component/comboBox.css);
 @import url(../css/component/tooltip.css);
 @import url(../css/component/button.css);
 @import url(../css/component/table.css);
 @import url(../css/component/dialog.css);
-@import url(../css/component/menuright.css);
-@import url(../css/component/toastbox.css);
-@import url(../css/component/checkbox.css);
-@import url(../css/component/DatimePicker.css);
+@import url(../css/component/menuRight.css);
+@import url(../css/component/toastBox.css);
+@import url(../css/component/checkBox.css);
+@import url(../css/component/datimePicker.css);
 body{
     margin: 0;
     padding: 0;
@@ -122,6 +122,9 @@ body{
     background: rgba(181, 201, 229, 0.603); 
   }
   .table-active{
+    background-color: rgba(26, 164, 200, .2) !important;
+  }
+  .table-active .hover{
     background-color: rgba(26, 164, 200, .2) !important;
   }
 .m-loading{

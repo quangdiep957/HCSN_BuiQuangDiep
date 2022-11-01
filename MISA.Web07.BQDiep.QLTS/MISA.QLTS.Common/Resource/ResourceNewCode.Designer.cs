@@ -22,14 +22,14 @@ namespace MISA.QLTS.Common.Resource {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Procedure {
+    public class ResourceNewCode {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Procedure() {
+        internal ResourceNewCode() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace MISA.QLTS.Common.Resource {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MISA.QLTS.Common.Resource.Procedure", typeof(Procedure).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MISA.QLTS.Common.Resource.ResourceNewCode", typeof(ResourceNewCode).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,20 @@ namespace MISA.QLTS.Common.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Proc_GetAll_Record.
+        ///   Looks up a localized string similar to NC001.
         /// </summary>
-        public static string GetAllRecord {
+        public static string NewCode {
             get {
-                return ResourceManager.GetString("GetAllRecord", resourceCulture);
+                return ResourceManager.GetString("NewCode", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Proc_fixed_asset_GetDetail_Multi.
+        ///   Looks up a localized string similar to Sequence contains no elements.
         /// </summary>
-        public static string GetAssetByIncrement {
+        public static string NoData {
             get {
-                return ResourceManager.GetString("GetAssetByIncrement", resourceCulture);
+                return ResourceManager.GetString("NoData", resourceCulture);
             }
         }
     }

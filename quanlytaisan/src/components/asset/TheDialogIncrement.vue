@@ -116,6 +116,8 @@
                 @changeData="getDataTable"
                 styleTooltip="true"
                 :originalTick="false"
+                :dataAsset="dataTable"
+                :isShowContextMenu=false
               />
             </div>
           </div>
@@ -145,7 +147,9 @@
   <DialogSelect
     v-if="isShowDialogSelect"
     @btnCloseDialog="closeDialogSelect"
+    @sendDataAsset="getDataAsset"
     :id="key"
+    :assetIDs="assetIDs"
     labelDialog="Chọn tài sản ghi tăng"
   />
   <DialogBudget
@@ -180,7 +184,7 @@ import DialogSelect from "./TheDialogSelectAsset.vue";
 import DialogBudget from "./TheDialogBudget.vue";
 import Config from "@/js/config";
 import Notify from "@/components/base/BaseDialogNotify.vue";
-import { API } from "@/js/callapi";
+import { API } from "@/js/callApi";
 export default {
   name: "QuanlytaisanTheDialogIncrement",
 
@@ -188,6 +192,7 @@ export default {
     return {
       formatDateBase: "DMY",
       dataRequiredTop: [],
+      assetIDs: [],
       isChange: false,
       summaryColumns: false,
       dataBudget: [],
@@ -315,6 +320,7 @@ export default {
       },
       key: "",
       isFocus: true,
+      dataTable: [],
       dataAssetDetail: [
         {
           fixedAssetIncrementID: "",
@@ -341,6 +347,13 @@ export default {
     Notify,
   },
 
+  beforeUpdate() {
+    // gán những tài sản đã được lưu tạm thời vào 1 biến
+    this.assetIDs = [];
+    for (const asset of this.dataEntry) {
+      this.assetIDs.push(asset.fixedAssetID);
+    }
+  },
   watch: {
     "this.itemDetail.fixedAssetIncrementID": function (newValue, oldValue) {
       if (newValue != oldValue) {
@@ -464,6 +477,7 @@ export default {
           if (this.isChange) {
             this.DialogNotify = true;
             this.errors = [];
+            this.errorName = "";
             (this.buttonNames = [
               Resource.Label.Save,
               Resource.Label.NotSave,
@@ -480,10 +494,20 @@ export default {
         console.log(error);
       }
     },
+    getDataAsset(assets) {
+      try {
+        for (const asset of assets) {
+          this.dataUpdate.push(asset);
+          this.dataEntry.push(asset);
+          this.dataTable = this.dataUpdate;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     closeDialogSelect() {
       try {
         this.isShowDialogSelect = false;
-        this.showTable = true;
       } catch (error) {
         console.log(error);
       }
@@ -530,37 +554,15 @@ export default {
             } else this.searchArray.keyword = item;
           }
         }
-
-        var httpSearch = ``;
-        if (this.searchArray.keyword != undefined) {
-          if (this.searchArray.keyword != "") {
-            httpSearch = httpSearch + `keyword=${this.searchArray.keyword}`;
-          }
-          if (this.searchArray.pageSize != "") {
-            httpSearch = httpSearch + `pageSize=${this.searchArray.pageSize}&`;
-          }
-          if (this.searchArray.pageNumber != "") {
-            httpSearch =
-              httpSearch + `pageNumber=${this.searchArray.pageNumber}`;
-          }
-          if (this.itemDetail.fixedAssetIncrementID != undefined) {
-            this.urlTable =
-              Resource.APIs.FixedAssetIncrements +
-              `AssetMulti?id=${this.itemDetail.fixedAssetIncrementID}` +
-              `&key=${this.itemDetail.fixedAssetIncrementCode}&` +
-              httpSearch +
-              `&filterId=1`;
-            this.showTable = true;
-          } else {
-            this.urlTable =
-              Resource.APIs.FixedAssetIncrements +
-              `AssetMulti?` +
-              `&key=${this.itemDetail.fixedAssetIncrementCode}&` +
-              httpSearch +
-              `&filterId=1`;
-            this.showTable = true;
-          }
-        }
+        // Tìm kiếm theo key word
+        this.dataUpdate = this.dataEntry.filter((item) => {
+          return (
+            item.fixedAssetCode.toUpperCase().includes(keyword.toUpperCase()) ||
+            item.fixedAssetName.toUpperCase().includes(keyword.toUpperCase())
+          );
+        });
+        // Truyền dữ liệu tìm kiếm được gửi vào table
+        this.dataTable = this.dataUpdate;
       } catch (error) {
         console.log(error);
       }
@@ -791,15 +793,6 @@ export default {
                   (this.isShowNumber = true);
                 this.errors.push(Resource.Errors.DoubleKey);
                 this.errorName = error.response.data.dataError[0];
-                // gọi Api Lấy mã mới cho người dùng
-                API.get(Resource.APIs.NewCodeIncrement)
-                  .then((res) => {
-                    this.dataChange = true;
-                    this.itemDetail.fixedAssetIncrementCode = res.data;
-                  })
-                  .catch((res) => {
-                    console.log(res);
-                  });
               }
 
               // Lỗi phía backend
@@ -808,6 +801,7 @@ export default {
               ) {
                 this.DialogNotify = true;
                 this.errors = [];
+                this.errorName = "";
                 (this.buttonNames = [Resource.Label.Agree]),
                   (this.isShowNumber = true);
                 this.errors.push(error.response.data.userMsg);
@@ -843,21 +837,13 @@ export default {
                   (this.isShowNumber = true);
                 this.errors.push(Resource.Errors.DoubleKey);
                 this.errorName = error.response.data.dataError[0];
-                // gọi Api Lấy mã mới cho người dùng
-                API.get(Resource.APIs.NewCodeIncrement)
-                  .then((res) => {
-                    this.dataChange = true;
-                    this.itemDetail.fixedAssetIncrementCode = res.data;
-                  })
-                  .catch((res) => {
-                    console.log(res);
-                  });
               }
 
               // Lỗi phía backend
               if (
                 error.response.data.handle == Enum.FormModeHandler.Exception
               ) {
+                this.errorName = "";
                 this.DialogNotify = true;
                 this.errors = [];
                 (this.buttonNames = [Resource.Label.Agree]),

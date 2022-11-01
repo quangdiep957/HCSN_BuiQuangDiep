@@ -43,7 +43,7 @@ namespace MISA.QLTS.DL
         /// <param name="id"></param>
         /// <returns></returns>
         /// CreatedBy : Bùi Quang Điệp(12/10/2022)
-        public bool CheckDoubleKeyCode(FixedAssetIncrement increment,Guid id);
+        public bool CheckDuplicationCode(FixedAssetIncrement increment,Guid id);
 
         /// <summary>
         /// TÌm kiếm và phân trang bảng Increment

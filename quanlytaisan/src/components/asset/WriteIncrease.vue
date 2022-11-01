@@ -53,6 +53,7 @@
                 @keyDownEnter="handlerSearch"
                 :focus="isFocus"
                 @focus="isFocus = isFocus = false"
+                :focusInput="false"
                 @keyDown="checkInput"
               />
               <div class="group_icon">
@@ -94,7 +95,8 @@
               @hideTable="showTableIncrement = false"
               @pageNumber="getPageNumber"
               @dataPageSize="getDataPageSize"
-              
+              :focusTable="true"
+              :originalTick="true"
             />
           </div>
         </pane>
@@ -136,8 +138,8 @@
               :styleImage="styleImageDetail"
               :styleTable="styleTable"
               @itemDialog="getItemAsset"
-              :originalTick=false
-              
+              :originalTick="false"
+              :isShowContextMenu="false"
             />
           </div>
         </pane>
@@ -190,7 +192,7 @@ import Dialog from "@/components/asset/TheDialogIncrement.vue";
 import Resource from "@/js/resource";
 import Enum from "@/js/enum";
 import ToolTip from "@/components/base/BaseTooltip.vue";
-import { API } from "@/js/callapi";
+import { API } from "@/js/callApi";
 import Notify from "@/components/base/BaseDialogNotify.vue";
 
 export default {
@@ -451,7 +453,8 @@ export default {
      */
     async handlerSearch(item) {
       try {
-        const maxLength=50;
+        debugger
+        const maxLength = 50;
         if (event != null || event != undefined) {
           var keyword = event.currentTarget.value;
           if (keyword != undefined) {
@@ -547,7 +550,8 @@ export default {
           if (quantity < 10) {
             quantity = "0" + quantity;
           }
-          (this.buttonText = [Resource.Label.Delete, Resource.Label.No]), (this.errorName = quantity);
+          (this.buttonText = [Resource.Label.Delete, Resource.Label.No]),
+            (this.errorName = quantity);
           this.titleWarning.push(Resource.Warning.DeleteIncrements);
           this.isShowNumber = true;
         }
@@ -591,7 +595,7 @@ export default {
         // Lấy mã tài sản mới nhất truyền vào input
         API.get(Resource.APIs.NewCodeIncrement)
           .then((res) => {
-            this.labelDialog = "Thêm chứng từ ghi tăng";
+            this.labelDialog = Resource.TitleDialog.AddIncrement;
             console.log(res);
             this.itemDetail.fixedAssetIncrementCode = res.data;
             this.isShowDialog = true;
@@ -611,14 +615,13 @@ export default {
      */
     itemDialog(item) {
       var assetIncrementID = item.fixedAssetIncrementID;
-
       API.get(
         Resource.APIs.FixedAssetIncrements +
           `IncrementDetail/?id=${assetIncrementID}`
       )
         .then((res) => {
           this.itemDetail = res.data;
-          this.handler =  Resource.CommandType.Edit;
+          this.handler = Resource.CommandType.Edit;
           this.isShowDialog = true;
         })
         .catch((err) => {
@@ -638,22 +641,19 @@ export default {
       } else {
         this.showRemove = false;
       }
-      if(this.dataTicks.length >= 1)
-      {
+      if (this.dataTicks.length >= 1) {
         this.idAssetIncrement = item[0].fixedAssetIncrementID;
-      this.urlTableDataID =
-        Resource.APIs.FixedAssetIncrements +
-        `AssetMulti?id=${this.idAssetIncrement}`;
-      this.showTable = true;
+        this.urlTableDataID =
+          Resource.APIs.FixedAssetIncrements +
+          `AssetMulti?id=${this.idAssetIncrement}`;
+        this.showTable = true;
+      } else {
+        this.idAssetIncrement = "00000000-0000-0000-0000-000000000000";
+        this.urlTableDataID =
+          Resource.APIs.FixedAssetIncrements +
+          `AssetMulti?id=${this.idAssetIncrement}`;
+        this.showTable = true;
       }
-      else{
-        this.idAssetIncrement = '00000000-0000-0000-0000-000000000000';
-      this.urlTableDataID =
-        Resource.APIs.FixedAssetIncrements +
-        `AssetMulti?id=${this.idAssetIncrement}`;
-      this.showTable = true;
-      }
-     
     },
     /**
      * Show thông báo thêm mới hoặc sửa thành công

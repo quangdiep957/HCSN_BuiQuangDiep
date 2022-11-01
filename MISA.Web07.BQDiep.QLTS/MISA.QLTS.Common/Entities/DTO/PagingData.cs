@@ -21,6 +21,52 @@ namespace MISA.QLTS.Common.Entities.DTO
         /// <summary>
         /// Danh sách tổng
         /// </summary>
-        public List<decimal> Summary { get; set; }
+        public Summary Summary { get; set; }
+    }
+}
+
+public class Summary
+{
+    /// <summary>
+    /// Tổng giá tiền
+    /// </summary>
+    public decimal SumPrice { get; set; }
+
+    /// <summary>
+    /// Tổng giá trị hao mòn
+    /// </summary>
+    public decimal SumDepreciation { get; set; }
+
+    /// <summary>
+    /// Tổng giá trị còn lại
+    /// </summary>
+    public decimal SumAtrophy { get; set; }
+
+    /// <summary>
+    /// Tổng số lượng
+    /// </summary>
+    public decimal SumQuantity { get; set; }
+
+    /// <summary>
+    /// Hàm khởi tạo
+    /// </summary>
+    public Summary()
+    {
+
+    }
+
+    /// <summary>
+    /// Hàm khởi tạo có tham số
+    /// </summary>
+    /// <param name="sumPrice"></param>
+    /// <param name="sumDepreciation"></param>
+    /// <param name="sumAtrophy"></param>
+    /// <param name="sumQuantity"></param>
+    public Summary(decimal sumPrice, decimal sumDepreciation, decimal sumAtrophy, decimal sumQuantity)
+    {
+        SumAtrophy = sumAtrophy;
+        SumQuantity = sumQuantity;
+        SumPrice = sumPrice;
+        SumDepreciation = sumDepreciation;
     }
 }

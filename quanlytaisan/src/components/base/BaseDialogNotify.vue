@@ -54,19 +54,19 @@
 </template>
 
 <script>
-import Resource from '@/js/resource';
-import { API } from "../../js/callapi";
+import Resource from "@/js/resource";
+import { API } from "../../js/callApi";
 export default {
   name: "TheDialogNotify",
 
   data() {
     return {
       ShowDialogNotify: true,
-      buttonLabel:{
-        buttonLabelZero:0,
-        buttonLabelOne:1,
-        buttonLabelTwo:2
-      }
+      buttonLabel: {
+        buttonLabelZero: 0,
+        buttonLabelOne: 1,
+        buttonLabelTwo: 2,
+      },
     };
   },
   components: {},
@@ -132,7 +132,7 @@ export default {
                 console.log(res);
                 this.$emit("removeData");
                 this.$emit("isShowDialogNotify");
-                this.$emit("handlerName",Resource.Label.Delete);
+                this.$emit("handlerName", Resource.Label.Delete);
                 this.emitter.emit("LoadData");
               })
               .catch((res) => {

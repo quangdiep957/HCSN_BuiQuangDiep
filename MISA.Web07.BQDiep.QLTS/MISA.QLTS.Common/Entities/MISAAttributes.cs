@@ -61,6 +61,9 @@ namespace MISA.QLTS.Common.Entities
         }
     }
 
+    /// <summary>
+    /// Attribute không được bỏ trống
+    /// </summary>
     public class NoEmpty:Attribute{ }
 
     public class MaxLengthText:Attribute
