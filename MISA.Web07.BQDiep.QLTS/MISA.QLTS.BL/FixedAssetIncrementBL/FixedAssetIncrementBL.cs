@@ -42,9 +42,9 @@ namespace MISA.QLTS.BL
         /// <param name="id">id của bảng ghi tăng</param>
         /// <returns></returns>
         /// Created:Bùi Quang Điệp(09/10/2022)
-        public List<FixedAssetMulti> GetMultiAsset(Guid id, List<Guid> cacheValue, string keyword)
+        public List<FixedAssetMulti> GetMultiAsset(Guid id, string keyword)
         {
-            return _fixedAssetIncrementDL.GetMultiAsset(id,cacheValue,keyword);
+            return _fixedAssetIncrementDL.GetMultiAsset(id,keyword);
         }
 
         /// <summary>
@@ -87,7 +87,6 @@ namespace MISA.QLTS.BL
             }
         }
 
-
         /// <summary>
         /// Check mã trùng khi thêm mới
         /// </summary>
@@ -123,7 +122,6 @@ namespace MISA.QLTS.BL
         {
 
             var orConditions = new List<string>();
-            var andConditions = new List<string>();
             string whereClause = "";
 
             if (keyword != null)
@@ -135,19 +133,32 @@ namespace MISA.QLTS.BL
             {
                 whereClause = $"({string.Join(" OR ", orConditions)})";
             }
-
-            if (andConditions.Count > 0)
-            {
-                if (orConditions.Count > 0)
-                {
-                    whereClause += $"AND {string.Join(" AND ", andConditions)}";
-                }
-                else
-                    whereClause += $" {string.Join(" AND ", andConditions)}";
-            }
             return _fixedAssetIncrementDL.FilterIncrement(whereClause, pageSize, pageNumber);
         }
-
+        
+        /// <summary>
+        /// Validate dùng riêng cho bảng ghi tăng tài sản
+        /// </summary>
+        /// <param name="assetIncrement"></param>
+        /// CreateBy : Bùi Quang Điệp (11/01/2022)
+        protected override void ValidateRecord(FixedAssetIncrement assetIncrement)
+        {
+            var error = new ErrorSevice();
+            var errorsData = new List<string>();
+             // Kiểm tra cần chọn ít nhất 1 tài sản
+             if(assetIncrement.FixedAssetIDs.Count == 0)
+            {
+                errorsData.Add(ResourceValidate.MinAsset);
+            }    
+            if (errorsData.Count > 0)
+            {
+                error.Handle = (int)Handler.Required;
+                error.DevMsg = ResourceVN.Error_ValidateData;
+                error.UserMsg = ResourceValidate.Required;
+                error.DataError = errorsData;
+                throw error;
+            }
+        }
 
         #endregion
     }

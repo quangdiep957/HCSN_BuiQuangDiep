@@ -12,7 +12,7 @@
     </div>
     <table
       class="table"
-      @click="this.$refs.menu.close"
+      @click="closeConTextMenu"
       ref="table"
       tabindex="1000"
       @keydown="pressKeyMove()"
@@ -170,7 +170,6 @@
               <div
                 @click="isShowDialogDetail(item)"
                 class="icon-mini icon-edit-mini icon__size-14 tooltip tooltipHandler"
-                style="margin-left: 15px"
               >
                 <Tooltip
                   tooltiptext="Sửa"
@@ -184,7 +183,7 @@
                 @click="isShowDialogDetail(item, true)"
                 v-if="value.replication != false"
                 class="icon-mini icon-replication-mini icon__size-14 tooltip tooltipHandler tooltipHandlerEdit"
-                style="margin-left: 10px"
+                style="margin-left: 7px"
               >
                 <Tooltip
                   tooltiptext="Nhân bản"
@@ -195,7 +194,7 @@
               <div
                 class="icon-mini icon-remove-mini icon__size-14 tooltip tooltipHandler tooltipHandlerRemove"
                 @click="HandleRemoveDetail(item)"
-                style="margin-left: 10px"
+                style="margin-left: 7px"
               >
                 <Tooltip
                   tooltiptext="Xóa"
@@ -317,7 +316,7 @@
         Tổng số : <span style="font-weight: bold">{{ sumItem }}</span> bản ghi
       </p>
       <Combobox ComboboxQuantity="true" @dataPageSize="getDataPageSize" />
-      <div class="page__table--number display-flex">
+      <div class="page__table--number display-flex" ref="pageNumber">
         <div class="page--number-item">
           <div class="icon icon-back icon__size-8 tooltip" @click="BackPage">
             <Tooltip tooltiptext="Trang trước" positiontooltip="bottom" />
@@ -428,9 +427,9 @@ export default {
     };
   },
   props: {
-    isShowContextMenu:{
-      type:Boolean,
-      default:true
+    isShowContextMenu: {
+      type: Boolean,
+      default: true,
     },
     focusTable: Boolean,
     bodyData: {
@@ -459,7 +458,7 @@ export default {
       type: Array,
       default: () => [],
     },
-    showTable: Boolean,
+    loadTable: Boolean,
     styleImage: Object,
     summaryColumn: Boolean,
     changeData: {
@@ -505,6 +504,11 @@ export default {
      */
     formatCash,
     formatDate,
+    /**
+     *  Kiểm tra object có rỗng hay không
+     * Author : Bùi Quang Điệp
+     * Date:10/08/2022
+     */
     isEmptyObject(obj) {
       return JSON.stringify(obj) === "{}";
     },
@@ -517,41 +521,35 @@ export default {
       this.$emit("dataPageSize", item);
       this.recordNumber = item;
     },
-
-    /**
-     *  Truyền dữ liệu 1 hàng vào 1 mảng
-     * Author : Bùi Quang Điệp
-     * Date:10/08/2022
-     */
-    btnRowTable(item) {
-      console.log(item);
-    },
-
     /**
      *  Nhận dữ liệu và show dialog nhân bản
      * Author : Bùi Quang Điệp
      * Date:10/08/2022
      */
     isShowDialogDetail(item, replication) {
-      if (item.fixedAssetID != undefined) {
-        API.get(Resource.APIs.Asset + `${item.fixedAssetID}`)
-          .then((res) => {
-            console.log(res);
+      try {
+        if (item.fixedAssetID != undefined) {
+          API.get(Resource.APIs.Asset + `${item.fixedAssetID}`)
+            .then((res) => {
+              console.log(res);
 
-            if (replication == true) {
-              this.emitter.emit("replication", res.data);
-              replication = false;
-            } else {
-              this.emitter.emit("itemDialog", res.data);
-              this.$emit("itemDialog", item);
-              this.emitter.emit("handlerEdit");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        this.$emit("itemDialog", item);
+              if (replication != undefined && replication == true) {
+                this.emitter.emit("replication", res.data);
+                replication = false;
+              } else {
+                this.emitter.emit("itemDialog", res.data);
+                this.$emit("itemDialog", item);
+                this.emitter.emit("handlerEdit");
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          this.$emit("itemDialog", item);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     /**
@@ -588,7 +586,7 @@ export default {
               }
               if (checkAdd == true) this.dataTicks.push(item);
             } else {
-              if (this.dataTicks[0] == item) {
+              if (this.dataTicks.length > 0 && this.dataTicks[0] == item) {
                 if (this.unCheck == true) {
                   this.unCheck = false;
                 } else {
@@ -637,19 +635,23 @@ export default {
      * Date:10/08/2022
      * */
     selectTickAndShift(e, index) {
-      e.preventDefault();
-      this.IndexLast = index;
-      var tg = "";
-      // Kiểm tra vị trí nếu vị trí click bên trên thì đổi ngược lại vị trí index
-      if (this.IndexLast < this.IndexFirst) {
-        tg = this.IndexLast;
-        this.IndexLast = this.IndexFirst;
-        this.IndexFirst = tg;
-      }
-      // Gán số lượng được chọn về rỗng
-      this.dataTicks = [];
-      for (var i = this.IndexFirst; i <= this.IndexLast; i++) {
-        this.dataTicks.push(this.Asset[i]);
+      try {
+        e.preventDefault();
+        this.IndexLast = index;
+        var tg = "";
+        // Kiểm tra vị trí nếu vị trí click bên trên thì đổi ngược lại vị trí index
+        if (this.IndexLast < this.IndexFirst) {
+          tg = this.IndexLast;
+          this.IndexLast = this.IndexFirst;
+          this.IndexFirst = tg;
+        }
+        // Gán số lượng được chọn về rỗng
+        this.dataTicks = [];
+        for (var i = this.IndexFirst; i <= this.IndexLast; i++) {
+          this.dataTicks.push(this.Asset[i]);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     /**
@@ -904,7 +906,6 @@ export default {
 
     getDataTable() {
       try {
-        debugger
         this.summaryColum = [];
         this.countNumber = 0;
         this.isLoading = true;
@@ -1048,6 +1049,24 @@ export default {
         this.isRowHover = item;
       } catch (error) {
         console.log(error);
+      }
+    },
+
+    /*
+     * set trang mặc định khi không có dữ liệu
+     * Author : Bùi Quang Điệp
+     * Date : 10/09/2022
+     */
+    setPageNumber() {
+      var listDom = this.$refs["pageNumber"].children;
+      var check = true;
+      for (let i = 0; i < listDom.length; i++) {
+        if (listDom[i].classList.contains("number-active")) {
+          check = false;
+        }
+      }
+      if (check) {
+        this.btnPageNumber(1);
       }
     },
 
@@ -1247,6 +1266,14 @@ export default {
     },
 
     /*
+     *  hàm xử lý đóng context menu
+     * Author : Bùi Quang Điệp
+     * Date : 16/09/2022
+     */
+    closeConTextMenu() {
+      if (this.$refs["menu"] != undefined) this.$refs["menu"].close();
+    },
+    /*
      * Gọi Hàm xử lý sự click contextmenu
      * Author : Bùi Quang Điệp
      * Date : 14/08/2022
@@ -1331,13 +1358,6 @@ export default {
     // document.removeEventListener('mousemove', this.stopMove);
   },
   beforeUpdate() {
-    // kiểm tra nếu xóa hết bản ghi trong 1 trang thì tự động chuyển lên trang đầu
-    if (this.numberPage > 1) {
-      if (this.Asset.length == 0) {
-        this.numberPage = this.numberPage - 1;
-        this.btnPageNumber(this.numberPage);
-      }
-    }
     if (this.dataAsset.length > 0) {
       this.Asset = this.dataAsset;
       this.sumItem = this.Asset.length;
@@ -1353,7 +1373,8 @@ export default {
     }
   },
   updated() {
-    if (this.urlTable != "" && this.showTable) {
+    this.setPageNumber();
+    if (this.urlTable != "" && this.loadTable) {
       this.$emit("hideTable");
       this.getDataTable();
     }
@@ -1380,7 +1401,6 @@ export default {
       this.sumColumnsTable();
     }
   },
-
   /*
    * kích hoạt khi click chuột
    * Author : Bùi Quang Điệp

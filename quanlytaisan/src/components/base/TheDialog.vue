@@ -343,9 +343,9 @@
   </div>
 
   <Notify
-    v-if="DialogNotify"
+    v-if="dialogNotify"
     :dataError="errors"
-    @isShowDialogNotify="DialogNotify = false"
+    @isShowDialogNotify="dialogNotify = false"
     :buttonNames="buttonNames"
     @isSaveData="saveData"
     @removeDialog="removeDialog"
@@ -422,7 +422,7 @@ export default {
 
       buttonNames: [Resource.Label.Agree],
       errors: [],
-      DialogNotify: false,
+      dialogNotify: false,
       date: {
         Startday: new Date(),
         Depreciation: new Date(),
@@ -624,7 +624,7 @@ export default {
       if (this.dataRequiredTop.length == 0) {
         if (this.errors.length >= 1) {
           this.errorName = "";
-          this.DialogNotify = true;
+          this.dialogNotify = true;
         }
       }
       this.isShowTooltipRequired = true;
@@ -641,15 +641,17 @@ export default {
      * Date:10/08/2022
      */
     validationMajor() {
-      var lifeTime = (1 / this.dataItemDetail.lifeTime) * 100;
+      const hundred = 100;
+      const fixed = 1;
+      var lifeTime = (1 / this.dataItemDetail.lifeTime) * hundred;
       var depreciationRate = this.unFormDecimal(
         this.dataItemDetail.depreciationRate
       );
       if (lifeTime.toString().includes(".")) {
-        lifeTime = lifeTime.toFixed(1);
+        lifeTime = lifeTime.toFixed(fixed);
       }
       if (depreciationRate.toString().includes(".")) {
-        depreciationRate = parseFloat(depreciationRate).toFixed(1);
+        depreciationRate = parseFloat(depreciationRate).toFixed(fixed);
       }
       if (lifeTime != depreciationRate) {
         this.errors.push(Resource.Required.BusinessValidationDepreciationRate);
@@ -674,7 +676,7 @@ export default {
         if (isCheckRequired == false) {
           this.validationMajor();
           if (this.errors.length >= 1) {
-            this.DialogNotify = true;
+            this.dialogNotify = true;
           } else {
             this.opacity = 0;
             // tạo object loại kiểu json
@@ -726,7 +728,7 @@ export default {
                       Enum.FormModeHandler.Required
                     ) {
                       // Lỗi nhập liệu phía người dùng
-                      this.DialogNotify = true;
+                      this.dialogNotify = true;
                       this.errors = [];
                       (this.buttonNames = [Resource.Label.Agree]),
                         this.errors.push(error.response.data.dataError[0]);
@@ -736,7 +738,7 @@ export default {
                       error.response.data.handle ==
                       Enum.FormModeHandler.DoubleKey
                     ) {
-                      this.DialogNotify = true;
+                      this.dialogNotify = true;
                       this.errors = [];
                       (this.buttonNames = [Resource.Label.Agree]),
                         (this.isShowNumber = true);
@@ -749,7 +751,7 @@ export default {
                       error.response.data.handle ==
                       Enum.FormModeHandler.Exception
                     ) {
-                      this.DialogNotify = true;
+                      this.dialogNotify = true;
                       this.errors = [];
                       (this.buttonNames = [Resource.Label.Agree]),
                         (this.isShowNumber = true);
@@ -789,7 +791,7 @@ export default {
                     error.response.data.handle == Enum.FormModeHandler.Required
                   ) {
                     // Lỗi nhập liệu phía người dùng
-                    this.DialogNotify = true;
+                    this.dialogNotify = true;
                     this.errors = [];
                     (this.buttonNames = [Resource.Label.Agree]),
                       this.errors.push(error.response.data.dataError[0]);
@@ -798,7 +800,7 @@ export default {
                   if (
                     error.response.data.handle == Enum.FormModeHandler.DoubleKey
                   ) {
-                    this.DialogNotify = true;
+                    this.dialogNotify = true;
                     this.errors = [];
                     (this.buttonNames = [Resource.Label.Agree]),
                       (this.isShowNumber = true);
@@ -810,7 +812,7 @@ export default {
                   if (
                     error.response.data.handle == Enum.FormModeHandler.Exception
                   ) {
-                    this.DialogNotify = true;
+                    this.dialogNotify = true;
                     this.errors = [];
                     (this.buttonNames = [Resource.Label.Agree]),
                       (this.isShowNumber = true);
@@ -839,9 +841,12 @@ export default {
             event.classList.add("border-red");
             // this.isRequired = true;
           } else {
-            //  this.isRequired = false;
-            this.requiredData[name] = "";
-            event.classList.remove("border-red");
+            if (event.value == 0) {
+              event.classList.add("border-red");
+            } else {
+              this.requiredData[name] = "";
+              event.classList.remove("border-red");
+            }
           }
           // this.dataItemDetail[name] = event.value;
         }
@@ -1026,7 +1031,7 @@ export default {
       try {
         if (this.handler == Resource.CommandType.Edit) {
           if (this.isChange) {
-            this.DialogNotify = true;
+            this.dialogNotify = true;
             this.errors = [];
 
             (this.buttonNames = [
@@ -1066,7 +1071,7 @@ export default {
      */
     removeDialog() {
       try {
-        this.DialogNotify = false;
+        this.dialogNotify = false;
         this.$emit("btnCloseDialog");
       } catch (error) {
         console.log(error);
@@ -1082,19 +1087,6 @@ export default {
       try {
         item.setDate(item.getDate() + 1);
         this.dataItemDetail.purchaseDate = item;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
-    /**
-     * Cập nhật lại dữ liệu khi có thay đối
-     * Author : Bùi Quang Điệp
-     * Date:15/08/2022
-     */
-    updateData(value, name) {
-      try {
-        this.dataItemDetail[name] = value;
       } catch (error) {
         console.log(error);
       }
@@ -1294,7 +1286,9 @@ export default {
     },
     "dataItemDetail.depreciationRate": function (newValue, oldValue) {
       if (oldValue != undefined) {
-        this.calculatedepreciationYear();
+        if (oldValue != "") {
+          this.calculatedepreciationYear();
+        }
         if (newValue != oldValue) {
           if (oldValue != 0) {
             if (Number(newValue) != 0) {
@@ -1302,7 +1296,6 @@ export default {
                 this.isChange = true;
             }
           }
-          
         }
       }
     },

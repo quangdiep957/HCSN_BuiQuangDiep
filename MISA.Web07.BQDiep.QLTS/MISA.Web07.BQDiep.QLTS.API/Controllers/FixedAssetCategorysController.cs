@@ -16,7 +16,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         #endregion
 
     #region Constructor
-            public FixedAssetCategorysController(IFixedAssetCategoryBL fixedAssetCategoryBL, IMemoryCache memoryCache) : base(fixedAssetCategoryBL, memoryCache)
+            public FixedAssetCategorysController(IFixedAssetCategoryBL fixedAssetCategoryBL) : base(fixedAssetCategoryBL)
             {
             _fixedAssetCategoryBL = fixedAssetCategoryBL;
             }

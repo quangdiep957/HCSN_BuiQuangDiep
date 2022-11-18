@@ -14,7 +14,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         #region Field
         private IBudgetBL _budgetBL;
 
-        public BudgetsController(IBudgetBL budgetBL, IMemoryCache memoryCache) : base(budgetBL,memoryCache)
+        public BudgetsController(IBudgetBL budgetBL) : base(budgetBL)
         {
             _budgetBL = budgetBL;
         }

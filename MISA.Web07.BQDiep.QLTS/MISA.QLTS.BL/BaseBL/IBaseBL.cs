@@ -22,7 +22,7 @@ namespace MISA.QLTS.BL.BaseBL
         /// createBy : Bùi Quang Điệp (24/08/2022)
         /// 
 
-        public int Delete(List<Guid> id);
+        public int Delete(List<Guid> ids);
 
 
         /// <summary>

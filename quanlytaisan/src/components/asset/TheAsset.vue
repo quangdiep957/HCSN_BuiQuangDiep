@@ -69,8 +69,8 @@
       :dataLabel="dataLabel"
       :urlTable="urlTable"
       colspan="6"
-      :showTable="showTable"
-      @hideTable="showTable = false"
+      :loadTable="loadTable"
+      @hideTable="loadTable = false"
       @pageNumber="getPageNumber"
       @dataPageSize="getDataPageSize"
       :focusTable="true"
@@ -203,7 +203,7 @@ export default {
           label: "Số lượng",
           nameValue: "quantity",
           formatNumber: true,
-          summaryLoad: "sumQuantity",
+          summary: "sumQuantity",
         },
         {
           tooltipText: "",
@@ -213,7 +213,8 @@ export default {
           label: "Nguyên giá",
           nameValue: "cost",
           formatNumber: true,
-          summaryLoad: "sumPrice",
+          summary: "sumPrice",
+          styleCss: " min-width: 115px;",
         },
         {
           tooltipText: "Hao mòn/khấu hao lũy kế",
@@ -223,7 +224,8 @@ export default {
           label: "HM,KH lũy kế",
           nameValue: "depreciationValue",
           formatNumber: true,
-          summaryLoad: "sumDepreciation",
+          summary: "sumDepreciation",
+          styleCss: " min-width: 115px;",
         },
         {
           tooltipText: "",
@@ -233,7 +235,8 @@ export default {
           label: "Giá trị còn lại",
           nameValue: "residualValue",
           formatNumber: true,
-          summaryLoad: "sumAtrophy",
+          summary: "sumAtrophy",
+          styleCss: " min-width: 115px;",
         },
         {
           tooltipText: "",
@@ -276,7 +279,7 @@ export default {
       isShowNumber: false,
       dataReplication: {},
       isRemove: false,
-      showTable: false,
+      loadTable: false,
       lastName: "",
       firstText: "",
       lastText: "",
@@ -383,7 +386,7 @@ export default {
             (this.buttonText = ["Xóa", "Không"]),
               this.titleWarning.push(Resource.Warning.Delete);
             this.isShowNumber = false;
-            this.errorName = this.dataTicks[0].fixedAssetName + "?";
+            this.errorName = this.dataTicks[0].fixedAssetName +"?";
           } else {
             if (quantity < 10) {
               quantity = "0" + quantity;
@@ -494,7 +497,7 @@ export default {
           httpSearch = httpSearch + `pageNumber=${this.searchArray.pageNumber}`;
         }
         this.urlTable = Resource.APIs.AssetFilter + httpSearch;
-        this.showTable = true;
+        this.loadTable = true;
         // await  this.emitter.emit("search",httpSearch);
       } catch (error) {
         console.log(error);

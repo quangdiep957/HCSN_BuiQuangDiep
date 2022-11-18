@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -61,7 +62,7 @@ namespace MISA.QLTS.DL
         /// <param name="totalCount"></param>
         /// <param name="dataSummary"></param>
         /// createBy : Bùi Quang Điệp (24/10/2022)
-        private static void SummaryCount(SqlMapper.GridReader multipleResults, out long totalCount, out Summary dataSummary2)
+        private static void SummaryCount(SqlMapper.GridReader multipleResults, out long totalCount, out Summary dataSummary)
         {
             totalCount = multipleResults.Read<long>().Single();
             var summary = multipleResults.Read<SummaryAsset>().ToList();
@@ -71,6 +72,7 @@ namespace MISA.QLTS.DL
             decimal sumAtrophy = 0;
             const int hundredPercent = 100;
             var now = DateTime.Now.Year;
+            const int fixedDecimal = 0;
             foreach (var val in summary)
             {
                 sumQuantity = sumQuantity + val.Quantity;
@@ -86,11 +88,11 @@ namespace MISA.QLTS.DL
                 var residualValue = val.Cost - sumDepreciation;
                 sumAtrophy = sumAtrophy + residualValue;
             }
-            dataSummary2 = new Summary();
-            dataSummary2.SumAtrophy = sumAtrophy;
-            dataSummary2.SumQuantity=sumQuantity;
-            dataSummary2.SumPrice = sumPrice;
-            dataSummary2.SumDepreciation = sumDepreciations;
+            dataSummary = new Summary();
+            dataSummary.SumAtrophy = Math.Round(sumAtrophy, fixedDecimal);
+            dataSummary.SumQuantity= Math.Round(sumQuantity, fixedDecimal);
+            dataSummary.SumPrice = Math.Round(sumPrice, fixedDecimal) ;
+            dataSummary.SumDepreciation = Math.Round(sumDepreciations, fixedDecimal) ;
         }
 
         /// <summary>

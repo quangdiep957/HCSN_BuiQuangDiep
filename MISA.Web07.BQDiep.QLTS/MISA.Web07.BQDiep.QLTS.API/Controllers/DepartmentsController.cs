@@ -15,7 +15,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         #region Field
         private IDepartmentBL  _departmentBL;
 
-        public DepartmentsController(IDepartmentBL departmentBL , IMemoryCache memoryCache) : base(departmentBL,memoryCache)
+        public DepartmentsController(IDepartmentBL departmentBL) : base(departmentBL)
         {
             _departmentBL = departmentBL;
         }

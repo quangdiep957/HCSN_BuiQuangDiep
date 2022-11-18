@@ -32,11 +32,11 @@ Resource.Required = {
   DoubleKey: "Mã tài sản  đã có trong hệ thống!",
   FixedAssetCode: "Mã tài sản không được bỏ trống .",
   FixedAssetName: "Tên tài sản không được bỏ trống.",
-  Quantity: "Số lượng không được bỏ trống.",
-  DepreciationYear: "Giá trị hao mòn không được bỏ trống.",
-  LifeTime: "Số năm sử dụng không được bỏ trống.",
-  DepreciationRate: "Tỉ lệ hao mòn không được bỏ trống.",
-  Cost: "Nguyên giá không được bỏ trống.",
+  Quantity: "Số lượng không được bằng không.",
+  DepreciationYear: "Giá trị hao mòn không được bằng không.",
+  LifeTime: "Số năm sử dụng không được bằng không.",
+  DepreciationRate: "Tỉ lệ hao mòn không được bằng không.",
+  Cost: "Nguyên giá không được bằng không.",
   DepartmentID: "Mã phòng ban không được để trống.",
   FixedAssetCategoryID: "Mã loại tài sản không được để trống.",
   LengthAssetCode: "Mã tài sản không được quá 20 kí tự.",
@@ -156,6 +156,7 @@ Resource.APIs = {
   NewCode: "FixedAssets/CodeAsset",
   NewCodeIncrement: "FixedAssetIncrements/CodeAsset",
   DepartmentSearch: "Departments/search?keyword=",
+  BudgetSearch: "Budgets/search?keyword=",
   FixedAssetCategorySearch: "FixedAssetCategorys/search?keyword=",
   UserLogOut: "Users/logout",
   UserLogIn: "Users/login",
@@ -195,6 +196,16 @@ Resource.PopupIcons = {
   warning: "warning",
   deleteWarning: "deleteWarning",
   confirm: "confirm",
+};
+
+/*
+ * ID của các bảng cần xóa
+ * Author : Bùi Quang Điệp
+ * Date:07/09/2022
+ */
+Resource.IDTable = {
+  fixedAssetIncrementID: "fixedAssetIncrementID",
+  fixedAssetID: "fixedAssetID",
 };
 
 export default Resource;

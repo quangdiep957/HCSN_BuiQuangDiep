@@ -113,21 +113,24 @@ export default {
           this.$emit("isShowDialogNotify");
         }
         // Kiểm tra chức năng là lưu hay thêm mới
-        if (this.buttonNames[this.buttonLabel.buttonLabelTwo] != undefined) {
+        else if (this.buttonNames[this.buttonLabel.buttonLabelTwo] != undefined) {
           this.$emit("isSaveData");
         } else {
-          var idAssets = [];
-          var property = "";
+          var propertyIDs = [];
+          var propertyID = "";
+          // Kiểm tra xem đang xóa bảng nào sau đó lấy ID
           if (this.dataAsset[0].fixedAssetID == undefined) {
-            property = "fixedAssetIncrementID";
+            propertyID = Resource.IDTable.fixedAssetIncrementID;
           } else {
-            property = "fixedAssetID";
+            propertyID = Resource.IDTable.fixedAssetID;
           }
+          // gán Các ID vào trong mảng
           for (let i = 0; i < this.dataAsset.length; i++) {
-            idAssets.push(this.dataAsset[i][property]);
+            propertyIDs.push(this.dataAsset[i][propertyID]);
           }
-          if (idAssets.length > 0) {
-            API.post(this.domain, idAssets)
+          // Kiểm tra mảng nếu có phần tử thì gọi API xóa
+          if (propertyIDs.length > 0) {
+            API.post(this.domain, propertyIDs)
               .then((res) => {
                 console.log(res);
                 this.$emit("removeData");

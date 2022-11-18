@@ -30,8 +30,6 @@ namespace MISA.QLTS.BL.BaseBL
             _baseDL = baseDL;
 
         }
-
-
         #endregion
 
         #region method
@@ -42,9 +40,10 @@ namespace MISA.QLTS.BL.BaseBL
         /// 200 kết quả thành công
         /// </returns>
         /// Createed By :Bùi Quang Điệp (23/08/2022)
-        public int Delete(List<Guid> id)
+        public int Delete(List<Guid> ids)
         {
-            return _baseDL.Delete(id);
+            ValidateDelete(ids);
+            return _baseDL.Delete(ids);
         }
 
         /// <summary>
@@ -56,7 +55,6 @@ namespace MISA.QLTS.BL.BaseBL
         {
             return _baseDL.GetAll();
         }
-
 
         /// <summary>
         /// Danh sách một bản ghi
@@ -80,14 +78,11 @@ namespace MISA.QLTS.BL.BaseBL
         {
             // Validate dữ liệu
             Validate(record);
-
             // Validate riêng
-
             ValidateRecord(record);
             ValidateCheckCreate(record);
             return _baseDL.InsertOneRecord(record);
         }
-
 
         /// <summary>
         /// Tìm kiếm theo mã và tên của từng table
@@ -112,9 +107,7 @@ namespace MISA.QLTS.BL.BaseBL
         {
             // Validate dữ liệu
             Validate(record);
-
             // Validate riêng
-
             ValidateRecord(record);
             ValidateCheckUpdate(record, id);
             return _baseDL.UpdateRecord(record, id);
@@ -155,12 +148,7 @@ namespace MISA.QLTS.BL.BaseBL
                 if (string.IsNullOrEmpty(propValue.ToString()))
                 {
                     labelName = (labelName == string.Empty ? propName : labelName);
-
-
-
-                    dataErrors.Add($"{labelName}" + ResourceValidate.Required1);
-
-
+                    dataErrors.Add($"{labelName} " + ResourceValidate.NoEmpty);
                 }
             }
             // Lấy ra các trường cần kiểm tra độ dài
@@ -351,6 +339,26 @@ namespace MISA.QLTS.BL.BaseBL
             {
                 stringResult = recordCodes[1];
             }
+        }
+
+        /// <summary>
+        /// Kiểm tra xem có dữ liệu để xóa không
+        /// </summary>
+        /// <param name="ids"></param>
+        /// CreatedBy : Bùi Quang Điệp(01/11/2022)
+        private void ValidateDelete(List<Guid> ids)
+        {
+            if(ids == null || ids.Count == 0)
+            {
+                var dataErrors = new List<string>();
+                dataErrors.Add(ResourceValidate.MinAsset);
+                var errorResult = new ErrorSevice();
+                errorResult.Handle = (int)Handler.Required;
+                errorResult.DevMsg = ResourceVN.Error_ValidateData;
+                errorResult.UserMsg = ResourceValidate.Required;
+                errorResult.DataError = dataErrors;
+                throw errorResult;
+            }    
         }
 
         #endregion

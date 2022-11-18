@@ -13,10 +13,8 @@ export function formatCash(val){
         {
             return val
         }
-        else{
-            return str.replace(/^0+/, '').replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, Config.FormatCost.Number)
-        }
-       
+           return str.replace(/^0+/, '').replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, Config.FormatCost.Number)
+         
     }
     else{
         return 0;

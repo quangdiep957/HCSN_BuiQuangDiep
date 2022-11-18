@@ -32,10 +32,9 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         private IAssetBL _assetBL;
         public readonly IMemoryCache _memoryCache;
         #endregion
-        public FixedAssetsController(IAssetBL assetBL, IMemoryCache memoryCache) : base(assetBL, memoryCache)
+        public FixedAssetsController(IAssetBL assetBL) : base(assetBL)
         {
             _assetBL = assetBL;
-            _memoryCache = memoryCache;
         }
 
 

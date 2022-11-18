@@ -91,8 +91,8 @@
               @dataTick="assetIncrement"
               @itemDialog="itemDialog"
               @deleteAsset="dataDelete"
-              :showTable="showTableIncrement"
-              @hideTable="showTableIncrement = false"
+              :loadTable="loadTableIncrement"
+              @hideTable="loadTableIncrement = false"
               @pageNumber="getPageNumber"
               @dataPageSize="getDataPageSize"
               :focusTable="true"
@@ -133,8 +133,8 @@
               :canPaging="false"
               :showReplication="false"
               colspan="3"
-              :showTable="showTable"
-              @hideTable="showTable = false"
+              :loadTable="loadTable"
+              @hideTable="loadTable = false"
               :styleImage="styleImageDetail"
               :styleTable="styleTable"
               @itemDialog="getItemAsset"
@@ -264,7 +264,7 @@ export default {
           label: "Nguyên giá",
           nameValue: "price",
           formatNumber: true,
-          summaryLoad: "sumPriceIncrement",
+          summary: "sumPrice",
         },
         {
           tooltipText: "",
@@ -363,7 +363,7 @@ export default {
       isShowDialog: false,
       itemDetail: [],
       idAssetIncrement: "",
-      showTable: true,
+      loadTable: true,
       labelDialog: "",
       handler: "",
       dataTicks: [],
@@ -388,7 +388,7 @@ export default {
         handlerName: "",
         errorName: "",
       },
-      showTableIncrement: false,
+      loadTableIncrement: false,
       showRemove: false,
       styleImage: {
         height: "60px",
@@ -453,20 +453,10 @@ export default {
      */
     async handlerSearch(item) {
       try {
-        debugger
-        const maxLength = 50;
         if (event != null || event != undefined) {
           var keyword = event.currentTarget.value;
           if (keyword != undefined) {
-            if (keyword.length > maxLength) {
-              // Thông báo cho người dùng không nhập quá 50 kí tự
-              this.tooltipSearch = "Không thể nhập quá 50 kí tự !";
-              this.isTooltipShow = true;
-              setTimeout(() => {
-                this.isTooltipShow = false;
-              }, Enum.SetTimeOut.TimeOut);
-              return;
-            } else this.searchArray.keyword = item;
+          this.searchArray.keyword = item;
           }
         }
         var httpSearch = ``;
@@ -484,7 +474,7 @@ export default {
         }
 
         this.urlTable = Resource.APIs.FixedAssetIncrementFilter + httpSearch;
-        this.showTableIncrement = true;
+        this.loadTableIncrement = true;
       } catch (error) {
         console.log(error);
       }
@@ -646,13 +636,13 @@ export default {
         this.urlTableDataID =
           Resource.APIs.FixedAssetIncrements +
           `AssetMulti?id=${this.idAssetIncrement}`;
-        this.showTable = true;
+        this.loadTable = true;
       } else {
         this.idAssetIncrement = "00000000-0000-0000-0000-000000000000";
         this.urlTableDataID =
           Resource.APIs.FixedAssetIncrements +
           `AssetMulti?id=${this.idAssetIncrement}`;
-        this.showTable = true;
+        this.loadTable = true;
       }
     },
     /**

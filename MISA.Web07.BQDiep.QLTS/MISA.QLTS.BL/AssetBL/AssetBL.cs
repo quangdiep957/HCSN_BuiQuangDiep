@@ -34,25 +34,17 @@ namespace MISA.QLTS.DL
         #endregion
 
         #region Method
-      
-        //<summary>
-        //Lấy mã tài sản mới nhất
-        //</summary>
-        // <param name ="Asset">Thông tin tài sản </param>
-        //<returns>
-        // - 200 Lấy dữ liệu thành công
-        // - 500 Lỗi từ phía sever
-        //</returns>
-        // Author:14/08/2022
-        //public int IEnumerable<FixedAsset>()
-        //{
-        //    return _assetDL.GetCodeAsset();
-        //}
 
-        public string GetPagingAsset(string ID)
-        {
-            throw new NotImplementedException();
-        }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="ID"></param>
+        ///// <returns></returns>
+        ///// Date: 18/08/2022
+        //public string GetPagingAsset(string ID)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         /// <summary>
         /// Tìm kiếm và phân trang
@@ -66,7 +58,6 @@ namespace MISA.QLTS.DL
         /// Create By : Bùi Quang Điệp (22/08/2022)
         public PagingData<FixedAsset> FilterAsset(string? keyword, Guid? categoryAssetID, Guid? departmentID, List<Guid> dataFixedAssetID, int pageSize = 20, int pageNumber = 1,int status=2)
         {
-
             var orConditions = new List<string>();
             var andConditions = new List<string>();
             string whereClause = "";
@@ -76,7 +67,6 @@ namespace MISA.QLTS.DL
                 orConditions.Add($"FixedAssetID LIKE '%{keyword}%'");
                 orConditions.Add($"FixedAssetname LIKE '%{keyword}%'");
                 orConditions.Add($"FixedAssetCode LIKE '%{keyword}%'");
-
             }
             if (dataFixedAssetID.Count > 0)
             {
@@ -165,7 +155,6 @@ namespace MISA.QLTS.DL
         /// Created By:Bùi Quang Điêp(19/09/2022)
         protected override void ValidateCheckCreate(FixedAsset asset)
         {
-
             var checkDuplicateCode = _assetDL.CheckDuplicateCode(asset,Guid.Empty);
             if (!checkDuplicateCode)
             {
@@ -178,7 +167,6 @@ namespace MISA.QLTS.DL
                 error.DataError = errorsData;
                 throw error;
             }
-
         }
 
         /// <summary>
@@ -190,14 +178,12 @@ namespace MISA.QLTS.DL
         {
             var error = new ErrorSevice();
             var errorsData = new List<string>();
-            if (asset.PurchaseDate > DateTime.Now)
+            var date = DateTime.Now.AddDays(1);
+            if (asset.PurchaseDate > date)
             {
-
                 errorsData.Add(ResourceValidate.PurchaseDate);
-
-
             }
-            if (asset.ProductionDate > DateTime.Now)
+            if (asset.ProductionDate > date)
             {
                 errorsData.Add(ResourceValidate.DateUse);
             }

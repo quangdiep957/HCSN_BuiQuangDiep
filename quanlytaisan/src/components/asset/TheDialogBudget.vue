@@ -2,7 +2,7 @@
   <div
     class="dialog__handle"
     id="dialog__handle"
-    @keydown.esc="CloseKeyESC"
+    @keydown.esc="closeDialog"
     ref="dialog"
   >
     <div class="dialog">
@@ -383,7 +383,7 @@ export default {
       try {
         // Kiểm tra name có dữ liệu hay không
         if (name != "") {
-          if (!event.value) {
+          if (!event.value || event.value == 0) {
             event.classList.add("border-red");
           } else {
             event.classList.remove("border-red");
@@ -496,14 +496,17 @@ export default {
       // validation
       this.positionInputRequired = [];
       this.requiredDataCombobox = [];
+      this.isCheckRequiredCombobox = [];
       this.errors = [];
       var isCheck = true;
+
       // Kiểm tra nguồn hình thành không được trùng nhau
       for (let i = 0; i < this.dataUpdate.length; i++) {
         if (this.dataUpdate[i].budget == "") {
           this.errors = [];
           //this.requiredData.budget = Resource.Required.RequiredBudget;
           this.requiredDataCombobox.push(Resource.Required.RequiredBudget);
+          this.isCheckRequiredCombobox.push(false);
           if (this.borderRedCombobox.length == 0) {
             this.borderRedCombobox.push("");
           }
@@ -511,9 +514,11 @@ export default {
           //this.errors.push(Resource.Required.RequiredBudget);
           isCheck = false;
         } else {
+          this.isCheckRequiredCombobox.push(true);
           this.requiredDataCombobox.push("");
         }
-        if (this.dataUpdate[i].cost == 0 || this.dataUpdate[i].cost == "") {
+
+        if (this.dataUpdate[i].cost == "" || this.dataUpdate[i].cost == 0) {
           this.errors = [];
           this.positionInputRequired.push(true);
           this.requiredData.cost = Resource.Required.RequiredCost;

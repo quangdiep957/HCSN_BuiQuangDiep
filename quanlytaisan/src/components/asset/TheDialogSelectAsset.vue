@@ -2,7 +2,7 @@
   <div
     class="dialog__handle"
     id="dialog__handle"
-    @keydown.esc="CloseKeyESC"
+    @keydown.esc="closeDialog"
     ref="dialog"
   >
     <div class="dialog">
@@ -51,8 +51,8 @@
                 :urlTable="urlTable"
                 :classTable="true"
                 colspan="6"
-                :showTable="showTable"
-                @hideTable="showTable = false"
+                :loadTable="loadTable"
+                @hideTable="loadTable = false"
                 :canSummary="false"
                 :classCustom="'tableBody'"
                 moveData="true"
@@ -107,7 +107,7 @@ export default {
       isShowTooltipRequired: false,
       dataItemDetail: [],
       dataTemporary: [],
-      showTable: false,
+      loadTable: false,
       dataChange: false,
       styleObject: {
         width: "calc(30% - 2px)",
@@ -334,7 +334,7 @@ export default {
           }
         }
         this.urlTable = Resource.APIs.AssetFilter + httpSearch;
-        this.showTable = true;
+        this.loadTable = true;
       } catch (error) {
         console.log(error);
       }

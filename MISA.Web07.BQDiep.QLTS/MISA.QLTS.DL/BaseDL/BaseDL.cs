@@ -75,11 +75,8 @@ namespace MISA.QLTS.DL
                     for (int i = 0; i < ids.Count; i++)
                     {
                         conditionWhere = conditionWhere + $"'{ids[i]}',";
-                        if (typeof(T).Name == "FixedAssetIncrement")
-                        {
-                            HandlerMajorDeleteIncrement(ids[i], sqlConection, trans);
-
-                        }
+                        // xử lý nghiệp vụ riêng của từng bảng
+                        HandlerMajorDelete(ids[i], sqlConection, trans);
                     }
                     conditionWhere = conditionWhere.Remove(conditionWhere.Length - 1) + ")";
                     var parameter = new DynamicParameters();
@@ -188,12 +185,8 @@ namespace MISA.QLTS.DL
                     if (numberAffectedRow > 0)
                     {
                         result = (Guid)properties[0].GetValue(record);
-
-                        // Kiểm tra xem có phải bảng ghi tăng hay không
-                        if (typeof(T).Name == "FixedAssetIncrement")
-                        {
-                            UpdateBudget(proppertiesAssetIDs, propertiesAssets, sqlConnection, trans, result);
-                        }
+                        // xử lý nghiệp vụ riêng của từng bảng
+                        MajorUpdateRecord(proppertiesAssetIDs, propertiesAssets, sqlConnection, trans, result);
                         trans.Commit();
                     }
                     return result;
@@ -252,12 +245,9 @@ namespace MISA.QLTS.DL
                     if (numberAffectedRow > 0)
                     {
                         result = id;
-                        // Kiểm tra xem có phải bảng ghi tăng hay không
-                        if (typeof(T).Name == "FixedAssetIncrement")
-                        {
-                            HandlerMajorDeleteIncrement(id, sqlConnection, trans);
-                            UpdateBudget(proppertiesAssetIDs, propertiesAssets, sqlConnection, trans, result);
-                        }
+                        // xử lý nghiệp vụ riêng của từng bảng
+                        HandlerMajorDelete(id, sqlConnection, trans);
+                        MajorUpdateRecord(proppertiesAssetIDs, propertiesAssets, sqlConnection, trans, result);
                         trans.Commit();
                     }
                     return result;
@@ -353,7 +343,7 @@ namespace MISA.QLTS.DL
         /// <param name="i"></param>
         /// <returns></returns>
         /// createBy : Bùi Quang Điệp (24/10/2022)
-        protected virtual void HandlerMajorDeleteIncrement(Guid fixedAssetIncrementID, MySqlConnection sqlConection, MySqlTransaction trans){}
+        protected virtual void HandlerMajorDelete(Guid fixedAssetIncrementID, MySqlConnection sqlConection, MySqlTransaction trans) { }
 
         /// <summary>
         /// Xử lý nghiệp vụ ghi tăng tài sản
@@ -364,7 +354,7 @@ namespace MISA.QLTS.DL
         /// <param name="trans"></param>
         /// <param name="result"></param>
         /// createdBy : Bùi Quang Điệp (24/08/2022)
-        protected virtual void UpdateBudget(List<Guid>? proppertiesAssetIDs, List<UpdateSourceCost>? propertiesAssets, MySqlConnection sqlConnection, MySqlTransaction trans, Guid result) { }
+        protected virtual void MajorUpdateRecord(List<Guid>? proppertiesAssetIDs, List<UpdateSourceCost>? propertiesAssets, MySqlConnection sqlConnection, MySqlTransaction trans, Guid result) { }
         #endregion
     }
 }

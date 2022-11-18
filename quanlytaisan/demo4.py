@@ -1,5 +1,3 @@
-from audioop import reverse
-
 
 list = []
 x=0

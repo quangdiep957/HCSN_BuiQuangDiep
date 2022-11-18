@@ -21,10 +21,9 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         private IFixedAssetIncrementBL _fixedAssetIncrementBL;
         public readonly IMemoryCache _memoryCache;
 
-        public FixedAssetIncrementsController(IFixedAssetIncrementBL fixedAssetIncrementBL, IMemoryCache memoryCache) : base(fixedAssetIncrementBL, memoryCache)
+        public FixedAssetIncrementsController(IFixedAssetIncrementBL fixedAssetIncrementBL) : base(fixedAssetIncrementBL)
         {
             _fixedAssetIncrementBL = fixedAssetIncrementBL;
-            _memoryCache = memoryCache;
 
         }
 
@@ -42,30 +41,15 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
         /// <returns></returns>
         /// CreatedBy : Bùi Quang Điệp(16/10/2022)
         [HttpPost("AssetMulti")]
-        public IActionResult GetMultiAsset(Guid? id, string? key, string? keyword, int filterID = (int)Filter.None)
+        public IActionResult GetMultiAsset(Guid? id, string? key, string? keyword)
         {
             try
             {
-                var cacheValue = new List<Guid>();
-                if (filterID != (int)Filter.None)
-                {
-                    cacheValue = (List<Guid>)_memoryCache.Get(key);
-                    if (cacheValue != null)
-                    {
-                        if (cacheValue.Count == 0)
-                            cacheValue = new List<Guid>();
-                        else
-                        {
-                            cacheValue = (List<Guid>)_memoryCache.Get(key);
-                        }
-                    }
-
-                }
                 if (id == null)
                 {
                     id = Guid.Empty;
                 }
-                var record = _fixedAssetIncrementBL.GetMultiAsset((Guid)id, cacheValue, keyword);
+                var record = _fixedAssetIncrementBL.GetMultiAsset((Guid)id, keyword);
                     return StatusCode(StatusCodes.Status200OK, record);
             }
             catch (ErrorSevice ex)
@@ -74,12 +58,8 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
             }
             catch (Exception ex)
             {
-
                 return HandleException(ex);
-
             }
-
-
         }
 
         /// <summary>
@@ -170,9 +150,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.Controllers
 
             catch (Exception ex)
             {
-
                 return HandleException(ex);
-
             }
         }
 

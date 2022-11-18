@@ -106,11 +106,29 @@ namespace MISA.QLTS.Common.Resource {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ngày chứng từ không được lớn hơn ngày hiện tại!.
+        /// </summary>
+        public static string DateIncrement {
+            get {
+                return ResourceManager.GetString("DateIncrement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ngày bắt đầu không được phép lớn hơn ngày hiện tại.
         /// </summary>
         public static string DateUse {
             get {
                 return ResourceManager.GetString("DateUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ngày mua không được lớn hơn ngày hiện tại!.
+        /// </summary>
+        public static string DateVocher {
+            get {
+                return ResourceManager.GetString("DateVocher", resourceCulture);
             }
         }
         
@@ -138,6 +156,24 @@ namespace MISA.QLTS.Common.Resource {
         public static string MaxLength {
             get {
                 return ResourceManager.GetString("MaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cần chọn ít nhất một bản ghi!.
+        /// </summary>
+        public static string MinAsset {
+            get {
+                return ResourceManager.GetString("MinAsset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to không được bỏ trống!.
+        /// </summary>
+        public static string NoEmpty {
+            get {
+                return ResourceManager.GetString("NoEmpty", resourceCulture);
             }
         }
         
@@ -196,11 +232,11 @@ namespace MISA.QLTS.Common.Resource {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to không được bỏ trống !.
+        ///   Looks up a localized string similar to .
         /// </summary>
-        public static string Required1 {
+        public static string String1 {
             get {
-                return ResourceManager.GetString("Required1", resourceCulture);
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
     }

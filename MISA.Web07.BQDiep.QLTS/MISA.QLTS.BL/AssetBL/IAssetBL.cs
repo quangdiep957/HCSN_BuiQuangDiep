@@ -22,7 +22,7 @@ namespace MISA.QLTS.BL
         /// <param name="ID"></param>
         /// <returns></returns>
         /// Date: 18/08/2022
-        public string GetPagingAsset(string ID);
+        //public string GetPagingAsset(string ID);
 
         /// <summary>
         /// Tìm kiếm và phân trang

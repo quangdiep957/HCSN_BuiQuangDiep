@@ -6,7 +6,7 @@ namespace MISA.QLSP.Common.Entities.Entities
     {
         #region Property
         /// <summary>
-        /// MÃ lỗi
+        /// Mã lỗi
         /// </summary>
         public int Handle { get; set; }
         /// <summary>
@@ -33,7 +33,7 @@ namespace MISA.QLSP.Common.Entities.Entities
 
         #region Constructor
         /// <summary>
-        /// HÀm khởi tạo
+        /// Hàm khởi tạo
         /// </summary>
         public ErrorSevice()
         {

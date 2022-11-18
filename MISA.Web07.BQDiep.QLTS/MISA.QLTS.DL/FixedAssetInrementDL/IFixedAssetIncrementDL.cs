@@ -18,7 +18,7 @@ namespace MISA.QLTS.DL
         /// <param name="id">id của bảng ghi tăng</param>
         /// <returns></returns>
         /// Created:Bùi Quang Điệp(09/10/2022)
-        public List<FixedAssetMulti> GetMultiAsset(Guid id, List<Guid> cacheValue, string keyword);
+        public List<FixedAssetMulti> GetMultiAsset(Guid id, string keyword);
 
         /// <summary>
         /// Lấy danh sách chi tiết 1 bản ghi 

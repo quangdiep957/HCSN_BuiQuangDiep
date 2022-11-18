@@ -21,7 +21,7 @@ const routes = [
   },
   {
     path : '/asset/writeincrease',
-    name : 'writeincrease',
+    name : 'writeIncrease',
     component : WriteIncrease
   }
 ]

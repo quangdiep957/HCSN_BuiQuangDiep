@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog__handle" id="dialog__handle" @keydown.esc="CloseKeyESC">
+  <div class="dialog__handle" id="dialog__handle" @keydown.esc="closeDialog">
     <div class="dialog" ref="dialog">
       <div class="dialog__header">
         <h3 id="handle">{{ labelDialog }}</h3>
@@ -101,8 +101,8 @@
                 :classTable="true"
                 colspan="6"
                 :can-paging="false"
-                :showTable="showTable"
-                @hideTable="showTable = false"
+                :loadTable="loadTable"
+                @hideTable="loadTable = false"
                 :classCustom="'tableBody'"
                 @itemDialog="getItemAsset"
                 @deleteAsset="deleteAsset"
@@ -293,7 +293,7 @@ export default {
           label: "Chức năng",
           replication: false,
           styleCss:
-            "width:90px !important ; max-width:90px !important ; min-width:90px !important ;position: sticky;right: 0px;background-color: #fff;",
+            "width:90px !important ; max-width:90px !important ; min-width:90px !important ;position: sticky;right: 0px;background-color: #fff;right:-2px",
         },
       ],
       isShowDialogSelect: false,
@@ -306,7 +306,7 @@ export default {
       errors: [],
       inputHandler: false,
       summaryIncrement: 0,
-      showTable: false,
+      loadTable: false,
       getPrice: false,
       searchArray: {
         keyword: "",
@@ -391,14 +391,14 @@ export default {
         Resource.APIs.FixedAssetIncrements +
         `AssetMulti?id=${this.itemDetail.fixedAssetIncrementID}` +
         `&key=${this.itemDetail.fixedAssetIncrementCode}&filterId=1`;
-      this.showTable = true;
+      this.loadTable = true;
     } else if (this.handler == Resource.CommandType.Add) {
       this.urlTable =
         Resource.APIs.FixedAssetIncrements +
         `AssetMulti?` +
         `key=${this.itemDetail.fixedAssetIncrementCode}&filterId=1`;
       this.labelDialog = Resource.TitleDialog.AddIncrement;
-      this.showTable = true;
+      this.loadTable = true;
     }
     this.key = this.itemDetail.fixedAssetIncrementCode;
     if (
@@ -494,6 +494,12 @@ export default {
         console.log(error);
       }
     },
+
+    /**
+     * Lấy dữ liệu tài sản
+     * Author : Bùi Quang Điệp
+     * Date:10/08/2022
+     */
     getDataAsset(assets) {
       try {
         for (const asset of assets) {
@@ -505,6 +511,12 @@ export default {
         console.log(error);
       }
     },
+
+    /**
+     * Đóng dialog chọn tài sản
+     * Author : Bùi Quang Điệp
+     * Date:10/08/2022
+     */
     closeDialogSelect() {
       try {
         this.isShowDialogSelect = false;
@@ -663,10 +675,8 @@ export default {
     validation() {
       // validate dữ liệu
       // Check required
-      var date = new Date();
-      var day = date.getDate() + 1;
-      date = date.setDate(day);
       var isCheck = true;
+      this.errors = [];
       if (this.itemDetail.fixedAssetIncrementCode == "") {
         isCheck = false;
       } else {
@@ -682,18 +692,7 @@ export default {
         this.itemDetail.dateVocher == ""
       ) {
         isCheck = false;
-      } else {
-        if (new Date(this.itemDetail.dateIncrement) > date) {
-          isCheck = false;
-          this.errors.push(Resource.Required.MaxIncrementDate);
-          this.buttonNames = [Resource.Label.Close];
-        } else if (new Date(this.itemDetail.dateVocher) > date) {
-          isCheck = false;
-          this.errors.push(Resource.Required.MaxDateVocher);
-          this.buttonNames = [Resource.Label.Close];
-        }
       }
-
       // Kiểm tra ít nhất phải có 1 bản ghi được chọn
       if (this.dataEntry.length < 1) {
         isCheck = false;
@@ -903,7 +902,7 @@ export default {
     getdateVocher(res) {
       try {
         res.setDate(res.getDate() + 1);
-        this.itemDetail.dateVocher = res;
+        this.itemDetail.dateVocher = new Date(res);
       } catch (error) {
         console.log(error);
       }
@@ -916,7 +915,7 @@ export default {
     getDateIncrement(res) {
       try {
         res.setDate(res.getDate() + 1);
-        this.itemDetail.dateIncrement = res;
+        this.itemDetail.dateIncrement = new Date(res);
       } catch (error) {
         console.log(error);
       }

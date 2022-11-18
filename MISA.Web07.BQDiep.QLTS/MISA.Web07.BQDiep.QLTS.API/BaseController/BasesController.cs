@@ -19,13 +19,11 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
     {
         #region Field
         private IBaseBL<T> _baseBL;
-        public readonly IMemoryCache _memoryCache;
         #endregion
         #region constructor
-        public BasesController(IBaseBL<T> baseBL,IMemoryCache memoryCache)
+        public BasesController(IBaseBL<T> baseBL)
         {
             _baseBL = baseBL;
-            _memoryCache = memoryCache; 
         }
         #endregion
 
@@ -268,7 +266,7 @@ namespace MISA.Web07.BQDiep.QLTS.API.BaseController
             error.UserMsg = ex.UserMsg;
             error.DevMsg = ex.DevMsg;
             error.DataError = ex.DataError;
-            return StatusCode(500, error);
+            return StatusCode(400, error);
         }
 
         //<summary>

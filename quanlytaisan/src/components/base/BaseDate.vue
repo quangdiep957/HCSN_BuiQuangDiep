@@ -73,17 +73,6 @@ export default {
   },
 
   methods: {
-    demo() {
-      if (this.deleteChange) {
-        // Lấy value sau khi xóa
-        var value = this.$refs["date"].value;
-        var valueArray = [];
-        for (let i = 0; i < value.length; i++) {
-          valueArray.push(value[i]);
-        }
-        this.dateArray = valueArray;
-      }
-    },
     /**
      * hàm validate ngày tháng
      * Author : Bùi Quang Điệp

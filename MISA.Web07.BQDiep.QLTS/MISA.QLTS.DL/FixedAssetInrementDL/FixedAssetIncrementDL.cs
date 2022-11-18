@@ -41,7 +41,7 @@ namespace MISA.QLTS.DL
         /// <param name="id">id của bảng ghi tăng</param>
         /// <returns></returns>
         /// Created:Bùi Quang Điệp(09/10/2022)
-        public List<FixedAssetMulti> GetMultiAsset(Guid id,List<Guid> cacheValue, string keyword)
+        public List<FixedAssetMulti> GetMultiAsset(Guid id, string keyword)
         {
             var recordAssets = new List<FixedAssetMulti>();
             var paramater = new DynamicParameters();
@@ -61,11 +61,7 @@ namespace MISA.QLTS.DL
                 }
                 paramater.Add("v_where", conditionWhere);
             }
-
-            string dataFixedAssetID;
-            List<FixedAssetMulti> dataAsset;
-            // lấy danh sách tài sản trong cache
-            GetCacheFixedAssets(cacheValue, keyword, paramaterAsset, out dataFixedAssetID, out dataAsset);
+            var dataAsset = new List<FixedAssetMulti>();
             var nameProcedure = ResourceProcedure.GetAssetByIncrement;
             // Kết nối đến database
             using (var sqlConnection = new MySqlConnection(DatabaseContext.ConnectionString))
@@ -79,50 +75,8 @@ namespace MISA.QLTS.DL
                     }
                     dataAsset = (List<FixedAssetMulti>)res;
                 }
-                // Lấy danh sách tài sản được lưu trong bộ nhớ cache
-                var procName = ResourceProcedure.GetAssetCache;
-                if (dataFixedAssetID != "")
-                {
-                    var dataAssetCache = sqlConnection.Query<FixedAssetMulti>(procName, paramaterAsset, commandType: System.Data.CommandType.StoredProcedure);
-                    foreach (var item in dataAssetCache)
-                    {
-                        dataAsset.Add(item);
-                    }
-
-                }
+               
                 return dataAsset;
-            }
-        }
-
-        /// <summary>
-        /// Lấy danh sách tài sản lưu trong cache được gửi lên từ Fontend
-        /// </summary>
-        /// <param name="cacheValue"></param>
-        /// <param name="keyword"></param>
-        /// <param name="paramaterAsset"></param>
-        /// <param name="dataFixedAssetID"></param>
-        /// <param name="dataAsset"></param>
-        /// CreatedBy:Bùi Quang Điệp(29/10/2022)
-        private static void GetCacheFixedAssets(List<Guid> cacheValue, string keyword, DynamicParameters paramaterAsset, out string dataFixedAssetID, out List<FixedAssetMulti> dataAsset)
-        {
-            dataFixedAssetID = string.Empty;
-            dataAsset = new List<FixedAssetMulti>();
-            if (cacheValue != null)
-            {
-                if (cacheValue.Count > 0)
-                {
-                    dataFixedAssetID = "fixedAssetID IN(";
-                    foreach (var item in cacheValue)
-                    {
-                        dataFixedAssetID = dataFixedAssetID + "'" + item + "'" + ",";
-                    }
-                    dataFixedAssetID = dataFixedAssetID.Remove(dataFixedAssetID.Length - 1) + ")";
-                    if (keyword != null)
-                    {
-                        dataFixedAssetID = $" FixedAssetCode LIKE '%{keyword}%'" + "and " + dataFixedAssetID + $" or FixedAssetName LIKE '%{keyword}%'" + " and " + dataFixedAssetID;
-                    }
-                    paramaterAsset.Add("v_where", dataFixedAssetID);
-                }
             }
         }
 
@@ -215,16 +169,9 @@ namespace MISA.QLTS.DL
                 var data = multipleResults.Read<FixedAssetIncrement>().ToList();
                 var totalCount = multipleResults.Read<long>().Single();
                 var summary = multipleResults.Read<Summary>().Single();
-                decimal sumQuantity = 0;
-                decimal sumPrice = 0;
-                decimal sumDepreciations = 0;
-                decimal sumAtrophy = 0;
                 var now = DateTime.Now.Year;
                 var dataSummary = new Summary();
                 dataSummary = summary;
-                //dataSummary.Add(sumPrice);
-                //dataSummary.Add(sumDepreciations);
-                //dataSummary.Add(sumAtrophy);
                 var res = new PagingData<FixedAssetIncrement>()
                 {
                     Data = data,
@@ -273,7 +220,7 @@ namespace MISA.QLTS.DL
         /// <param name="trans"></param>
         /// <param name="result"></param>
         /// createdBy : Bùi Quang Điệp (24/08/2022)
-        protected override void UpdateBudget(List<Guid>? proppertiesAssetIDs, List<UpdateSourceCost>? propertiesAssets, MySqlConnection sqlConnection, MySqlTransaction trans, Guid result)
+        protected override void MajorUpdateRecord(List<Guid>? proppertiesAssetIDs, List<UpdateSourceCost>? propertiesAssets, MySqlConnection sqlConnection, MySqlTransaction trans, Guid result)
         {
             var paramaterCreate = new DynamicParameters();
             var paramaterUpdateAsset = new DynamicParameters();
@@ -349,7 +296,7 @@ namespace MISA.QLTS.DL
         /// <param name="i"></param>
         /// <returns></returns>
         /// createBy : Bùi Quang Điệp (24/10/2022)
-        protected override void HandlerMajorDeleteIncrement(Guid fixedAssetIncrementID, MySqlConnection sqlConection, MySqlTransaction trans)
+        protected override void HandlerMajorDelete(Guid fixedAssetIncrementID, MySqlConnection sqlConection, MySqlTransaction trans)
         {
             // Lấy danh sách ID tài sản theo mã ghi tăng
             var proc = ResourceProcedure.GetAssetByIncrement;

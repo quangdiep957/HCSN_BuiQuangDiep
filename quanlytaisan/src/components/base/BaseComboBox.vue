@@ -248,7 +248,7 @@ export default {
       top: "0px",
       opacity: 0,
       isShow: false,
-      isTicked: "",
+      isTicked: "20",
       isShowCombo: false,
       value_input: "",
       value_quantity: "20",
@@ -341,6 +341,10 @@ export default {
           if (this.nameTable == "Department") {
             domain = Resource.APIs.DepartmentSearch + keyword;
           }
+          else if(this.nameTable =="Budget")
+          {
+            domain = Resource.APIs.BudgetSearch + keyword;
+          }
           this.isLoading = true;
           API.get(domain)
             .then((res) => {
@@ -406,8 +410,6 @@ export default {
         } else {
           this.value_input = item[this.code];
         }
-
-        this.$emit("checkRequired", true, this.position);
         if (this.isCheck == true) {
           this.$emit("removeData");
           this.$emit("checkFalse");
@@ -421,6 +423,7 @@ export default {
         if (this.checkFocus == true) {
           this.$refs.inputControl.focus();
         }
+        this.$emit("checkRequired", true, this.position);
       } catch (error) {
         console.log(error);
       }
@@ -468,6 +471,14 @@ export default {
             this.$emit("dataComBoBoxSearch", item);
           }
         }
+        if(this.value_input != "")
+        {
+          this.$emit("checkRequired", true, this.position);
+        }
+        else{
+          this.$emit("checkRequired", false, this.position);
+        }
+
       } catch (error) {
         console.log(error);
       }
